@@ -237,10 +237,10 @@ export default function Home() {
           </p>
 
           {/* DIRECT HERO INPUT */}
-          <div className="w-full max-w-md bg-white p-3 rounded-[24px] shadow-lg border border-slate-200 transform hover:scale-[1.02] transition-transform duration-300">
+          <div className="w-full max-w-md bg-white p-2 sm:p-3 rounded-[24px] shadow-lg border border-slate-200 transform hover:scale-[1.02] transition-transform duration-300">
             <div className="flex flex-col gap-2">
-              <div className="flex items-center bg-slate-50 rounded-xl px-4 py-3 border border-slate-100 focus-within:border-indigo-500/50 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
-                <div className="flex items-center gap-2 border-r border-slate-300 pr-3 mr-3 cursor-pointer" onClick={() => handleCountrySelect(selectedCountry === '+91' ? '+971' : '+91')}>
+              <div className="flex items-center bg-slate-50 rounded-xl px-3 sm:px-4 py-2 sm:py-3 border border-slate-100 focus-within:border-indigo-500/50 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
+                <div className="flex items-center gap-2 border-r border-slate-300 pr-2 sm:pr-3 mr-2 sm:mr-3 cursor-pointer" onClick={() => handleCountrySelect(selectedCountry === '+91' ? '+971' : '+91')}>
                   <span className={`fi ${selectedCountry === '+91' ? 'fi-in' : 'fi-ae'} rounded-sm text-lg shadow-sm`}></span>
                   <span className="text-slate-800 font-bold text-sm">{selectedCountry}</span>
                   <FontAwesomeIcon icon={faChevronDown} className="text-[10px] text-slate-400" />
@@ -248,7 +248,7 @@ export default function Home() {
                 <input
                   type="tel"
                   placeholder="98765 43210"
-                  className="bg-transparent w-full outline-none text-slate-900 font-bold placeholder-slate-400 text-lg h-full"
+                  className="bg-transparent w-full outline-none text-slate-900 font-bold placeholder-slate-400 text-base sm:text-lg h-full"
                   value={phoneNumber}
                   onChange={handlePhoneChange}
                   maxLength={10}
@@ -256,7 +256,7 @@ export default function Home() {
               </div>
 
               <button
-                className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-indigo-200 transition-all flex items-center justify-center gap-3 text-lg disabled:opacity-70 disabled:cursor-not-allowed"
+                className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 sm:py-4 rounded-xl shadow-lg shadow-indigo-200 transition-all flex items-center justify-center gap-3 text-base sm:text-lg disabled:opacity-70 disabled:cursor-not-allowed"
                 onClick={handleSubmit}
                 disabled={isLoading}
               >
@@ -984,7 +984,7 @@ export default function Home() {
       {/* FINAL CTA */}
       <section className="py-24 bg-slate-50 border-t border-slate-200">
         <div className="container mx-auto px-6 flex justify-center">
-          <div className="bg-white p-8 rounded-[40px] shadow-lg border border-slate-100 max-w-lg w-full">
+          <div className="bg-white p-6 sm:p-8 rounded-[40px] shadow-lg border border-slate-100 max-w-lg w-full">
             <div className="text-center mb-6">
               <h3 className="text-2xl font-bold text-slate-900">C'mon, Make That Call!</h3>
               <p className="text-slate-500 text-sm">Try Callers – Meet Paul / Cassie</p>
@@ -1016,16 +1016,16 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="flex items-center border border-slate-200 rounded-2xl px-4 py-3 mb-4 bg-slate-50 shadow-inner">
-              <div className="flex items-center gap-2 border-r border-slate-300 pr-3 mr-3 cursor-pointer">
+            <div className="flex items-center border border-slate-200 rounded-2xl px-3 sm:px-4 py-2 sm:py-3 mb-4 bg-slate-50 shadow-inner">
+              <div className="flex items-center gap-2 border-r border-slate-300 pr-2 sm:pr-3 mr-2 sm:mr-3 cursor-pointer">
                 <span className="fi fi-in rounded-sm text-xl shadow-sm"></span>
                 <span className="text-slate-800 font-bold text-sm">+91</span>
                 <i className="fas fa-chevron-down text-[10px] text-slate-400"></i>
               </div>
-              <input type="tel" placeholder="081234 56789" className="bg-transparent w-full outline-none text-slate-900 font-bold placeholder-slate-400 text-lg" />
+              <input type="tel" placeholder="081234 56789" className="bg-transparent w-full outline-none text-slate-900 font-bold placeholder-slate-400 text-base sm:text-lg" />
             </div>
 
-            <button className="w-full bg-cyan-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-indigo-200 transition-all flex items-center justify-center gap-2 text-lg">
+            <button className="w-full bg-cyan-600 hover:bg-indigo-700 text-white font-bold py-3 sm:py-4 rounded-2xl shadow-lg shadow-indigo-200 transition-all flex items-center justify-center gap-2 text-base sm:text-lg">
               <FontAwesomeIcon icon={faPhoneVolume} /> Receive AI Call
             </button>
           </div>
@@ -1036,8 +1036,8 @@ export default function Home() {
       <Footer />
 
       {/* MODALS */}
-      <MobileCallInput />
-      <FloatingBotIcon onOpen={() => setShowWebBot(true)} />
+  
+   
 
       {showVoiceAgent && <VoiceAgent onClose={() => setShowVoiceAgent(false)} />}
       {showWebBot && <WebVoiceAgent onClose={() => setShowWebBot(false)} />}
