@@ -929,7 +929,7 @@ export default function Home() {
               <input type="tel" placeholder="081234 56789" className="bg-transparent w-full outline-none text-slate-900 font-bold placeholder-slate-400 text-lg" />
             </div>
 
-            <button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-indigo-200 transition-all flex items-center justify-center gap-2 text-lg">
+            <button className="w-full bg-cyan-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-indigo-200 transition-all flex items-center justify-center gap-2 text-lg">
               <FontAwesomeIcon icon={faPhoneVolume} /> Receive AI Call
             </button>
           </div>

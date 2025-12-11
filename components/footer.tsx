@@ -64,10 +64,8 @@ export default function Footer() {
           {/* Brand */}
           <motion.div variants={itemVariants}>
             <div className="flex items-center gap-2 mb-4">
-              <Image src="/xeny-logo.png" alt="Xeny Logo" width={32} height={32} />
-              <span className="text-lg font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-                Xeny
-              </span>
+              <Image src="/logo/xeny-logo.png" alt="Xeny Logo" width={52} height={52} />
+             
             </div>
             <p className="text-sm text-gray-600">Create AI voice agents to automate your customer conversations</p>
           </motion.div>

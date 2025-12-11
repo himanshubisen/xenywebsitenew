@@ -20,10 +20,8 @@ export default function Header({ onDemoClick }: HeaderProps) {
         {/* Logo */}
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <Image src="/xeny-logo.png" alt="Xeny Logo" width={32} height={32} />
-            <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-              Xeny
-            </span>
+            <Image src="/logo/xeny-logo.png" alt="Xeny Logo" width={52} height={52} />
+        
           </Link>
         </motion.div>
 
@@ -62,7 +60,7 @@ export default function Header({ onDemoClick }: HeaderProps) {
               onClick={() => window.open('https://app.xeny.ai/signup-with-voiceagent', '_blank')}
               className=" bg-cyan-600 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-6"
             >
-              Book a Demo
+              Get Start
             </Button>
           </motion.div>
         </div>
