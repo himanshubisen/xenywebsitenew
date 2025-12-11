@@ -3,6 +3,8 @@
 import { useState, useRef, useEffect } from "react"
 import { X, Loader2, Mic, MicOff } from "lucide-react"
 import { motion } from "framer-motion"
+import VoiceAgentClient from "@/lib/voice-agent-client"
+import AudioProcessor from "@/lib/audio-processor"
 
 interface WebVoiceAgentProps {
   onClose: () => void
@@ -14,76 +16,14 @@ export default function WebVoiceAgent({ onClose }: WebVoiceAgentProps) {
   const [isSpeaking, setIsSpeaking] = useState(false)
   const [status, setStatus] = useState("AI Voice Agent Ready")
 
-  const wsRef = useRef<WebSocket | null>(null)
-  const mediaStreamRef = useRef<MediaStream | null>(null)
-  const audioContextRef = useRef<AudioContext | null>(null)
-  const processorRef = useRef<ScriptProcessorNode | null>(null)
-  const sourceRef = useRef<MediaStreamAudioSourceNode | null>(null)
+  const voiceClientRef = useRef<VoiceAgentClient | null>(null)
+  const audioProcessorRef = useRef<AudioProcessor | null>(null)
 
-  const wsServerUrl = "wss://devweb.xeny.ai"
-  const environment = "wsprod"
-  const voiceAgentId = "690ef1d4f5605ac44e4c233f"
+  // Use environment variables for WebSocket configuration
+  const wsServerUrl = process.env.NEXT_WEBSOCKET_SERVER_URL || "wss://devweb.xeny.ai"
+  const environment = process.env.NEXT_ENVIRONMENT || "wsprod"
+  const voiceAgentId = process.env.NEXT_VOICE_AGENT_ID || "690ef1d4f5605ac44e4c233f"
   const serverUrl = `${wsServerUrl}/${environment}/${voiceAgentId}`
-
-  const startMicrophone = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-      mediaStreamRef.current = stream
-
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
-      audioContextRef.current = audioContext
-
-      const source = audioContext.createMediaStreamSource(stream)
-      sourceRef.current = source
-
-      const processor = audioContext.createScriptProcessor(4096, 1, 1)
-      processorRef.current = processor
-
-      source.connect(processor)
-      processor.connect(audioContext.destination)
-
-      processor.onaudioprocess = (e) => {
-        if (!isActive || !wsRef.current || wsRef.current.readyState !== WebSocket.OPEN) return
-
-        const inputData = e.inputBuffer.getChannelData(0)
-        const buffer = new ArrayBuffer(inputData.length * 2)
-        const view = new DataView(buffer)
-        let offset = 0
-        for (let i = 0; i < inputData.length; i++, offset += 2) {
-          const sample = Math.max(-1, Math.min(1, inputData[i]))
-          view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7FFF, true)
-        }
-        if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-          wsRef.current.send(buffer)
-        }
-      }
-
-      setStatus("Listening...")
-    } catch (err) {
-      console.error("Mic access denied", err)
-      setStatus("Microphone access denied")
-      setIsLoading(false)
-    }
-  }
-
-  const stopMicrophone = () => {
-    if (processorRef.current) {
-      processorRef.current.disconnect()
-      processorRef.current = null
-    }
-    if (sourceRef.current) {
-      sourceRef.current.disconnect()
-      sourceRef.current = null
-    }
-    if (mediaStreamRef.current) {
-      mediaStreamRef.current.getTracks().forEach(track => track.stop())
-      mediaStreamRef.current = null
-    }
-    if (audioContextRef.current) {
-      audioContextRef.current.close()
-      audioContextRef.current = null
-    }
-  }
 
   const handleConnect = async () => {
     if (isActive) {
@@ -91,84 +31,146 @@ export default function WebVoiceAgent({ onClose }: WebVoiceAgentProps) {
       setIsLoading(true)
       setStatus("Stopping...")
 
-      if (wsRef.current) {
-        wsRef.current.close()
-        wsRef.current = null
+      try {
+        // Disconnect voice client
+        if (voiceClientRef.current) {
+          voiceClientRef.current.disconnect()
+          voiceClientRef.current = null
+        }
+
+        // Cleanup audio processor
+        if (audioProcessorRef.current) {
+          audioProcessorRef.current.cleanup()
+          audioProcessorRef.current = null
+        }
+
+        setIsActive(false)
+        setIsSpeaking(false)
+        setStatus("AI Voice Agent Ready")
+      } catch (error) {
+        console.error("Error stopping voice agent:", error)
+        setStatus("Error stopping")
+      } finally {
+        setIsLoading(false)
       }
-
-      stopMicrophone()
-
-      setIsActive(false)
-      setIsSpeaking(false)
-      setStatus("AI Voice Agent Ready")
-      setIsLoading(false)
     } else {
       // START
       setIsLoading(true)
       setStatus("Connecting...")
 
       try {
-        const ws = new WebSocket(serverUrl)
+        console.log(`Connecting to WebSocket: ${serverUrl}`)
+        setStatus(`Connecting to ${serverUrl}...`)
 
-        ws.onopen = () => {
-          console.log("WebSocket Connected")
-          setIsActive(true)
-          setIsLoading(false)
-          setStatus("Listening...")
-          startMicrophone()
-        }
+        // Create voice client
+        const voiceClient = new VoiceAgentClient(serverUrl)
+        voiceClientRef.current = voiceClient
 
-        ws.onmessage = (event) => {
-          if (event.data instanceof Blob) {
-            setIsSpeaking(true)
-            const fileReader = new FileReader()
-            fileReader.onload = () => {
-              const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
-              audioContext.decodeAudioData(fileReader.result as ArrayBuffer, (buffer) => {
-                const source = audioContext.createBufferSource()
-                source.buffer = buffer
-                source.connect(audioContext.destination)
-                source.start(0)
-                source.onended = () => setIsSpeaking(false)
-              }, (error) => {
-                console.error("Audio decode error:", error)
-                setIsSpeaking(false)
-              })
-            }
-            fileReader.onerror = (error) => {
-              console.error("FileReader error:", error)
-              setIsSpeaking(false)
-            }
-            fileReader.readAsArrayBuffer(event.data)
-          }
-        }
+        // Create audio processor
+        const audioProcessor = new AudioProcessor(voiceClient)
+        audioProcessorRef.current = audioProcessor
 
-        ws.onerror = (err) => {
-          console.error("WebSocket error:", err)
-          setStatus("Connection error")
-        }
+        // Set up event handlers
+        voiceClient.on('connected', () => {
+          console.log("WebSocket Connected successfully")
+          setStatus("Connected! Initializing audio...")
+        })
 
-        ws.onclose = () => {
-          console.log("WebSocket closed")
+        voiceClient.on('session_ready', () => {
+          console.log("Session ready")
+          setStatus("Session ready! Starting microphone...")
+          startAudioProcessing()
+        })
+
+        voiceClient.on('audio_start', () => {
+          console.log("Agent started speaking")
+          setIsSpeaking(true)
+        })
+
+        voiceClient.on('audio_done', () => {
+          console.log("Agent finished speaking")
+          setIsSpeaking(false)
+        })
+
+        voiceClient.on('transcript', (transcript: string) => {
+          console.log("User transcript:", transcript)
+          setStatus(`You: ${transcript}`)
+        })
+
+        voiceClient.on('response_text', (text: string) => {
+          console.log("Agent response:", text)
+          setStatus(`Agent: ${text}`)
+        })
+
+        voiceClient.on('error', (error: string) => {
+          console.error("Voice client error:", error)
+          setStatus(`Error: ${error}`)
+        })
+
+        voiceClient.on('disconnected', () => {
+          console.log("Disconnected")
           setIsActive(false)
           setIsSpeaking(false)
-          setStatus("AI Voice Agent Ready")
-          stopMicrophone()
-        }
+          setStatus("Disconnected")
+        })
 
-        wsRef.current = ws
+        // Connect to WebSocket
+        await voiceClient.connect()
+
+        setIsActive(true)
+        setIsLoading(false)
+        setStatus("Connected! Waiting for session...")
+
       } catch (error) {
         console.error("Connection failed:", error)
-        setStatus("Failed to connect")
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+        setStatus(`Failed to connect: ${errorMessage}`)
         setIsLoading(false)
+
+        // Cleanup on error
+        if (voiceClientRef.current) {
+          voiceClientRef.current.disconnect()
+          voiceClientRef.current = null
+        }
+        if (audioProcessorRef.current) {
+          audioProcessorRef.current.cleanup()
+          audioProcessorRef.current = null
+        }
       }
+    }
+  }
+
+  const startAudioProcessing = async () => {
+    try {
+      if (!audioProcessorRef.current) {
+        throw new Error("Audio processor not initialized")
+      }
+
+      // Initialize audio
+      await audioProcessorRef.current.initialize()
+
+      // Start recording
+      await audioProcessorRef.current.startRecording()
+
+      setStatus("Listening... Speak now!")
+      console.log("Audio processing started")
+    } catch (error) {
+      console.error("Failed to start audio processing:", error)
+      setStatus(`Audio error: ${error instanceof Error ? error.message : 'Unknown error'}`)
     }
   }
 
   useEffect(() => {
     return () => {
-      if (wsRef.current) wsRef.current.close()
-      stopMicrophone()
+      // Cleanup on component unmount
+      if (voiceClientRef.current) {
+        voiceClientRef.current.disconnect()
+        voiceClientRef.current = null
+      }
+      if (audioProcessorRef.current) {
+        audioProcessorRef.current.cleanup()
+        audioProcessorRef.current = null
+      }
     }
   }, [])
 
