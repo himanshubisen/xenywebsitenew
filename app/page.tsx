@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faGraduationCap, faTruckLoading, faCoins, faMagnet, faPhoneAlt, faUserPlus, faFileInvoiceDollar, faMicrophoneAlt, faClock, faCalendarCheck, faGlobe, faFilter, faPaperPlane, faCalendarAlt, faSearch, faCheckCircle, faHistory, faCreditCard, faChartBar, faRoute, faBoxOpen, faClipboardCheck, faChartPie, faRocket, faPhoneVolume, faHeadset, faChartLine, faBolt, faRobot, faBrain, faSearch as faSearchIcon, faPlay, faChevronDown, faLock, faCheck, faBars, faTimes, faSpinner } from "@fortawesome/free-solid-svg-icons"
+import { faGraduationCap, faTruckLoading, faCoins, faMagnet, faPhoneAlt, faUserPlus, faFileInvoiceDollar, faMicrophoneAlt, faClock, faCalendarCheck, faGlobe, faFilter, faPaperPlane, faCalendarAlt, faSearch, faCheckCircle, faHistory, faCreditCard, faChartBar, faRoute, faBoxOpen, faClipboardCheck, faChartPie, faRocket, faPhoneVolume, faHeadset, faChartLine, faBolt, faRobot, faBrain, faSearch as faSearchIcon, faPlay, faChevronDown, faLock, faCheck, faBars, faTimes, faSpinner, faCircle } from "@fortawesome/free-solid-svg-icons"
 import { faAmazon, faGoogle, faSpotify, faAirbnb, faUber, faStripe, faMicrosoft, faSalesforce, faHubspot, faWhatsapp, faSlack } from "@fortawesome/free-brands-svg-icons"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
@@ -11,6 +11,9 @@ import MobileCallInput from "@/components/mobile-call-input"
 import FloatingBotIcon from "@/components/floating-bot-icon"
 import VoiceAgent from "@/components/voice-agent"
 import WebVoiceAgent from "@/components/web-voice-agent"
+import LightThemeVoicePage from "@/components/light-theme-voice-page"
+
+
 
 export default function Home() {
   const [showVoiceAgent, setShowVoiceAgent] = useState(false)
@@ -287,6 +290,8 @@ export default function Home() {
         </div>
       </section>
 
+  
+
       {/* CLIENTS MARQUEE */}
       <div className="bg-white border-y border-slate-100 py-10 overflow-hidden relative">
         <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10"></div>
@@ -321,6 +326,11 @@ export default function Home() {
             <div className="group"><div className="text-4xl font-bold text-pink-500 mb-2">10X</div><p className="text-xs font-bold uppercase text-slate-400">Jump in Conversions</p></div>
           </div>
         </div>
+      </section>
+
+          {/* VOICE SELECTION SECTION */}
+      <section className="py-24 bg-slate-50">
+        <LightThemeVoicePage />
       </section>
 
       {/* NEW: CALCULATOR SECTION */}
