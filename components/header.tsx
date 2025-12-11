@@ -60,7 +60,7 @@ export default function Header({ onDemoClick }: HeaderProps) {
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button
               onClick={() => window.open('https://app.xeny.ai/signup-with-voiceagent', '_blank')}
-              className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-6"
+              className=" bg-cyan-600 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-6"
             >
               Book a Demo
             </Button>

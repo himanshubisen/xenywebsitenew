@@ -169,6 +169,306 @@
       opacity: 1;
     }
   }
+  
+  /* ===========================================
+     CYAN GRADIENT BUTTONS WITH EFFECTS
+     =========================================== */
+  
+  /* Apply cursor:pointer only to solid cyan buttons (no gradients) */
+  /* Target only cyan solid buttons that are NOT gradient buttons */
+  button[class*="bg-cyan-600"]:not([class*="bg-gradient"]),
+  button[class*="bg-cyan-700"]:not([class*="bg-gradient"]),
+  button[class*="bg-cyan-800"]:not([class*="bg-gradient"]) {
+    background: linear-gradient(90deg, #0e7490, #2563eb, #4f46e5);
+    color: white !important;
+    border-radius: 0.5rem; /* rounded-lg */
+    font-size: 0.875rem;   /* text-sm */
+    font-weight: 500;      /* font-medium */
+    transition: all 0.3s ease;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    background-size: 200% 200%;
+  }
+  
+  /* Hover – brighter, smoother gradient shift */
+  
+  /* Apply only to solid cyan buttons (no gradients already applied) */
+  /* Normal state: exact color like your image */
+  button[class*="bg-cyan-600"]:not([class*="bg-gradient"]),
+  button[class*="bg-cyan-700"]:not([class*="bg-gradient"]),
+  button[class*="bg-cyan-800"]:not([class*="bg-gradient"]) {
+    background: linear-gradient(90deg, #3b82f6, #d100ff);
+    color: white ;
+    border-radius: 0.5rem;
+    /* padding: 8px 18px; */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  }
+  
+  /* Hover state: opacity + smooth fade */
+  button[class*="bg-cyan-600"]:not([class*="bg-gradient"]):hover,
+  button[class*="bg-cyan-700"]:not([class*="bg-gradient"]):hover,
+  button[class*="bg-cyan-800"]:not([class*="bg-gradient"]):hover {
+    opacity: 0.85;       /* fade effect */
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+    color: black;
+  }
+  
+  /* -------------------------------------------------- */
+  /*  ANIMATIONS – used by both buttons                 */
+  /* -------------------------------------------------- */
+  @keyframes ping-slow {
+    0%, 100% { transform: scale(1); opacity: 0; }
+    50%      { transform: scale(1.5); opacity: 0.2; }
+  }
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  
+  .animate-ping-slow { animation: ping-slow 3s cubic-bezier(0,0,0.2,1) infinite; }
+  .animate-spin-slow { animation: spin-slow 6s linear infinite; }
+  
+  /* ============================
+     DANGER GRADIENT BUTTONS
+  ============================== */
+  button[class*="bg-red-3"]:not([class*="bg-gradient"]),
+  button[class*="bg-red-4"]:not([class*="bg-gradient"]),
+  button[class*="bg-red-5"]:not([class*="bg-gradient"]),
+  button[class*="bg-red-6"]:not([class*="bg-gradient"]),
+  button[class*="bg-red-7"]:not([class*="bg-gradient"]),
+  button[class*="bg-red-8"]:not([class*="bg-gradient"]),
+  button[class*="bg-red-9"]:not([class*="bg-gradient"]) {
+    background: linear-gradient(90deg, #ff007d, #ff4d4d, #ff9900); /* pink → red → orange */
+    color: #fff !important;
+  
+    border-radius: 0.6rem;
+  
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  
+    cursor: pointer;
+    transition: all 0.35s ease;
+    background-size: 220% 220%;
+    box-shadow: 0 6px 18px rgba(255, 0, 80, 0.45);
+  }
+  
+  /* ============================
+     HOVER – gradient slide + glow
+  ============================== */
+  button[class*="bg-red-3"]:not([class*="bg-gradient"]):hover,
+  button[class*="bg-red-4"]:not([class*="bg-gradient"]):hover,
+  button[class*="bg-red-5"]:not([class*="bg-gradient"]):hover,
+  button[class*="bg-red-6"]:not([class*="bg-gradient"]):hover,
+  button[class*="bg-red-7"]:not([class*="bg-gradient"]):hover,
+  button[class*="bg-red-8"]:not([class*="bg-gradient"]):hover,
+  button[class*="bg-red-9"]:not([class*="bg-gradient"]):hover {
+    background-position: right center;
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 8px 25px rgba(255, 0, 100, 0.55);
+  }
+  
+  /* ============================
+     ACTIVE – press effect
+  ============================== */
+  button[class*="bg-red-3"]:not([class*="bg-gradient"]):active,
+  button[class*="bg-red-4"]:not([class*="bg-gradient"]):active,
+  button[class*="bg-red-5"]:not([class*="bg-gradient"]):active,
+  button[class*="bg-red-6"]:not([class*="bg-gradient"]):active,
+  button[class*="bg-red-7"]:not([class*="bg-gradient"]):active,
+  button[class*="bg-red-8"]:not([class*="bg-gradient"]):active,
+  button[class*="bg-red-9"]:not([class*="bg-gradient"]):active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 3px 12px rgba(255, 0, 100, 0.4);
+  }
+  
+  /* ===========================================
+     3D PARTICLE ANIMATIONS & GRADIENT BACKGROUNDS
+     =========================================== */
+  
+  /* 3D Particle Background */
+  @keyframes particle-float {
+    0%, 100% {
+      transform: translateY(0px) translateX(0px) scale(1);
+      opacity: 0.7;
+    }
+    25% {
+      transform: translateY(-20px) translateX(10px) scale(1.1);
+      opacity: 1;
+    }
+    50% {
+      transform: translateY(-10px) translateX(-15px) scale(0.9);
+      opacity: 0.8;
+    }
+    75% {
+      transform: translateY(-30px) translateX(5px) scale(1.05);
+      opacity: 0.9;
+    }
+  }
+  
+  @keyframes particle-rotate {
+    0% { transform: rotate(0deg) scale(1); }
+    50% { transform: rotate(180deg) scale(1.2); }
+    100% { transform: rotate(360deg) scale(1); }
+  }
+  
+  @keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  
+  @keyframes fade-in-up {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes glow-pulse {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.5), 0 0 40px rgba(209, 0, 255, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 30px rgba(59, 130, 246, 0.8), 0 0 60px rgba(209, 0, 255, 0.5);
+    }
+  }
+  
+  @keyframes slide-in-left {
+    0% {
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes slide-in-right {
+    0% {
+      opacity: 0;
+      transform: translateX(50px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  /* Particle Container */
+  .particle-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+  }
+  
+  .particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #d100ff);
+    border-radius: 50%;
+    animation: particle-float 8s ease-in-out infinite;
+  }
+  
+  .particle:nth-child(2n) {
+    animation-duration: 10s;
+    animation-delay: 2s;
+  }
+  
+  .particle:nth-child(3n) {
+    animation-duration: 12s;
+    animation-delay: 4s;
+  }
+  
+  .particle:nth-child(4n) {
+    width: 6px;
+    height: 6px;
+    animation: particle-rotate 15s linear infinite;
+  }
+  
+  .particle:nth-child(5n) {
+    width: 3px;
+    height: 3px;
+    animation-duration: 6s;
+    animation-delay: 1s;
+  }
+  
+  /* Gradient Background Classes */
+  .gradient-bg {
+    background: linear-gradient(90deg, #3b82f6, #d100ff);
+    background-size: 200% 200%;
+    animation: gradient-shift 8s ease infinite;
+  }
+  
+  .gradient-bg-overlay {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(209, 0, 255, 0.1));
+    backdrop-filter: blur(10px);
+  }
+  
+  /* Animation Utility Classes */
+  .animate-fade-in-up {
+    animation: fade-in-up 0.8s ease-out;
+  }
+  
+  .animate-glow-pulse {
+    animation: glow-pulse 3s ease-in-out infinite;
+  }
+  
+  .animate-slide-in-left {
+    animation: slide-in-left 0.6s ease-out;
+  }
+  
+  .animate-slide-in-right {
+    animation: slide-in-right 0.6s ease-out;
+  }
+  
+  /* Enhanced Button Hover Effects */
+  .enhanced-button {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .enhanced-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+  }
+  
+  .enhanced-button:hover::before {
+    left: 100%;
+  }
+  
+  .enhanced-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3), 0 0 50px rgba(209, 0, 255, 0.2);
+  }
 
   @keyframes gradientFlow {
     0% { background-position: 0% center; }
