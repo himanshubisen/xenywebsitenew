@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faGraduationCap, faTruckLoading, faCoins, faMagnet, faPhoneAlt, faUserPlus, faFileInvoiceDollar, faMicrophoneAlt, faClock, faCalendarCheck, faGlobe, faFilter, faPaperPlane, faCalendarAlt, faSearch, faCheckCircle, faHistory, faCreditCard, faChartBar, faRoute, faBoxOpen, faClipboardCheck, faChartPie, faRocket, faPhoneVolume, faHeadset, faChartLine, faBolt, faRobot, faBrain, faSearch as faSearchIcon, faPlay, faChevronDown, faLock, faCheck, faBars, faTimes } from "@fortawesome/free-solid-svg-icons"
+import { faGraduationCap, faTruckLoading, faCoins, faMagnet, faPhoneAlt, faUserPlus, faFileInvoiceDollar, faMicrophoneAlt, faClock, faCalendarCheck, faGlobe, faFilter, faPaperPlane, faCalendarAlt, faSearch, faCheckCircle, faHistory, faCreditCard, faChartBar, faRoute, faBoxOpen, faClipboardCheck, faChartPie, faRocket, faPhoneVolume, faHeadset, faChartLine, faBolt, faRobot, faBrain, faSearch as faSearchIcon, faPlay, faChevronDown, faLock, faCheck, faBars, faTimes, faSpinner } from "@fortawesome/free-solid-svg-icons"
 import { faAmazon, faGoogle, faSpotify, faAirbnb, faUber, faStripe, faMicrosoft, faSalesforce, faHubspot, faWhatsapp, faSlack } from "@fortawesome/free-brands-svg-icons"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
@@ -24,6 +24,78 @@ export default function Home() {
   // Active tab states
   const [activeUseCaseTab, setActiveUseCaseTab] = useState('growth')
   const [activeServiceTab, setActiveServiceTab] = useState('edu')
+
+  // Phone input form state
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [selectedCountry, setSelectedCountry] = useState('+91') // Default to India
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
+
+  // Handle country selection
+  const handleCountrySelect = (countryCode: string) => {
+    setSelectedCountry(countryCode)
+    setError('')
+  }
+
+  // Handle phone number input
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPhoneNumber(e.target.value)
+    setError('')
+  }
+
+  // Handle form submission
+  const handleSubmit = async () => {
+    if (!phoneNumber) {
+      setError('Please enter a phone number')
+      return
+    }
+
+    if (!phoneNumber.match(/^[0-9]{10}$/)) {
+      setError('Please enter a valid 10-digit phone number')
+      return
+    }
+
+    setIsLoading(true)
+    setError('')
+    setSuccess('')
+
+    try {
+      // Determine campaign ID based on selected country
+      const campaignId = selectedCountry === '+91'
+        ? process.env.NEXT_CAMPAIGN_ID_IND || "69391e24f8a4456f85e108b8"
+        : process.env.NEXT_CAMPAIGN_ID_UAE || "693a53a6bda2a468cca3b453"
+
+      // Construct the full phone number with country code
+      const fullPhoneNumber = `${selectedCountry}${phoneNumber}`
+
+      // Make API call using environment variable
+      const baseUrl = process.env.NEXT_XENY_CRM_BASE_URL || 'https://app.xeny.ai/apis/api'
+      const response = await fetch(`${baseUrl}/public/test-outbound-call/${campaignId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          agentNumber: fullPhoneNumber
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to initiate call')
+      }
+
+      const data = await response.json()
+      setSuccess('AI call initiated successfully! You will receive a call shortly.')
+      console.log('Call initiated:', data)
+
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to initiate call')
+      console.error('Call initiation error:', err)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   // Calculate savings
   const calculateSavings = () => {
@@ -168,25 +240,49 @@ export default function Home() {
           <div className="w-full max-w-md bg-white p-3 rounded-[24px] shadow-lg border border-slate-200 transform hover:scale-[1.02] transition-transform duration-300">
             <div className="flex flex-col gap-2">
               <div className="flex items-center bg-slate-50 rounded-xl px-4 py-3 border border-slate-100 focus-within:border-indigo-500/50 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
-                <div className="flex items-center gap-2 border-r border-slate-300 pr-3 mr-3 cursor-pointer">
-                  <span className="fi fi-in rounded-sm text-lg shadow-sm"></span>
-                  <span className="text-slate-800 font-bold text-sm">+91</span>
+                <div className="flex items-center gap-2 border-r border-slate-300 pr-3 mr-3 cursor-pointer" onClick={() => handleCountrySelect(selectedCountry === '+91' ? '+971' : '+91')}>
+                  <span className={`fi ${selectedCountry === '+91' ? 'fi-in' : 'fi-ae'} rounded-sm text-lg shadow-sm`}></span>
+                  <span className="text-slate-800 font-bold text-sm">{selectedCountry}</span>
                   <FontAwesomeIcon icon={faChevronDown} className="text-[10px] text-slate-400" />
                 </div>
-                <input type="tel" placeholder="98765 43210" className="bg-transparent w-full outline-none text-slate-900 font-bold placeholder-slate-400 text-lg h-full" />
+                <input
+                  type="tel"
+                  placeholder="98765 43210"
+                  className="bg-transparent w-full outline-none text-slate-900 font-bold placeholder-slate-400 text-lg h-full"
+                  value={phoneNumber}
+                  onChange={handlePhoneChange}
+                  maxLength={10}
+                />
               </div>
 
-              <button className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-indigo-200 transition-all flex items-center justify-center gap-3 text-lg">
-                <span className="relative flex h-3 w-3">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
-                </span>
-                Receive AI Call Now
+              <button
+                className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-indigo-200 transition-all flex items-center justify-center gap-3 text-lg disabled:opacity-70 disabled:cursor-not-allowed"
+                onClick={handleSubmit}
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <>
+                    <span className="animate-spin">
+                      <FontAwesomeIcon icon={faSpinner} className="text-white" />
+                    </span>
+                    Initiating Call...
+                  </>
+                ) : (
+                  <>
+                    <span className="relative flex h-3 w-3">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+                    </span>
+                    Receive AI Call Now
+                  </>
+                )}
               </button>
             </div>
             <p className="text-[10px] text-slate-400 mt-2 text-center flex items-center justify-center gap-1">
               <FontAwesomeIcon icon={faLock} /> Free demo • No credit card required
             </p>
+            {error && <p className="text-red-500 text-sm text-center mt-2">{error}</p>}
+            {success && <p className="text-green-500 text-sm text-center mt-2">{success}</p>}
           </div>
         </div>
       </section>
