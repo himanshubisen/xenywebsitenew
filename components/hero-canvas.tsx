@@ -17,8 +17,13 @@ export default function HeroCanvas() {
       antialias: true
     })
 
-    renderer.setSize(window.innerWidth, window.innerHeight)
+    renderer.setSize(window.innerWidth, window.innerHeight, false)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+
+    // Ensure canvas doesn't exceed viewport
+    const canvas = canvasRef.current
+    canvas.style.width = '100vw'
+    canvas.style.height = '100vh'
 
     const geometry = new THREE.IcosahedronGeometry(2, 2)
     const material = new THREE.MeshNormalMaterial({ wireframe: true, transparent: true, opacity: 0.15 })
@@ -38,7 +43,11 @@ export default function HeroCanvas() {
     const handleResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight
       camera.updateProjectionMatrix()
-      renderer.setSize(window.innerWidth, window.innerHeight)
+      renderer.setSize(window.innerWidth, window.innerHeight, false)
+      const canvas = canvasRef.current
+      if (!canvas) return
+      canvas.style.width = '100vw'
+      canvas.style.height = '100vh'
     }
 
     window.addEventListener('resize', handleResize)

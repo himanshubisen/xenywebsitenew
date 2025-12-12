@@ -1,7 +1,7 @@
 "use client"
 
 import { Menu, X } from "lucide-react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
@@ -13,17 +13,33 @@ interface HeaderProps {
 
 export default function Header({ onDemoClick }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   return (
     <nav className="fixed top-0 w-full z-50 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="bg-white/70 backdrop-blur-md border border-white/50 shadow-sm rounded-full px-6 py-3 flex justify-between items-center">
           {/* Logo */}
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-              <Image src="/logo/xeny-logo.png" alt="Xeny Logo" width={102} height={102} />
-            </Link>
-          </motion.div>
+          {isMobile ? (
+            <div>
+              <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                <Image src="/logo/xeny-logo.png" alt="Xeny Logo" width={102} height={102} />
+              </Link>
+            </div>
+          ) : (
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                <Image src="/logo/xeny-logo.png" alt="Xeny Logo" width={102} height={102} />
+              </Link>
+            </motion.div>
+          )}
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
@@ -43,26 +59,33 @@ export default function Header({ onDemoClick }: HeaderProps) {
             >
               Sign In
             </Link>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            {isMobile ? (
               <Button
                 onClick={() => window.open('https://app.xeny.ai/signup-with-voiceagent', '_blank')}
                 className="bg-cyan-600 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-6 rounded-full font-bold text-sm shadow-lg hover:shadow-indigo-500/30"
               >
                 Get Started
               </Button>
-            </motion.div>
+            ) : (
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  onClick={() => window.open('https://app.xeny.ai/signup-with-voiceagent', '_blank')}
+                  className="bg-cyan-600 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-6 rounded-full font-bold text-sm shadow-lg hover:shadow-indigo-500/30"
+                >
+                  Get Started
+                </Button>
+              </motion.div>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
-          <motion.button
+          <button
             className="md:hidden p-2"
             onClick={() => setIsOpen(!isOpen)}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
             aria-label="Toggle menu"
           >
             {isOpen ? <X size={24} className="text-slate-900" /> : <Menu size={24} className="text-slate-900" />}
-          </motion.button>
+          </button>
         </div>
       </div>
 
