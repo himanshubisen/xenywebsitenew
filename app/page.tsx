@@ -859,59 +859,43 @@ export default function CallersPage() {
       <section id="industries" className="py-24 bg-slate-100 border-y border-slate-100 relative z-10">
 
         {/* 4. WHAT POWERS EVERY CALL (Features) */}
-        {/* <section id="features" className="py-24 bg-white">
-            <div className="container mx-auto px-6">
-                <div className="text-center mb-16">
-                    <h2 className="text-4xl font-bold text-slate-900 mb-4">
-                        <ScrollTextReveal text="What Powers Every Call" splitBy="word" />
-                    </h2>
-                    <p className="text-slate-500">The technology stack behind the voice.</p>
-                </div>
+         <section id="features" className="py-24 ">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-slate-900 mb-4">What Powers Every Call</h2>
+            <p className="text-slate-500">The technology stack behind the voice.</p>
+          </div>
 
-                <div className="grid lg:grid-cols-2 gap-12">
-                    <div className="grid md:grid-cols-2 lg:grid-cols-1 gap-6">
-                        <StaggerReveal staggerDelay={150} direction="up">
-                        <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-2xl hover:shadow-indigo-100 transition-all group">
-                          <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">01</div>
-                          <h3 className="text-xl font-bold text-slate-900 mb-2">Multilingual AI Agent</h3>
-                          <p className="text-sm text-slate-600">Speaks naturally, handles interruptions, and switches languages mid-call - no IVR, no robotic pauses.</p>
-                        </div>
-
-                        <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-2xl hover:shadow-indigo-100 transition-all group">
-                          <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">02</div>
-                          <h3 className="text-xl font-bold text-slate-900 mb-2">LLM-Powered Understanding</h3>
-                          <p className="text-sm text-slate-600">Understands meaning, tone, and context to respond, clarify, and adjust the flow in real time.</p>
-                        </div>
-
-                        <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-2xl hover:shadow-indigo-100 transition-all group">
-                          <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">03</div>
-                          <h3 className="text-xl font-bold text-slate-900 mb-2">Smooth Handoff</h3>
-                          <p className="text-sm text-slate-600">When a lead shows intent, AI hands off instantly with full context—no repeats, no friction.</p>
-                        </div>
-
-                        <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-2xl hover:shadow-indigo-100 transition-all group">
-                          <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">04</div>
-                          <h3 className="text-xl font-bold text-slate-900 mb-2">Instant Post-Call Actions</h3>
-                          <p className="text-sm text-slate-600">Sends confirmations, reminders, messages, quotes, or summaries automatically right after the call.</p>
-                        </div>
-
-                         <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-2xl hover:shadow-indigo-100 transition-all group">
-                          <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">05</div>
-                          <h3 className="text-xl font-bold text-slate-900 mb-2">Smart Interruption Handling</h3>
-                          <p className="text-sm text-slate-600">Stays on track through noise, overlap, or sudden questions and adapts without breaking the flow.</p>
-                        </div>
-
-                        </StaggerReveal>
-                    </div>
-
-                    <div className="flex items-center justify-center min-h-[450px]">
-                        <ScrollReveal direction="up" delay={300}>
-                            <AnimatedFlowDiagram />
-                        </ScrollReveal>
-                    </div>
-                </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all group">
+              <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">01</div>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">Multilingual AI Agent</h3>
+              <p className="text-sm text-slate-600">Speaks naturally, handles interruptions, and switches languages mid-call - no IVR, no robotic pauses.</p>
             </div>
-        </section> */}
+            <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all group">
+              <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">02</div>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">LLM-Powered Understanding</h3>
+              <p className="text-sm text-slate-600">Understands meaning, tone, and context to respond, clarify, and adjust the flow in real time.</p>
+            </div>
+            <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all group">
+              <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">03</div>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">Smooth Handoff</h3>
+              <p className="text-sm text-slate-600">When a lead shows intent, AI hands off instantly with full context—no repeats, no friction.</p>
+            </div>
+            <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all group">
+              <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">04</div>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">Instant Post-Call Actions</h3>
+              <p className="text-sm text-slate-600">Sends confirmations, reminders, messages, quotes, or summaries automatically right after the call.</p>
+            </div>
+            <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all group">
+              <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">05</div>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">Smart Interruption Handling</h3>
+              <p className="text-sm text-slate-600">Stays on track through noise, overlap, or sudden questions and adapts without breaking the flow.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
 
         {/* 5. INDUSTRIES (Service Tabs) */}
         <section id="industries-tabs" className="py-24 bg-white border-y border-slate-100">
