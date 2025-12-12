@@ -48,10 +48,10 @@ export default function Footer() {
 
   return (
     <motion.footer
-      initial={{ opacity: 0 }}
+      initial={{ opacity: 1 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
-      className="border-t border-gray-200 bg-gradient-to-b from-white to-gray-50"
+      className="border-t border-gray-200 bg-gradient-to-b from-white to-gray-50 z-10 relative "
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <motion.div
@@ -64,7 +64,7 @@ export default function Footer() {
           {/* Brand */}
           <motion.div variants={itemVariants}>
             <div className="flex items-center gap-2 mb-4">
-              <Image src="/logo/xeny-logo.png" alt="Xeny Logo" width={52} height={52} />
+              <Image src="/logo/xeny-logo.png" alt="Xeny Logo" width={102} height={102} />
              
             </div>
             <p className="text-sm text-gray-600">Create AI voice agents to automate your customer conversations</p>
