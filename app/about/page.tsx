@@ -122,8 +122,8 @@ export default function About() {
               >
                 <value.icon className="w-8 h-8 text-blue-600 mb-4 mx-auto md:mx-0" />
                 <h3 className="text-xl font-bold mb-3 text-blue-700">{value.title}</h3>
-                <p className="text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: value.content }} />
-              </div>
+                <p className="text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: value.content }}></p>
+              </motion.div>
             ))}
           </StaggerReveal>
 
@@ -164,7 +164,7 @@ export default function About() {
               >
                 <div className="text-3xl font-bold text-blue-600 mb-1">{stat.value}</div>
                 <p className="text-sm text-gray-600">{stat.label}</p>
-              </div>
+              </motion.div>
             ))}
           </StaggerReveal>
           

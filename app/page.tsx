@@ -40,6 +40,7 @@ import ScrollReveal from "@/components/animations/ScrollReveal"
 import TextReveal from "@/components/animations/TextReveal"
 import ScrollTextReveal from "@/components/animations/ScrollTextReveal"
 import StaggerReveal from "@/components/animations/StaggerReveal"
+import RightAIEffect from "@/components/RightAIEffect" // AI Image Morph: A futuristic visual showing a human face transitioning into a complex digital data mesh through pixel-morphing effects.
 
 // --- Types ---
 type TabId = 'real_estate' | 'growth' | 'hr' | 'finance' | 'cx' | 'ops' | 'marketing';
@@ -53,7 +54,7 @@ type ServiceId = 'edu' | 'ecommerce' | 'realestate' | 'healthcare' | 'logistics'
  */
 const ThreeBackground = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  
+
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -62,7 +63,7 @@ const ThreeBackground = () => {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    
+
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     containerRef.current.appendChild(renderer.domElement);
@@ -78,7 +79,7 @@ const ThreeBackground = () => {
     const ctx = textCanvas.getContext('2d');
     const textTextureWidth = 1024;
     const textTextureHeight = 512;
-    
+
     if (ctx) {
       textCanvas.width = textTextureWidth;
       textCanvas.height = textTextureHeight;
@@ -87,20 +88,20 @@ const ThreeBackground = () => {
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillStyle = '#ffffff';
-      ctx.shadowColor = 'rgba(79, 70, 229, 1)'; 
+      ctx.shadowColor = 'rgba(79, 70, 229, 1)';
       ctx.shadowBlur = 40;
       ctx.fillText('Xeny', textTextureWidth / 2, textTextureHeight / 2);
     }
 
     const texture = new THREE.CanvasTexture(textCanvas);
     texture.minFilter = THREE.LinearFilter;
-    
+
     const textGeometry = new THREE.PlaneGeometry(4, 2);
-    const textMaterial = new THREE.MeshBasicMaterial({ 
-        map: texture, 
-        transparent: true, 
-        opacity: 1, 
-        side: THREE.DoubleSide
+    const textMaterial = new THREE.MeshBasicMaterial({
+      map: texture,
+      transparent: true,
+      opacity: 1,
+      side: THREE.DoubleSide
     });
     const textMesh = new THREE.Mesh(textGeometry, textMaterial);
     scene.add(textMesh);
@@ -111,13 +112,13 @@ const ThreeBackground = () => {
     let animationId: number;
     const animate = () => {
       animationId = requestAnimationFrame(animate);
-      
+
       const time = Date.now() * 0.001;
 
       // Orb Rotation
       orb.rotation.y += 0.002;
       orb.rotation.x = Math.sin(time * 0.5) * 0.1;
-      
+
       // Text Sway
       textMesh.position.y = Math.sin(time) * 0.1;
       textMesh.rotation.y = Math.sin(time * 0.5) * 0.15;
@@ -169,8 +170,8 @@ const HeroTypewriter = () => {
       const i = loopNum % phrases.length;
       const fullText = phrases[i];
 
-      setText(isDeleting 
-        ? fullText.substring(0, text.length - 1) 
+      setText(isDeleting
+        ? fullText.substring(0, text.length - 1)
         : fullText.substring(0, text.length + 1)
       );
 
@@ -207,7 +208,7 @@ const UrbanPiperSection = () => {
       if (!sectionRef.current) return;
       const rect = sectionRef.current.getBoundingClientRect();
       const windowHeight = window.innerHeight;
-      
+
       // Determine if section is generally visible
       const isSectionVisible = rect.top < windowHeight && rect.bottom > 0;
       setIsVisible(isSectionVisible);
@@ -230,33 +231,33 @@ const UrbanPiperSection = () => {
 
   return (
     <section ref={sectionRef} className="relative min-h-[80vh] flex items-center justify-center bg-slate-900 overflow-hidden py-20">
-       {/* Background Accents */}
-           <HeroCanvas />
-       <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-20 pointer-events-none">
-            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-600 rounded-full blur-[120px]"></div>
-            <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600 rounded-full blur-[120px]"></div>
-        </div>
+      {/* Background Accents */}
+      <HeroCanvas />
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-20 pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-600 rounded-full blur-[120px]"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600 rounded-full blur-[120px]"></div>
+      </div>
 
-        <div className="container mx-auto px-6 relative z-10">
-            <div className="max-w-5xl mx-auto">
-                <div 
-                  className={`flex items-center gap-3 mb-12 transition-all duration-1000 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-                >
-                    <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-slate-900 text-xl font-bold">X</div>
-                    <span className="text-white font-bold tracking-wide text-xl">xeny</span>
-                    <span className="h-px w-12 bg-white/20 ml-4"></span>
-                    <span className="text-slate-400 text-xs uppercase tracking-widest">Enterprise Case Study</span>
-                </div>
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="max-w-5xl mx-auto">
+          <div
+            className={`flex items-center gap-3 mb-12 transition-all duration-1000 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+          >
+            <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-slate-900 text-xl font-bold">X</div>
+            <span className="text-white font-bold tracking-wide text-xl">xeny</span>
+            <span className="h-px w-12 bg-white/20 ml-4"></span>
+            <span className="text-slate-400 text-xs uppercase tracking-widest">Enterprise Case Study</span>
+          </div>
 
-                <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight mb-12 relative z-20 text-white">
-                    <span className="text-indigo-500 text-4xl md:text-6xl absolute -ml-8 md:-ml-12 -mt-4 opacity-50">"</span>
-                    <ScrollTextReveal 
-                      text={quote}
-                      splitBy="word"
-                      staggerDelay={20}
-                    />
-                </h2>
-
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight mb-12 relative z-20 text-white">
+            <span className="text-indigo-500 text-4xl md:text-6xl absolute -ml-8 md:-ml-12 -mt-4 opacity-50">"</span>
+            <ScrollTextReveal
+              text={quote}
+              splitBy="word"
+              staggerDelay={20}
+            />
+          </h2>
+          {/* 
                 <div 
                   className={`flex items-center gap-6 transition-all duration-1000 delay-200 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                 >
@@ -270,9 +271,9 @@ const UrbanPiperSection = () => {
                         <span className="text-green-400 font-bold text-2xl">85%</span>
                         <span className="text-slate-500 text-xs uppercase">Support Automated</span>
                     </div>
-                </div>
-            </div>
+                </div> */}
         </div>
+      </div>
     </section>
   );
 };
@@ -284,53 +285,53 @@ const SavingsCalculator = () => {
   const [volume, setVolume] = useState(5000);
   const [cost, setCost] = useState(20);
 
-  const manualCost = Math.round(volume * 5 * (cost / 60)); 
+  const manualCost = Math.round(volume * 5 * (cost / 60));
   const aiCost = Math.round(volume * 5 * 0.12);
   const savings = manualCost - aiCost;
 
   return (
     <div className="grid lg:grid-cols-2 gap-12 items-center">
-        <div className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
-            <div className="space-y-8">
-                <div>
-                    <div className="flex justify-between mb-2">
-                        <label className="text-sm font-bold text-slate-700">Monthly Call Volume</label>
-                        <span className="text-sm font-bold text-indigo-600">{volume.toLocaleString()}</span>
-                    </div>
-                    <input 
-                      type="range" min="1000" max="50000" step="500" value={volume} 
-                      onChange={(e) => setVolume(Number(e.target.value))}
-                      className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
-                    />
-                </div>
-                <div>
-                    <div className="flex justify-between mb-2">
-                        <label className="text-sm font-bold text-slate-700">Agent Hourly Cost</label>
-                        <span className="text-sm font-bold text-indigo-600">${cost}</span>
-                    </div>
-                    <input 
-                      type="range" min="10" max="100" step="1" value={cost} 
-                      onChange={(e) => setCost(Number(e.target.value))}
-                      className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
-                    />
-                </div>
+      <div className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
+        <div className="space-y-8">
+          <div>
+            <div className="flex justify-between mb-2">
+              <label className="text-sm font-bold text-slate-700">Monthly Call Volume</label>
+              <span className="text-sm font-bold text-indigo-600">{volume.toLocaleString()}</span>
             </div>
+            <input
+              type="range" min="1000" max="50000" step="500" value={volume}
+              onChange={(e) => setVolume(Number(e.target.value))}
+              className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+            />
+          </div>
+          <div>
+            <div className="flex justify-between mb-2">
+              <label className="text-sm font-bold text-slate-700">Agent Hourly Cost</label>
+              <span className="text-sm font-bold text-indigo-600">${cost}</span>
+            </div>
+            <input
+              type="range" min="10" max="100" step="1" value={cost}
+              onChange={(e) => setCost(Number(e.target.value))}
+              className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+            />
+          </div>
         </div>
-        <div className="bg-slate-900 p-8 rounded-3xl shadow-2xl text-white">
-            <div className="mb-8">
-                <p className="text-slate-400 text-sm font-medium mb-1">Estimated Monthly Savings</p>
-                <div className="text-5xl font-bold text-green-400">${savings.toLocaleString()}</div>
-            </div>
-            <div className="mt-8 pt-6 border-t border-slate-700 flex justify-between items-center">
-                <div>
-                    <p className="text-3xl font-bold text-white">10X</p>
-                    <p className="text-xs text-slate-400">ROI Multiplier</p>
-                </div>
-                <button className="bg-white text-slate-900 px-6 py-2 rounded-full font-bold text-sm hover:bg-slate-200 transition-colors">
-                    Start Saving
-                </button>
-            </div>
+      </div>
+      <div className="bg-slate-900 p-8 rounded-3xl shadow-2xl text-white">
+        <div className="mb-8">
+          <p className="text-slate-400 text-sm font-medium mb-1">Estimated Monthly Savings</p>
+          <div className="text-5xl font-bold text-green-400">${savings.toLocaleString()}</div>
         </div>
+        <div className="mt-8 pt-6 border-t border-slate-700 flex justify-between items-center">
+          <div>
+            <p className="text-3xl font-bold text-white">10X</p>
+            <p className="text-xs text-slate-400">ROI Multiplier</p>
+          </div>
+          <button className="bg-white text-slate-900 px-6 py-2 rounded-full font-bold text-sm hover:bg-slate-200 transition-colors">
+            Start Saving
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
@@ -429,47 +430,47 @@ export default function CallersPage() {
   }, []);
 
   return (
-    <main className="font-sans text-slate-900 bg-slate-50 selection:bg-indigo-100 selection:text-indigo-900">
+<main className="font-sans text-slate-900 bg-slate-50 selection:bg-indigo-100 selection:text-indigo-900">
       <ThreeBackground />
       <Header />
 
       {/* HERO SECTION */}
       <section className="relative pt-32 pb-20 overflow-hidden">
         <div className="container mx-auto px-6 relative z-10 flex flex-col items-center text-center">
-            
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 backdrop-blur-sm border border-white/80 shadow-sm mb-8 animate-bounce-slow">
-                <span className="relative flex h-3 w-3">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-                </span>
-                <span className="text-xs font-bold text-slate-600  tracking-widest">Christmas discount is live</span>
-            </div>
 
-            <ScrollReveal direction="up" delay={100}>
-              <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold leading-[1.1] mb-6 text-slate-900">
-                <ScrollTextReveal 
-                  text="Your 24/7 AI Voice Employee For" 
-                  splitBy="word"
-                  className="block mb-4"
-                />
-                 <br />
-                <HeroTypewriter />
-                <span className="animate-pulse text-indigo-600">|</span>
-              </h1>
-            </ScrollReveal>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 backdrop-blur-sm border border-white/80 shadow-sm mb-8 animate-bounce-slow">
+            <span className="relative flex h-3 w-3">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+            </span>
+            <span className="text-xs font-bold text-slate-600  tracking-widest">Christmas discount is live</span>
+          </div>
 
-            <ScrollReveal direction="up" delay={300}>
-              <p className="text-xl text-slate-500 mb-12 max-w-4xl mx-auto leading-relaxed">
-                <ScrollTextReveal 
-                  text="Xeny automates calls, callbacks, and bookings—powering your digital transformation and keeping your business responsive, consistent, and miles ahead of competitors." 
-                  splitBy="word"
-                />
-              </p>
-            </ScrollReveal>
+          <ScrollReveal direction="up" delay={100}>
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold leading-[1.1] mb-6 text-slate-900">
+              <ScrollTextReveal
+                text="Your 24/7 AI Voice Employee For"
+                splitBy="word"
+                className="block mb-4"
+              />
+              <br />
+              <HeroTypewriter />
+              <span className="animate-pulse text-indigo-600">|</span>
+            </h1>
+          </ScrollReveal>
+
+          <ScrollReveal direction="up" delay={300}>
+            <p className="text-xl text-slate-500 mb-12 max-w-4xl mx-auto leading-relaxed">
+              <ScrollTextReveal
+                text="Xeny automates calls, callbacks, and bookings—powering your digital transformation and keeping your business responsive, consistent, and miles ahead of competitors."
+                splitBy="word"
+              />
+            </p>
+          </ScrollReveal>
 
 
-            {/* Simulated Input */}
-            <div className="w-full max-w-md bg-white p-2 sm:p-3 rounded-[24px] shadow-lg border border-slate-200 transform hover:scale-[1.02] transition-transform duration-300">
+          {/* Simulated Input */}
+          <div className="w-full max-w-md bg-white p-2 sm:p-3 rounded-[24px] shadow-lg border border-slate-200 transform hover:scale-[1.02] transition-transform duration-300">
             <div className="flex flex-col gap-2">
               <div className="flex items-center bg-slate-50 rounded-xl px-3 sm:px-4 py-2 sm:py-3 border border-slate-100 focus-within:border-indigo-500/50 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
                 <div className="flex items-center gap-2 border-r border-slate-300 pr-2 sm:pr-3 mr-2 sm:mr-3 cursor-pointer" onClick={handleCountrySelect}>
@@ -526,697 +527,693 @@ export default function CallersPage() {
         <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10"></div>
         <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white to-transparent z-10"></div>
         <div className="flex w-max gap-16 items-center opacity-60 grayscale hover:grayscale-0 transition-all duration-500 animate-[scroll_40s_linear_infinite]">
-             {/* Note: Using FontAwesome classes for brands as Lucide doesn't have them all */}
-             {[1, 2].map((i) => (
-                <div key={i} className="flex gap-16">
-                  <i className="fab fa-amazon text-4xl hover:text-[#FF9900] transition-colors"></i>
-                  <i className="fab fa-google text-3xl hover:text-[#4285F4] transition-colors"></i>
-                  <i className="fab fa-spotify text-4xl hover:text-[#1DB954] transition-colors"></i>
-                  <i className="fab fa-airbnb text-4xl hover:text-[#FF5A5F] transition-colors"></i>
-                  <i className="fab fa-uber text-4xl hover:text-black transition-colors"></i>
-                  <i className="fab fa-stripe text-5xl hover:text-[#635BFF] transition-colors"></i>
-                  <i className="fab fa-microsoft text-3xl hover:text-[#F25022] transition-colors"></i>
-                </div>
-             ))}
+          {/* Note: Using FontAwesome classes for brands as Lucide doesn't have them all */}
+          {[1, 2].map((i) => (
+            <div key={i} className="flex gap-16">
+              <i className="fab fa-amazon text-4xl hover:text-[#FF9900] transition-colors"></i>
+              <i className="fab fa-google text-3xl hover:text-[#4285F4] transition-colors"></i>
+              <i className="fab fa-spotify text-4xl hover:text-[#1DB954] transition-colors"></i>
+              <i className="fab fa-airbnb text-4xl hover:text-[#FF5A5F] transition-colors"></i>
+              <i className="fab fa-uber text-4xl hover:text-black transition-colors"></i>
+              <i className="fab fa-stripe text-5xl hover:text-[#635BFF] transition-colors"></i>
+              <i className="fab fa-microsoft text-3xl hover:text-[#F25022] transition-colors"></i>
+            </div>
+          ))}
         </div>
       </div>
 
       {/* STATS SECTION */}
       <section id="stats" className="py-24 bg-white z-10 relative">
         <div className="container mx-auto px-6">
-            <ScrollReveal direction="up" delay={0}>
-              <div className="text-center mb-16">
-                <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">Proven Results</span>
-                <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">
-                  <ScrollTextReveal text="Real Numbers, Real Growth" splitBy="word" />
-                </h2>
-                <p className="text-slate-500">Here is the impact we deliver to businesses like yours.</p>
-              </div>
-            </ScrollReveal>
-
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 text-center">
-              <StaggerReveal staggerDelay={100} direction="up">
-                <div className="group"><div className="text-4xl font-bold text-indigo-600 mb-2">90%</div><p className="text-xs font-bold uppercase text-slate-400">Call Automation</p></div>
-                <div className="group"><div className="text-4xl font-bold text-green-500 mb-2">90%</div><p className="text-xs font-bold uppercase text-slate-400">Less Staffing</p></div>
-                <div className="group"><div className="text-4xl font-bold text-blue-500 mb-2">50%</div><p className="text-xs font-bold uppercase text-slate-400">Fewer Errors</p></div>
-                <div className="group"><div className="text-4xl font-bold text-orange-500 mb-2">60%</div><p className="text-xs font-bold uppercase text-slate-400">Cost Savings</p></div>
-                <div className="group"><div className="text-4xl font-bold text-purple-500 mb-2">60%</div><p className="text-xs font-bold uppercase text-slate-400">Qualified Leads</p></div>
-                <div className="group"><div className="text-4xl font-bold text-pink-500 mb-2">10X</div><p className="text-xs font-bold uppercase text-slate-400">Sales Velocity</p></div>
-              </StaggerReveal>
-            </div>
-        </div>
-      </section>
-
-      {/* INDUSTRIES SECTION */}
-      <section id="industries" className="py-24 bg-slate-100 border-y border-slate-100 relative z-10">
-      {/* 4. WHAT POWERS EVERY CALL (Features) */}
-      <section id="features" className="py-24 ">
-        <div className="container mx-auto px-6">
           <ScrollReveal direction="up" delay={0}>
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-slate-900 mb-4">
-                <ScrollTextReveal text="What Powers Every Call" splitBy="word" />
+              <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">Proven Results</span>
+              <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">
+                <ScrollTextReveal text="Real Numbers, Real Growth" splitBy="word" />
               </h2>
-              <p className="text-slate-500">The technology stack behind the voice.</p>
+              <p className="text-slate-500">Here is the impact we deliver to businesses like yours.</p>
             </div>
           </ScrollReveal>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <StaggerReveal staggerDelay={150} direction="up">
-              <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all group">
-                <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">01</div>
-                <h3 className="text-xl font-bold text-slate-900 mb-2">Multilingual AI Agent</h3>
-                <p className="text-sm text-slate-600">Speaks naturally, handles interruptions, and switches languages mid-call - no IVR, no robotic pauses.</p>
-              </div>
-              <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all group">
-                <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">02</div>
-                <h3 className="text-xl font-bold text-slate-900 mb-2">LLM-Powered Understanding</h3>
-                <p className="text-sm text-slate-600">Understands meaning, tone, and context to respond, clarify, and adjust the flow in real time.</p>
-              </div>
-              <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all group">
-                <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">03</div>
-                <h3 className="text-xl font-bold text-slate-900 mb-2">Smooth Handoff</h3>
-                <p className="text-sm text-slate-600">When a lead shows intent, AI hands off instantly with full context—no repeats, no friction.</p>
-              </div>
-              <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all group">
-                <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">04</div>
-                <h3 className="text-xl font-bold text-slate-900 mb-2">Instant Post-Call Actions</h3>
-                <p className="text-sm text-slate-600">Sends confirmations, reminders, messages, quotes, or summaries automatically right after the call.</p>
-              </div>
-              <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all group">
-                <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">05</div>
-                <h3 className="text-xl font-bold text-slate-900 mb-2">Smart Interruption Handling</h3>
-                <p className="text-sm text-slate-600">Stays on track through noise, overlap, or sudden questions and adapts without breaking the flow.</p>
-              </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 text-center">
+            <StaggerReveal staggerDelay={100} direction="up">
+              <div className="group"><div className="text-4xl font-bold text-indigo-600 mb-2">90%</div><p className="text-xs font-bold uppercase text-slate-400">Call Automation</p></div>
+              <div className="group"><div className="text-4xl font-bold text-green-500 mb-2">90%</div><p className="text-xs font-bold uppercase text-slate-400">Less Staffing</p></div>
+              <div className="group"><div className="text-4xl font-bold text-blue-500 mb-2">50%</div><p className="text-xs font-bold uppercase text-slate-400">Fewer Errors</p></div>
+              <div className="group"><div className="text-4xl font-bold text-orange-500 mb-2">60%</div><p className="text-xs font-bold uppercase text-slate-400">Cost Savings</p></div>
+              <div className="group"><div className="text-4xl font-bold text-purple-500 mb-2">60%</div><p className="text-xs font-bold uppercase text-slate-400">Qualified Leads</p></div>
+              <div className="group"><div className="text-4xl font-bold text-pink-500 mb-2">10X</div><p className="text-xs font-bold uppercase text-slate-400">Sales Velocity</p></div>
             </StaggerReveal>
           </div>
         </div>
       </section>
 
-           {/* 5. INDUSTRIES (Service Tabs) */}
-      <section id="industries" className="py-24 bg-white border-y border-slate-100">
-        <div className="container mx-auto px-6">
+      {/* INDUSTRIES SECTION */}
+      <section id="industries" className="py-24 bg-slate-100 border-y border-slate-100 relative z-10">
+
+        {/* 4. WHAT POWERS EVERY CALL (Features) */}
+        <section id="features" className="py-24 ">
+          <div className="container mx-auto px-6">
+            <ScrollReveal direction="up" delay={0}>
+              <div className="text-center mb-16">
+                <h2 className="text-4xl font-bold text-slate-900 mb-4">
+                  <ScrollTextReveal text="What Powers Every Call" splitBy="word" />
+                </h2>
+                <p className="text-slate-500">The technology stack behind the voice.</p>
+              </div>
+            </ScrollReveal>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <StaggerReveal staggerDelay={150} direction="up">
+                <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all group">
+                  <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">01</div>
+                  <h3 className="text-xl font-bold text-slate-900 mb-2">Multilingual AI Agent</h3>
+                  <p className="text-sm text-slate-600">Speaks naturally, handles interruptions, and switches languages mid-call - no IVR, no robotic pauses.</p>
+                </div>
+                <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all group">
+                  <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">02</div>
+                  <h3 className="text-xl font-bold text-slate-900 mb-2">LLM-Powered Understanding</h3>
+                  <p className="text-sm text-slate-600">Understands meaning, tone, and context to respond, clarify, and adjust the flow in real time.</p>
+                </div>
+                <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all group">
+                  <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">03</div>
+                  <h3 className="text-xl font-bold text-slate-900 mb-2">Smooth Handoff</h3>
+                  <p className="text-sm text-slate-600">When a lead shows intent, AI hands off instantly with full context—no repeats, no friction.</p>
+                </div>
+                <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all group">
+                  <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">04</div>
+                  <h3 className="text-xl font-bold text-slate-900 mb-2">Instant Post-Call Actions</h3>
+                  <p className="text-sm text-slate-600">Sends confirmations, reminders, messages, quotes, or summaries automatically right after the call.</p>
+                </div>
+                <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all group">
+                  <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">05</div>
+                  <h3 className="text-xl font-bold text-slate-900 mb-2">Smart Interruption Handling</h3>
+                  <p className="text-sm text-slate-600">Stays on track through noise, overlap, or sudden questions and adapts without breaking the flow.</p>
+                </div>
+              </StaggerReveal>
+            </div>
+          </div>
+        </section>
+
+        {/* 5. INDUSTRIES (Service Tabs) */}
+        <section id="industries-tabs" className="py-24 bg-white border-y border-slate-100">
+          <div className="container mx-auto px-6">
+            <ScrollReveal direction="up" delay={0}>
+              <div className="text-center mb-12">
+                <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+                  <ScrollTextReveal text="Our Network. Your Growth." splitBy="word" />
+                </h2>
+
+                <div className="flex flex-wrap justify-center gap-4 mt-8">
+                  <button
+                    className={`px-8 py-3 rounded-full text-sm font-bold border flex items-center gap-2 transition-all ${activeServiceTab === 'edu'
+                        ? 'bg-slate-900 text-white shadow-lg'
+                        : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                      }`}
+                    onClick={() => setActiveServiceTab('edu')}
+                  >
+                    <FontAwesomeIcon icon={faGraduationCap} /> Education
+                  </button>
+                  <button
+                    className={`px-8 py-3 rounded-full text-sm font-bold border flex items-center gap-2 transition-all ${activeServiceTab === 'logistics'
+                        ? 'bg-slate-900 text-white shadow-lg'
+                        : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                      }`}
+                    onClick={() => setActiveServiceTab('logistics')}
+                  >
+                    <FontAwesomeIcon icon={faTruckLoading} /> Logistics
+                  </button>
+                  <button
+                    className={`px-8 py-3 rounded-full text-sm font-bold border flex items-center gap-2 transition-all ${activeServiceTab === 'finance_serv'
+                        ? 'bg-slate-900 text-white shadow-lg'
+                        : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                      }`}
+                    onClick={() => setActiveServiceTab('finance_serv')}
+                  >
+                    <FontAwesomeIcon icon={faCoins} /> Financial Services
+                  </button>
+                </div>
+              </div>
+            </ScrollReveal>
+
+            {/* SERVICE CONTENT: EDUCATION */}
+            {activeServiceTab === 'edu' && (
+              <div className="max-w-4xl mx-auto grid gap-8">
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="flex items-start gap-6">
+                    <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 text-xl">
+                      <FontAwesomeIcon icon={faChartBar} />
+                    </div>
+                    <div>
+                      <h3 className="text-3xl font-bold text-slate-900 mb-1">1M+</h3>
+                      <p className="text-slate-500 leading-snug">leads qualified across universities</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-6">
+                    <div className="w-14 h-14 bg-yellow-100 rounded-2xl flex items-center justify-center text-yellow-600 text-xl">
+                      <i className="fas fa-phone-alt"></i>
+                    </div>
+                    <div>
+                      <h3 className="text-3xl font-bold text-slate-900 mb-1">7x</h3>
+                      <p className="text-slate-500 leading-snug">more outreach in half the time</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="flex items-start gap-6">
+                    <div className="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600 text-xl">
+                      <i className="fas fa-headset"></i>
+                    </div>
+                    <div>
+                      <h3 className="text-3xl font-bold text-slate-900 mb-1">78%</h3>
+                      <p className="text-slate-500 leading-snug">inquiries resolved autonomously</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-6">
+                    <div className="w-14 h-14 bg-slate-100 rounded-2xl flex items-center justify-center text-slate-600 text-xl">
+                      <i className="fas fa-history"></i>
+                    </div>
+                    <div>
+                      <h3 className="text-3xl font-bold text-slate-900 mb-1">99.8%</h3>
+                      <p className="text-slate-500 leading-snug">uptime during peak admission</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* SERVICE CONTENT: LOGISTICS */}
+            {activeServiceTab === 'logistics' && (
+              <div className="max-w-4xl mx-auto grid gap-8">
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="flex items-start gap-6">
+                    <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 text-xl">
+                      <i className="fas fa-chart-line"></i>
+                    </div>
+                    <div>
+                      <h3 className="text-3xl font-bold text-slate-900 mb-1">8M+</h3>
+                      <p className="text-slate-500 leading-snug">deliveries coordinated</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-6">
+                    <div className="w-14 h-14 bg-yellow-100 rounded-2xl flex items-center justify-center text-yellow-600 text-xl">
+                      <i className="fas fa-route"></i>
+                    </div>
+                    <div>
+                      <h3 className="text-3xl font-bold text-slate-900 mb-1">46%</h3>
+                      <p className="text-slate-500 leading-snug">reduction in last mile costs</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="flex items-start gap-6">
+                    <div className="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600 text-xl">
+                      <i className="fas fa-box-open"></i>
+                    </div>
+                    <div>
+                      <h3 className="text-3xl font-bold text-slate-900 mb-1">92%</h3>
+                      <p className="text-slate-500 leading-snug">queries handled without humans</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-6">
+                    <div className="w-14 h-14 bg-slate-100 rounded-2xl flex items-center justify-center text-slate-600 text-xl">
+                      <i className="fas fa-clipboard-check"></i>
+                    </div>
+                    <div>
+                      <h3 className="text-3xl font-bold text-slate-900 mb-1">99.9%</h3>
+                      <p className="text-slate-500 leading-snug">uptime during peak shipping</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* SERVICE CONTENT: FINANCE */}
+            {activeServiceTab === 'finance_serv' && (
+              <div className="max-w-4xl mx-auto grid gap-8">
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="flex items-start gap-6">
+                    <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 text-xl">
+                      <i className="fas fa-chart-pie"></i>
+                    </div>
+                    <div>
+                      <h3 className="text-3xl font-bold text-slate-900 mb-1">5.2M+</h3>
+                      <p className="text-slate-500 leading-snug">financial conversations handled</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-6">
+                    <div className="w-14 h-14 bg-yellow-100 rounded-2xl flex items-center justify-center text-yellow-600 text-xl">
+                      <i className="fas fa-rocket"></i>
+                    </div>
+                    <div>
+                      <h3 className="text-3xl font-bold text-slate-900 mb-1">8x</h3>
+                      <p className="text-slate-500 leading-snug">more productive than outbound</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="flex items-start gap-6">
+                    <div className="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600 text-xl">
+                      <i className="fas fa-phone-volume"></i>
+                    </div>
+                    <div>
+                      <h3 className="text-3xl font-bold text-slate-900 mb-1">83%</h3>
+                      <p className="text-slate-500 leading-snug">queries resolved autonomously</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-6">
+                    <div className="w-14 h-14 bg-slate-100 rounded-2xl flex items-center justify-center text-slate-600 text-xl">
+                      <i className="fas fa-clock"></i>
+                    </div>
+                    <div>
+                      <h3 className="text-3xl font-bold text-slate-900 mb-1">99.9%</h3>
+                      <p className="text-slate-500 leading-snug">uptime during tax seasons</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
+
+        <div className="container mx-auto px-6 pt-20">
           <ScrollReveal direction="up" delay={0}>
             <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
-                <ScrollTextReveal text="Our Network. Your Growth." splitBy="word" />
+              <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">Industries</span>
+              <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mt-2 mb-4">
+                <ScrollTextReveal text="Expertise in Every Sector" splitBy="word" />
               </h2>
-
-            <div className="flex flex-wrap justify-center gap-4 mt-8">
-                <button
-                    className={`px-8 py-3 rounded-full text-sm font-bold border flex items-center gap-2 transition-all ${
-              activeServiceTab === 'edu'
-                ? 'bg-slate-900 text-white shadow-lg'
-                : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
-            }`}
-                    onClick={() => setActiveServiceTab('edu')}
-                >
-                    <FontAwesomeIcon icon={faGraduationCap} /> Education
-                </button>
-                <button
-                    className={`px-8 py-3 rounded-full text-sm font-bold border flex items-center gap-2 transition-all ${
-              activeServiceTab === 'logistics'
-                ? 'bg-slate-900 text-white shadow-lg'
-                : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
-            }`}
-                    onClick={() => setActiveServiceTab('logistics')}
-                >
-                    <FontAwesomeIcon icon={faTruckLoading} /> Logistics
-                </button>
-                <button
-                    className={`px-8 py-3 rounded-full text-sm font-bold border flex items-center gap-2 transition-all ${
-              activeServiceTab === 'finance_serv'
-                ? 'bg-slate-900 text-white shadow-lg'
-                : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
-            }`}
-                    onClick={() => setActiveServiceTab('finance_serv')}
-                >
-                    <FontAwesomeIcon icon={faCoins} /> Financial Services
-                </button>
-            </div>
+              <div className="flex flex-wrap justify-center gap-4 mt-8">
+                {[
+                  { id: 'edu', label: 'Education', icon: <User className="w-4 h-4" /> },
+                  { id: 'ecommerce', label: 'E-commerce', icon: <ShoppingBag className="w-4 h-4" /> },
+                  { id: 'realestate', label: 'Real Estate', icon: <Home className="w-4 h-4" /> },
+                  { id: 'healthcare', label: 'Health', icon: <HeartPulse className="w-4 h-4" /> },
+                  { id: 'logistics', label: 'Transportation', icon: <Truck className="w-4 h-4" /> },
+                  { id: 'finance_serv', label: 'Finance', icon: <Coins className="w-4 h-4" /> }
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveServiceTab(tab.id as ServiceId)}
+                    className={`px-6 py-3 rounded-full text-sm font-bold border flex items-center gap-2 transition-all ${activeServiceTab === tab.id
+                        ? 'bg-slate-900 text-white border-slate-900 shadow-lg'
+                        : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300'
+                      }`}
+                  >
+                    {tab.icon} {tab.label}
+                  </button>
+                ))}
+              </div>
             </div>
           </ScrollReveal>
 
-          {/* SERVICE CONTENT: EDUCATION */}
-          {activeServiceTab === 'edu' && (
-            <div className="max-w-4xl mx-auto grid gap-8">
-              <div className="grid md:grid-cols-2 gap-8">
+          {/* Dynamic Content for Industries */}
+          <div className="max-w-4xl mx-auto min-h-[300px]">
+            {activeServiceTab === 'edu' && (
+              <StaggerReveal staggerDelay={100} direction="up" className="grid md:grid-cols-2 gap-8">
                 <div className="flex items-start gap-6">
-                  <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 text-xl">
-                    <FontAwesomeIcon icon={faChartBar} />
-                  </div>
-                  <div>
-                    <h3 className="text-3xl font-bold text-slate-900 mb-1">1M+</h3>
-                    <p className="text-slate-500 leading-snug">leads qualified across universities</p>
-                  </div>
+                  <img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=200&q=80" className="w-14 h-14 rounded-2xl object-cover shadow-sm" alt="University" />
+                  <div><h3 className="text-3xl font-bold text-slate-900 mb-1">1M+</h3><p className="text-slate-500 leading-snug">leads qualified across universities</p></div>
+                </div>
+                <div className="flex items-start gap-6"><div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-yellow-100 text-yellow-600"><Phone /></div><div><h3 className="text-3xl font-bold text-slate-900 mb-1">7x</h3><p className="text-slate-500 leading-snug">faster outreach to applicants</p></div></div>
+                <div className="flex items-start gap-6"><div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-orange-100 text-orange-600"><MessageSquare /></div><div><h3 className="text-3xl font-bold text-slate-900 mb-1">78%</h3><p className="text-slate-500 leading-snug">FAQs answered without humans</p></div></div>
+                <div className="flex items-start gap-6"><div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-slate-200 text-slate-600"><Clock /></div><div><h3 className="text-3xl font-bold text-slate-900 mb-1">99.8%</h3><p className="text-slate-500 leading-snug">uptime during admission season</p></div></div>
+              </StaggerReveal>
+            )}
+            {activeServiceTab === 'ecommerce' && (
+              <StaggerReveal staggerDelay={100} direction="up" className="grid md:grid-cols-2 gap-8">
+                <div className="flex items-start gap-6">
+                  <img src="https://images.unsplash.com/photo-1556740758-90de374c12ad?auto=format&fit=crop&w=200&q=80" className="w-14 h-14 rounded-2xl object-cover shadow-sm" alt="Shop" />
+                  <div><h3 className="text-3xl font-bold text-slate-900 mb-1">$4.2M</h3><p className="text-slate-500 leading-snug">revenue recovered from abandoned carts</p></div>
+                </div>
+                <div className="flex items-start gap-6"><div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-purple-100 text-purple-600"><ShoppingBag /></div><div><h3 className="text-3xl font-bold text-slate-900 mb-1">35%</h3><p className="text-slate-500 leading-snug">cart recovery rate via voice</p></div></div>
+              </StaggerReveal>
+            )}
+            {activeServiceTab === 'realestate' && (
+              <StaggerReveal staggerDelay={100} direction="up" className="grid md:grid-cols-2 gap-8">
+                <div className="flex items-start gap-6">
+                  <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=200&q=80" className="w-14 h-14 rounded-2xl object-cover shadow-sm" alt="Real Estate" />
+                  <div><h3 className="text-3xl font-bold text-slate-900 mb-1">2.5M+</h3><p className="text-slate-500 leading-snug">property inquiries handled</p></div>
                 </div>
                 <div className="flex items-start gap-6">
-                  <div className="w-14 h-14 bg-yellow-100 rounded-2xl flex items-center justify-center text-yellow-600 text-xl">
-                    <i className="fas fa-phone-alt"></i>
-                  </div>
-                  <div>
-                    <h3 className="text-3xl font-bold text-slate-900 mb-1">7x</h3>
-                    <p className="text-slate-500 leading-snug">more outreach in half the time</p>
-                  </div>
-                </div>
-              </div>
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="flex items-start gap-6">
-                  <div className="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600 text-xl">
-                    <i className="fas fa-headset"></i>
-                  </div>
-                  <div>
-                    <h3 className="text-3xl font-bold text-slate-900 mb-1">78%</h3>
-                    <p className="text-slate-500 leading-snug">inquiries resolved autonomously</p>
-                  </div>
+                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-green-100 text-green-600"><Home /></div>
+                  <div><h3 className="text-3xl font-bold text-slate-900 mb-1">65%</h3><p className="text-slate-500 leading-snug">lead conversion rate</p></div>
                 </div>
                 <div className="flex items-start gap-6">
-                  <div className="w-14 h-14 bg-slate-100 rounded-2xl flex items-center justify-center text-slate-600 text-xl">
-                    <i className="fas fa-history"></i>
-                  </div>
-                  <div>
-                    <h3 className="text-3xl font-bold text-slate-900 mb-1">99.8%</h3>
-                    <p className="text-slate-500 leading-snug">uptime during peak admission</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* SERVICE CONTENT: LOGISTICS */}
-          {activeServiceTab === 'logistics' && (
-            <div className="max-w-4xl mx-auto grid gap-8">
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="flex items-start gap-6">
-                  <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 text-xl">
-                    <i className="fas fa-chart-line"></i>
-                  </div>
-                  <div>
-                    <h3 className="text-3xl font-bold text-slate-900 mb-1">8M+</h3>
-                    <p className="text-slate-500 leading-snug">deliveries coordinated</p>
-                  </div>
+                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-blue-100 text-blue-600"><Phone /></div>
+                  <div><h3 className="text-3xl font-bold text-slate-900 mb-1">24/7</h3><p className="text-slate-500 leading-snug">property viewing scheduling</p></div>
                 </div>
                 <div className="flex items-start gap-6">
-                  <div className="w-14 h-14 bg-yellow-100 rounded-2xl flex items-center justify-center text-yellow-600 text-xl">
-                    <i className="fas fa-route"></i>
-                  </div>
-                  <div>
-                    <h3 className="text-3xl font-bold text-slate-900 mb-1">46%</h3>
-                    <p className="text-slate-500 leading-snug">reduction in last mile costs</p>
-                  </div>
+                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-indigo-100 text-indigo-600"><MessageSquare /></div>
+                  <div><h3 className="text-3xl font-bold text-slate-900 mb-1">88%</h3><p className="text-slate-500 leading-snug">tenant queries resolved</p></div>
                 </div>
-              </div>
-              <div className="grid md:grid-cols-2 gap-8">
+              </StaggerReveal>
+            )}
+            {activeServiceTab === 'healthcare' && (
+              <StaggerReveal staggerDelay={100} direction="up" className="grid md:grid-cols-2 gap-8">
                 <div className="flex items-start gap-6">
-                  <div className="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600 text-xl">
-                    <i className="fas fa-box-open"></i>
-                  </div>
-                  <div>
-                    <h3 className="text-3xl font-bold text-slate-900 mb-1">92%</h3>
-                    <p className="text-slate-500 leading-snug">queries handled without humans</p>
-                  </div>
+                  <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?auto=format&fit=crop&w=200&q=80" className="w-14 h-14 rounded-2xl object-cover shadow-sm" alt="Healthcare" />
+                  <div><h3 className="text-3xl font-bold text-slate-900 mb-1">3.8M+</h3><p className="text-slate-500 leading-snug">appointments scheduled</p></div>
                 </div>
                 <div className="flex items-start gap-6">
-                  <div className="w-14 h-14 bg-slate-100 rounded-2xl flex items-center justify-center text-slate-600 text-xl">
-                    <i className="fas fa-clipboard-check"></i>
-                  </div>
-                  <div>
-                    <h3 className="text-3xl font-bold text-slate-900 mb-1">99.9%</h3>
-                    <p className="text-slate-500 leading-snug">uptime during peak shipping</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* SERVICE CONTENT: FINANCE */}
-          {activeServiceTab === 'finance_serv' && (
-            <div className="max-w-4xl mx-auto grid gap-8">
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="flex items-start gap-6">
-                  <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 text-xl">
-                    <i className="fas fa-chart-pie"></i>
-                  </div>
-                  <div>
-                    <h3 className="text-3xl font-bold text-slate-900 mb-1">5.2M+</h3>
-                    <p className="text-slate-500 leading-snug">financial conversations handled</p>
-                  </div>
+                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-red-100 text-red-600"><HeartPulse /></div>
+                  <div><h3 className="text-3xl font-bold text-slate-900 mb-1">72%</h3><p className="text-slate-500 leading-snug">no-show reduction</p></div>
                 </div>
                 <div className="flex items-start gap-6">
-                  <div className="w-14 h-14 bg-yellow-100 rounded-2xl flex items-center justify-center text-yellow-600 text-xl">
-                    <i className="fas fa-rocket"></i>
-                  </div>
-                  <div>
-                    <h3 className="text-3xl font-bold text-slate-900 mb-1">8x</h3>
-                    <p className="text-slate-500 leading-snug">more productive than outbound</p>
-                  </div>
-                </div>
-              </div>
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="flex items-start gap-6">
-                  <div className="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600 text-xl">
-                    <i className="fas fa-phone-volume"></i>
-                  </div>
-                  <div>
-                    <h3 className="text-3xl font-bold text-slate-900 mb-1">83%</h3>
-                    <p className="text-slate-500 leading-snug">queries resolved autonomously</p>
-                  </div>
+                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-pink-100 text-pink-600"><Clock /></div>
+                  <div><h3 className="text-3xl font-bold text-slate-900 mb-1">95%</h3><p className="text-slate-500 leading-snug">reminder accuracy</p></div>
                 </div>
                 <div className="flex items-start gap-6">
-                  <div className="w-14 h-14 bg-slate-100 rounded-2xl flex items-center justify-center text-slate-600 text-xl">
-                    <i className="fas fa-clock"></i>
-                  </div>
-                  <div>
-                    <h3 className="text-3xl font-bold text-slate-900 mb-1">99.9%</h3>
-                    <p className="text-slate-500 leading-snug">uptime during tax seasons</p>
-                  </div>
+                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-cyan-100 text-cyan-600"><MessageSquare /></div>
+                  <div><h3 className="text-3xl font-bold text-slate-900 mb-1">81%</h3><p className="text-slate-500 leading-snug">patient inquiries automated</p></div>
                 </div>
-              </div>
-            </div>
-          )}
+              </StaggerReveal>
+            )}
+            {activeServiceTab === 'logistics' && (
+              <StaggerReveal staggerDelay={100} direction="up" className="grid md:grid-cols-2 gap-8">
+                <div className="flex items-start gap-6">
+                  <img src="https://images.unsplash.com/photo-1601581875036-1c921f32e75e?auto=format&fit=crop&w=200&q=80" className="w-14 h-14 rounded-2xl object-cover shadow-sm" alt="Logistics" />
+                  <div><h3 className="text-3xl font-bold text-slate-900 mb-1">8M+</h3><p className="text-slate-500 leading-snug">deliveries coordinated</p></div>
+                </div>
+                <div className="flex items-start gap-6">
+                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-orange-100 text-orange-600"><Truck /></div>
+                  <div><h3 className="text-3xl font-bold text-slate-900 mb-1">46%</h3><p className="text-slate-500 leading-snug">reduction in last mile costs</p></div>
+                </div>
+                <div className="flex items-start gap-6">
+                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-yellow-100 text-yellow-600"><Phone /></div>
+                  <div><h3 className="text-3xl font-bold text-slate-900 mb-1">92%</h3><p className="text-slate-500 leading-snug">queries handled without humans</p></div>
+                </div>
+                <div className="flex items-start gap-6">
+                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-slate-200 text-slate-600"><Clock /></div>
+                  <div><h3 className="text-3xl font-bold text-slate-900 mb-1">99.9%</h3><p className="text-slate-500 leading-snug">uptime during peak shipping</p></div>
+                </div>
+              </StaggerReveal>
+            )}
+            {activeServiceTab === 'finance_serv' && (
+              <StaggerReveal staggerDelay={100} direction="up" className="grid md:grid-cols-2 gap-8">
+                <div className="flex items-start gap-6">
+                  <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=200&q=80" className="w-14 h-14 rounded-2xl object-cover shadow-sm" alt="Finance" />
+                  <div><h3 className="text-3xl font-bold text-slate-900 mb-1">5.2M+</h3><p className="text-slate-500 leading-snug">financial conversations handled</p></div>
+                </div>
+                <div className="flex items-start gap-6">
+                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-green-100 text-green-600"><Coins /></div>
+                  <div><h3 className="text-3xl font-bold text-slate-900 mb-1">8x</h3><p className="text-slate-500 leading-snug">more productive than outbound</p></div>
+                </div>
+                <div className="flex items-start gap-6">
+                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-blue-100 text-blue-600"><Phone /></div>
+                  <div><h3 className="text-3xl font-bold text-slate-900 mb-1">83%</h3><p className="text-slate-500 leading-snug">queries resolved autonomously</p></div>
+                </div>
+                <div className="flex items-start gap-6">
+                  <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-slate-200 text-slate-600"><Clock /></div>
+                  <div><h3 className="text-3xl font-bold text-slate-900 mb-1">99.9%</h3><p className="text-slate-500 leading-snug">uptime during tax seasons</p></div>
+                </div>
+              </StaggerReveal>
+            )}
+          </div>
         </div>
       </section>
 
-        <div className="container mx-auto px-6 pt-20">
-            <ScrollReveal direction="up" delay={0}>
-              <div className="text-center mb-12">
-                <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">Industries</span>
-                <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mt-2 mb-4">
-                  <ScrollTextReveal text="Expertise in Every Sector" splitBy="word" />
-                </h2>
-                <div className="flex flex-wrap justify-center gap-4 mt-8">
-                    {[
-                      { id: 'edu', label: 'Education', icon: <User className="w-4 h-4" /> },
-                      { id: 'ecommerce', label: 'E-commerce', icon: <ShoppingBag className="w-4 h-4" /> },
-                      { id: 'realestate', label: 'Real Estate', icon: <Home className="w-4 h-4" /> },
-                      { id: 'healthcare', label: 'Health', icon: <HeartPulse className="w-4 h-4" /> },
-                      { id: 'logistics', label: 'Transportation', icon: <Truck className="w-4 h-4" /> },
-                      { id: 'finance_serv', label: 'Finance', icon: <Coins className="w-4 h-4" /> }
-                    ].map((tab) => (
-                      <button 
-                        key={tab.id}
-                        onClick={() => setActiveServiceTab(tab.id as ServiceId)}
-                        className={`px-6 py-3 rounded-full text-sm font-bold border flex items-center gap-2 transition-all ${
-                          activeServiceTab === tab.id
-                          ? 'bg-slate-900 text-white border-slate-900 shadow-lg'
-                          : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300'
-                        }`}
-                      >
-                        {tab.icon} {tab.label}
-                      </button>
-                    ))}
-                </div>
-              </div>
-            </ScrollReveal>
+      {/* USE CASES TABS */ }
+    <section id="use-cases" className="py-24 bg-white relative z-10">
+    <div className="container mx-auto px-6">
+      <ScrollReveal direction="up" delay={0}>
+        <div className="text-center mb-12">
+          <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">Applications</span>
+          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mt-2 mb-4">
+            <ScrollTextReveal text="Workflows That Save You Time" splitBy="word" />
+          </h2>
 
-            {/* Dynamic Content for Industries */}
-            <div className="max-w-4xl mx-auto min-h-[300px]">
-              {activeServiceTab === 'edu' && (
-                <StaggerReveal staggerDelay={100} direction="up" className="grid md:grid-cols-2 gap-8">
-                    <div className="flex items-start gap-6">
-                        <img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=200&q=80" className="w-14 h-14 rounded-2xl object-cover shadow-sm" alt="University" />
-                        <div><h3 className="text-3xl font-bold text-slate-900 mb-1">1M+</h3><p className="text-slate-500 leading-snug">leads qualified across universities</p></div>
-                    </div>
-                    <div className="flex items-start gap-6"><div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-yellow-100 text-yellow-600"><Phone /></div><div><h3 className="text-3xl font-bold text-slate-900 mb-1">7x</h3><p className="text-slate-500 leading-snug">faster outreach to applicants</p></div></div>
-                    <div className="flex items-start gap-6"><div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-orange-100 text-orange-600"><MessageSquare /></div><div><h3 className="text-3xl font-bold text-slate-900 mb-1">78%</h3><p className="text-slate-500 leading-snug">FAQs answered without humans</p></div></div>
-                    <div className="flex items-start gap-6"><div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-slate-200 text-slate-600"><Clock /></div><div><h3 className="text-3xl font-bold text-slate-900 mb-1">99.8%</h3><p className="text-slate-500 leading-snug">uptime during admission season</p></div></div>
-                </StaggerReveal>
-              )}
-              {activeServiceTab === 'ecommerce' && (
-                 <StaggerReveal staggerDelay={100} direction="up" className="grid md:grid-cols-2 gap-8">
-                    <div className="flex items-start gap-6">
-                        <img src="https://images.unsplash.com/photo-1556740758-90de374c12ad?auto=format&fit=crop&w=200&q=80" className="w-14 h-14 rounded-2xl object-cover shadow-sm" alt="Shop" />
-                        <div><h3 className="text-3xl font-bold text-slate-900 mb-1">$4.2M</h3><p className="text-slate-500 leading-snug">revenue recovered from abandoned carts</p></div>
-                    </div>
-                    <div className="flex items-start gap-6"><div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-purple-100 text-purple-600"><ShoppingBag /></div><div><h3 className="text-3xl font-bold text-slate-900 mb-1">35%</h3><p className="text-slate-500 leading-snug">cart recovery rate via voice</p></div></div>
-                 </StaggerReveal>
-              )}
-              {activeServiceTab === 'realestate' && (
-                <StaggerReveal staggerDelay={100} direction="up" className="grid md:grid-cols-2 gap-8">
-                    <div className="flex items-start gap-6">
-                        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=200&q=80" className="w-14 h-14 rounded-2xl object-cover shadow-sm" alt="Real Estate" />
-                        <div><h3 className="text-3xl font-bold text-slate-900 mb-1">2.5M+</h3><p className="text-slate-500 leading-snug">property inquiries handled</p></div>
-                    </div>
-                    <div className="flex items-start gap-6">
-                        <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-green-100 text-green-600"><Home /></div>
-                        <div><h3 className="text-3xl font-bold text-slate-900 mb-1">65%</h3><p className="text-slate-500 leading-snug">lead conversion rate</p></div>
-                    </div>
-                    <div className="flex items-start gap-6">
-                        <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-blue-100 text-blue-600"><Phone /></div>
-                        <div><h3 className="text-3xl font-bold text-slate-900 mb-1">24/7</h3><p className="text-slate-500 leading-snug">property viewing scheduling</p></div>
-                    </div>
-                    <div className="flex items-start gap-6">
-                        <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-indigo-100 text-indigo-600"><MessageSquare /></div>
-                        <div><h3 className="text-3xl font-bold text-slate-900 mb-1">88%</h3><p className="text-slate-500 leading-snug">tenant queries resolved</p></div>
-                    </div>
-                </StaggerReveal>
-              )}
-              {activeServiceTab === 'healthcare' && (
-                <StaggerReveal staggerDelay={100} direction="up" className="grid md:grid-cols-2 gap-8">
-                    <div className="flex items-start gap-6">
-                        <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?auto=format&fit=crop&w=200&q=80" className="w-14 h-14 rounded-2xl object-cover shadow-sm" alt="Healthcare" />
-                        <div><h3 className="text-3xl font-bold text-slate-900 mb-1">3.8M+</h3><p className="text-slate-500 leading-snug">appointments scheduled</p></div>
-                    </div>
-                    <div className="flex items-start gap-6">
-                        <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-red-100 text-red-600"><HeartPulse /></div>
-                        <div><h3 className="text-3xl font-bold text-slate-900 mb-1">72%</h3><p className="text-slate-500 leading-snug">no-show reduction</p></div>
-                    </div>
-                    <div className="flex items-start gap-6">
-                        <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-pink-100 text-pink-600"><Clock /></div>
-                        <div><h3 className="text-3xl font-bold text-slate-900 mb-1">95%</h3><p className="text-slate-500 leading-snug">reminder accuracy</p></div>
-                    </div>
-                    <div className="flex items-start gap-6">
-                        <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-cyan-100 text-cyan-600"><MessageSquare /></div>
-                        <div><h3 className="text-3xl font-bold text-slate-900 mb-1">81%</h3><p className="text-slate-500 leading-snug">patient inquiries automated</p></div>
-                    </div>
-                </StaggerReveal>
-              )}
-              {activeServiceTab === 'logistics' && (
-                <StaggerReveal staggerDelay={100} direction="up" className="grid md:grid-cols-2 gap-8">
-                    <div className="flex items-start gap-6">
-                        <img src="https://images.unsplash.com/photo-1601581875036-1c921f32e75e?auto=format&fit=crop&w=200&q=80" className="w-14 h-14 rounded-2xl object-cover shadow-sm" alt="Logistics" />
-                        <div><h3 className="text-3xl font-bold text-slate-900 mb-1">8M+</h3><p className="text-slate-500 leading-snug">deliveries coordinated</p></div>
-                    </div>
-                    <div className="flex items-start gap-6">
-                        <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-orange-100 text-orange-600"><Truck /></div>
-                        <div><h3 className="text-3xl font-bold text-slate-900 mb-1">46%</h3><p className="text-slate-500 leading-snug">reduction in last mile costs</p></div>
-                    </div>
-                    <div className="flex items-start gap-6">
-                        <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-yellow-100 text-yellow-600"><Phone /></div>
-                        <div><h3 className="text-3xl font-bold text-slate-900 mb-1">92%</h3><p className="text-slate-500 leading-snug">queries handled without humans</p></div>
-                    </div>
-                    <div className="flex items-start gap-6">
-                        <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-slate-200 text-slate-600"><Clock /></div>
-                        <div><h3 className="text-3xl font-bold text-slate-900 mb-1">99.9%</h3><p className="text-slate-500 leading-snug">uptime during peak shipping</p></div>
-                    </div>
-                </StaggerReveal>
-              )}
-              {activeServiceTab === 'finance_serv' && (
-                <StaggerReveal staggerDelay={100} direction="up" className="grid md:grid-cols-2 gap-8">
-                    <div className="flex items-start gap-6">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=200&q=80" className="w-14 h-14 rounded-2xl object-cover shadow-sm" alt="Finance" />
-                        <div><h3 className="text-3xl font-bold text-slate-900 mb-1">5.2M+</h3><p className="text-slate-500 leading-snug">financial conversations handled</p></div>
-                    </div>
-                    <div className="flex items-start gap-6">
-                        <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-green-100 text-green-600"><Coins /></div>
-                        <div><h3 className="text-3xl font-bold text-slate-900 mb-1">8x</h3><p className="text-slate-500 leading-snug">more productive than outbound</p></div>
-                    </div>
-                    <div className="flex items-start gap-6">
-                        <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-blue-100 text-blue-600"><Phone /></div>
-                        <div><h3 className="text-3xl font-bold text-slate-900 mb-1">83%</h3><p className="text-slate-500 leading-snug">queries resolved autonomously</p></div>
-                    </div>
-                    <div className="flex items-start gap-6">
-                        <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl bg-slate-200 text-slate-600"><Clock /></div>
-                        <div><h3 className="text-3xl font-bold text-slate-900 mb-1">99.9%</h3><p className="text-slate-500 leading-snug">uptime during tax seasons</p></div>
-                    </div>
-                </StaggerReveal>
-              )}
-            </div>
+          <div className="flex overflow-x-auto pb-4 gap-2 mt-8 justify-start md:justify-center no-scrollbar">
+            {['real_estate', 'growth', 'hr', 'finance', 'cx', 'ops', 'marketing'].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveUseCaseTab(tab as TabId)}
+                className={`px-5 py-2.5 rounded-full text-sm font-bold whitespace-nowrap border transition-all ${activeUseCaseTab === tab
+                    ? 'bg-slate-900 text-white border-slate-900'
+                    : 'bg-white text-slate-600 border-slate-200'
+                  }`}
+              >
+                {tab.replace('_', ' ').charAt(0).toUpperCase() + tab.replace('_', ' ').slice(1)}
+              </button>
+            ))}
+          </div>
         </div>
-      </section>
+      </ScrollReveal>
 
-      {/* USE CASES TABS */}
-      <section id="use-cases" className="py-24 bg-white relative z-10">
-        <div className="container mx-auto px-6">
-            <ScrollReveal direction="up" delay={0}>
-              <div className="text-center mb-12">
-                <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">Applications</span>
-                <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mt-2 mb-4">
-                  <ScrollTextReveal text="Workflows That Save You Time" splitBy="word" />
-                </h2>
-                
-                <div className="flex overflow-x-auto pb-4 gap-2 mt-8 justify-start md:justify-center no-scrollbar">
-                    {['real_estate', 'growth', 'hr', 'finance', 'cx', 'ops', 'marketing'].map((tab) => (
-                      <button 
-                        key={tab}
-                        onClick={() => setActiveUseCaseTab(tab as TabId)}
-                        className={`px-5 py-2.5 rounded-full text-sm font-bold whitespace-nowrap border transition-all ${
-                          activeUseCaseTab === tab
-                          ? 'bg-slate-900 text-white border-slate-900'
-                          : 'bg-white text-slate-600 border-slate-200'
-                        }`}
-                      >
-                        {tab.replace('_', ' ').charAt(0).toUpperCase() + tab.replace('_', ' ').slice(1)}
-                      </button>
-                    ))}
-                </div>
+      {/* Use Cases Content */}
+      <div className="max-w-5xl mx-auto min-h-[400px]">
+        {activeUseCaseTab === 'real_estate' && (
+          <StaggerReveal staggerDelay={150} direction="up" className="grid md:grid-cols-2 gap-8 justify-center">
+            <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
+              <div className="h-48 overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+                <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Real Estate" />
+                <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><Home className="text-green-400" /> Sales & Leasing</div>
               </div>
-            </ScrollReveal>
-
-            {/* Use Cases Content */}
-            <div className="max-w-5xl mx-auto min-h-[400px]">
-               {activeUseCaseTab === 'real_estate' && (
-                  <StaggerReveal staggerDelay={150} direction="up" className="grid md:grid-cols-2 gap-8 justify-center">
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Real Estate" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><Home className="text-green-400" /> Sales & Leasing</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">Lead & Property Management</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Lead Qualification</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Property visit scheduling</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">New inventory announcements</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Tenant" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><User className="text-yellow-400" /> Tenancy</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">Tenant Management</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Tenant rent reminders</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Lease renewal workflow</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                  </StaggerReveal>
-               )}
-               {activeUseCaseTab === 'growth' && (
-                  <StaggerReveal staggerDelay={150} direction="up" className="grid md:grid-cols-2 gap-8 justify-center">
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Sales Growth" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><TrendingUp className="text-blue-400" /> Sales Growth</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">Lead Generation & Qualification</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Automated lead qualification</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Outbound sales calls</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Follow-up automation</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Revenue" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><BarChart3 className="text-purple-400" /> Revenue Growth</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">Revenue Optimization</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Upsell & cross-sell calls</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Customer retention campaigns</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                  </StaggerReveal>
-               )}
-               {activeUseCaseTab === 'hr' && (
-                  <StaggerReveal staggerDelay={150} direction="up" className="grid md:grid-cols-2 gap-8 justify-center">
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Recruitment" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><Users className="text-indigo-400" /> Recruitment</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">Candidate Screening</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Initial candidate screening</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Interview scheduling</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Application status updates</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Employee Management" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><User className="text-blue-400" /> Employee Management</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">Employee Engagement</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Onboarding calls</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Employee surveys</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                  </StaggerReveal>
-               )}
-               {activeUseCaseTab === 'finance' && (
-                  <StaggerReveal staggerDelay={150} direction="up" className="grid md:grid-cols-2 gap-8 justify-center">
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Collections" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><CreditCard className="text-green-400" /> Collections</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">Payment Reminders</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Automated payment reminders</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Overdue account follow-ups</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Payment plan negotiations</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Financial Services" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><Coins className="text-yellow-400" /> Financial Services</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">Account Management</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Account balance inquiries</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Transaction verification</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                  </StaggerReveal>
-               )}
-               {activeUseCaseTab === 'cx' && (
-                  <StaggerReveal staggerDelay={150} direction="up" className="grid md:grid-cols-2 gap-8 justify-center">
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Customer Support" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><Headphones className="text-blue-400" /> Support</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">24/7 Customer Support</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Issue resolution</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Product inquiries</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Technical troubleshooting</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Customer Experience" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><MessageSquare className="text-purple-400" /> Experience</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">Customer Engagement</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Satisfaction surveys</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Feedback collection</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                  </StaggerReveal>
-               )}
-               {activeUseCaseTab === 'ops' && (
-                  <StaggerReveal staggerDelay={150} direction="up" className="grid md:grid-cols-2 gap-8 justify-center">
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Operations" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><Settings className="text-orange-400" /> Operations</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">Process Automation</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Order status updates</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Inventory notifications</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Delivery confirmations</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Workflow" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><BarChart3 className="text-indigo-400" /> Workflow</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">Operational Efficiency</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Vendor communications</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Internal notifications</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                  </StaggerReveal>
-               )}
-               {activeUseCaseTab === 'marketing' && (
-                  <StaggerReveal staggerDelay={150} direction="up" className="grid md:grid-cols-2 gap-8 justify-center">
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Campaigns" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><Megaphone className="text-pink-400" /> Campaigns</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">Marketing Campaigns</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Product launch calls</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Promotional announcements</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Event invitations</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Engagement" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><TrendingUp className="text-cyan-400" /> Engagement</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">Customer Engagement</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Win-back campaigns</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Loyalty program updates</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                  </StaggerReveal>
-               )}
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-slate-900 mb-4">Lead & Property Management</h3>
+                <div className="space-y-3 mb-8">
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Lead Qualification</span></div>
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Property visit scheduling</span></div>
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">New inventory announcements</span></div>
+                </div>
+                <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
+              </div>
             </div>
-        </div>
-      </section>
+            <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
+              <div className="h-48 overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+                <img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Tenant" />
+                <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><User className="text-yellow-400" /> Tenancy</div>
+              </div>
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-slate-900 mb-4">Tenant Management</h3>
+                <div className="space-y-3 mb-8">
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Tenant rent reminders</span></div>
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Lease renewal workflow</span></div>
+                </div>
+                <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
+              </div>
+            </div>
+          </StaggerReveal>
+        )}
+        {activeUseCaseTab === 'growth' && (
+          <StaggerReveal staggerDelay={150} direction="up" className="grid md:grid-cols-2 gap-8 justify-center">
+            <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
+              <div className="h-48 overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Sales Growth" />
+                <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><TrendingUp className="text-blue-400" /> Sales Growth</div>
+              </div>
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-slate-900 mb-4">Lead Generation & Qualification</h3>
+                <div className="space-y-3 mb-8">
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Automated lead qualification</span></div>
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Outbound sales calls</span></div>
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Follow-up automation</span></div>
+                </div>
+                <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
+              </div>
+            </div>
+            <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
+              <div className="h-48 overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Revenue" />
+                <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><BarChart3 className="text-purple-400" /> Revenue Growth</div>
+              </div>
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-slate-900 mb-4">Revenue Optimization</h3>
+                <div className="space-y-3 mb-8">
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Upsell & cross-sell calls</span></div>
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Customer retention campaigns</span></div>
+                </div>
+                <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
+              </div>
+            </div>
+          </StaggerReveal>
+        )}
+        {activeUseCaseTab === 'hr' && (
+          <StaggerReveal staggerDelay={150} direction="up" className="grid md:grid-cols-2 gap-8 justify-center">
+            <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
+              <div className="h-48 overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+                <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Recruitment" />
+                <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><Users className="text-indigo-400" /> Recruitment</div>
+              </div>
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-slate-900 mb-4">Candidate Screening</h3>
+                <div className="space-y-3 mb-8">
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Initial candidate screening</span></div>
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Interview scheduling</span></div>
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Application status updates</span></div>
+                </div>
+                <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
+              </div>
+            </div>
+            <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
+              <div className="h-48 overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Employee Management" />
+                <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><User className="text-blue-400" /> Employee Management</div>
+              </div>
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-slate-900 mb-4">Employee Engagement</h3>
+                <div className="space-y-3 mb-8">
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Onboarding calls</span></div>
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Employee surveys</span></div>
+                </div>
+                <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
+              </div>
+            </div>
+          </StaggerReveal>
+        )}
+        {activeUseCaseTab === 'finance' && (
+          <StaggerReveal staggerDelay={150} direction="up" className="grid md:grid-cols-2 gap-8 justify-center">
+            <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
+              <div className="h-48 overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Collections" />
+                <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><CreditCard className="text-green-400" /> Collections</div>
+              </div>
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-slate-900 mb-4">Payment Reminders</h3>
+                <div className="space-y-3 mb-8">
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Automated payment reminders</span></div>
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Overdue account follow-ups</span></div>
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Payment plan negotiations</span></div>
+                </div>
+                <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
+              </div>
+            </div>
+            <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
+              <div className="h-48 overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+                <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Financial Services" />
+                <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><Coins className="text-yellow-400" /> Financial Services</div>
+              </div>
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-slate-900 mb-4">Account Management</h3>
+                <div className="space-y-3 mb-8">
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Account balance inquiries</span></div>
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Transaction verification</span></div>
+                </div>
+                <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
+              </div>
+            </div>
+          </StaggerReveal>
+        )}
+        {activeUseCaseTab === 'cx' && (
+          <StaggerReveal staggerDelay={150} direction="up" className="grid md:grid-cols-2 gap-8 justify-center">
+            <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
+              <div className="h-48 overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+                <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Customer Support" />
+                <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><Headphones className="text-blue-400" /> Support</div>
+              </div>
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-slate-900 mb-4">24/7 Customer Support</h3>
+                <div className="space-y-3 mb-8">
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Issue resolution</span></div>
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Product inquiries</span></div>
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Technical troubleshooting</span></div>
+                </div>
+                <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
+              </div>
+            </div>
+            <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
+              <div className="h-48 overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Customer Experience" />
+                <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><MessageSquare className="text-purple-400" /> Experience</div>
+              </div>
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-slate-900 mb-4">Customer Engagement</h3>
+                <div className="space-y-3 mb-8">
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Satisfaction surveys</span></div>
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Feedback collection</span></div>
+                </div>
+                <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
+              </div>
+            </div>
+          </StaggerReveal>
+        )}
+        {activeUseCaseTab === 'ops' && (
+          <StaggerReveal staggerDelay={150} direction="up" className="grid md:grid-cols-2 gap-8 justify-center">
+            <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
+              <div className="h-48 overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Operations" />
+                <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><Settings className="text-orange-400" /> Operations</div>
+              </div>
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-slate-900 mb-4">Process Automation</h3>
+                <div className="space-y-3 mb-8">
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Order status updates</span></div>
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Inventory notifications</span></div>
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Delivery confirmations</span></div>
+                </div>
+                <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
+              </div>
+            </div>
+            <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
+              <div className="h-48 overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+                <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Workflow" />
+                <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><BarChart3 className="text-indigo-400" /> Workflow</div>
+              </div>
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-slate-900 mb-4">Operational Efficiency</h3>
+                <div className="space-y-3 mb-8">
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Vendor communications</span></div>
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Internal notifications</span></div>
+                </div>
+                <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
+              </div>
+            </div>
+          </StaggerReveal>
+        )}
+        {activeUseCaseTab === 'marketing' && (
+          <StaggerReveal staggerDelay={150} direction="up" className="grid md:grid-cols-2 gap-8 justify-center">
+            <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
+              <div className="h-48 overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Campaigns" />
+                <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><Megaphone className="text-pink-400" /> Campaigns</div>
+              </div>
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-slate-900 mb-4">Marketing Campaigns</h3>
+                <div className="space-y-3 mb-8">
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Product launch calls</span></div>
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Promotional announcements</span></div>
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Event invitations</span></div>
+                </div>
+                <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
+              </div>
+            </div>
+            <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
+              <div className="h-48 overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
+                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Engagement" />
+                <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><TrendingUp className="text-cyan-400" /> Engagement</div>
+              </div>
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-slate-900 mb-4">Customer Engagement</h3>
+                <div className="space-y-3 mb-8">
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Win-back campaigns</span></div>
+                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Loyalty program updates</span></div>
+                </div>
+                <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
+              </div>
+            </div>
+          </StaggerReveal>
+        )}
+      </div>
+    </div>
+  </section>
 
 
 
-      {/* DASHBOARD SECTION */}
+  {/* DASHBOARD SECTION */ }
       <section id="dashboard" className="py-24 bg-slate-50 relative overflow-hidden">
         <div className="container mx-auto px-6 relative z-10">
             <ScrollReveal direction="up" delay={0}>
@@ -1301,25 +1298,25 @@ export default function CallersPage() {
         </div>
       </section>
 
-      {/* CALCULATOR */}
-      <section id="calculator" className="py-24 bg-slate-100 border-y border-slate-100 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-5 bg-noise"></div>
-        <div className="container mx-auto px-6 relative z-10">
-            <ScrollReveal direction="up" delay={0}>
-              <div className="text-center mb-16">
-                <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">ROI Engine</span>
-                <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">
-                  <ScrollTextReveal text="See How Much You'll Save" splitBy="word" />
-                </h2>
-                <p className="text-slate-500">Stop overpaying for manual calls.</p>
-              </div>
-            </ScrollReveal>
-            <SavingsCalculator />
+  {/* CALCULATOR */ }
+  <section id="calculator" className="py-24 bg-slate-100 border-y border-slate-100 relative overflow-hidden">
+    <div className="absolute inset-0 opacity-5 bg-noise"></div>
+    <div className="container mx-auto px-6 relative z-10">
+      <ScrollReveal direction="up" delay={0}>
+        <div className="text-center mb-16">
+          <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">ROI Engine</span>
+          <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">
+            <ScrollTextReveal text="See How Much You'll Save" splitBy="word" />
+          </h2>
+          <p className="text-slate-500">Stop overpaying for manual calls.</p>
         </div>
-      </section>
+      </ScrollReveal>
+      <SavingsCalculator />
+    </div>
+  </section>
 
-      {/* INSIGHTS */}
-      {/* <section className="py-24 bg-white border-y border-slate-100">
+  {/* INSIGHTS */ }
+  {/* <section className="py-24 bg-white border-y border-slate-100">
         <div className="container mx-auto px-6">
             <h2 className="text-4xl font-bold text-slate-900 mb-12 text-center">Proven Results from <br /> 90M+ completed calls</h2>
             <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -1348,106 +1345,106 @@ export default function CallersPage() {
         </div>
       </section> */}
 
-      {/* FAQ SECTION */}
-      <section className="py-24 bg-slate-50 border-y border-slate-100 relative z-10">
-        <div className="container mx-auto px-6 max-w-4xl">
-            <ScrollReveal direction="up" delay={0}>
-              <h2 className="text-4xl font-bold text-slate-900 mb-12 text-center">
-                <ScrollTextReveal text="Frequently Asked Questions" splitBy="word" />
-              </h2>
-            </ScrollReveal>
-            <div className="space-y-4">
-                {[
-                  { q: "How quickly can I really create a Voice AI agent?", a: "You can create a fully functional Voice AI agent in just a few minutes. Simply choose a voice, set your goals, add scripts or knowledge, and your agent is ready to make calls instantly." },
-                  { q: "Do I need any technical or coding knowledge?", a: "No technical or coding skills are required. Everything is no-code. However, developers can use our API, webhook events, and Zapier integrations for deeper customization." },
-                  { q: "What kind of Voice AI agents can I build?", a: "You can build agents for sales, support, appointment booking, lead qualification, automated callbacks, follow-ups, surveys, and more—fully customizable for any workflow." },
-                          { q: "Can I customize how the AI agent sounds and responds?", a: "Yes. You can customize the voice, tone, speaking style, accent, and full behavior. You can even create dynamic responses using conditions, memory, and custom prompts." },
-                  { q: "What happens after I create my agent?", a: "Once created, your agent can immediately start making or receiving calls. You can monitor conversations, analyze transcripts, track performance, and refine the agent anytime." },
-                  { q: "Is there a free trial or demo available?", a: "Yes. You can try the platform for free with demo minutes included. No credit card required. A live demo with our team is also available." },
-                    { q: "Can I integrate my AI agent with existing systems?", a: "Absolutely. We offer native integrations with Salesforce, HubSpot, Zoho, and Pipedrive, along with API access and Zapier for custom workflows." },
-               
-                ].map((faq, i) => (
-                  <div key={i} className={`bg-white rounded-2xl border border-slate-200 overflow-hidden transition-all ${activeFaq === i ? 'ring-2 ring-indigo-500/20' : ''}`}>
-                      <div 
-                        className="px-6 py-4 flex justify-between items-center font-bold text-slate-900 cursor-pointer hover:bg-slate-50"
-                        onClick={() => setActiveFaq(activeFaq === i ? null : i)}
-                      >
-                        {faq.q}
-                        <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform ${activeFaq === i ? 'rotate-180' : ''}`} />
-                      </div>
-                      <div className={`px-6 text-slate-500 text-sm transition-all duration-300 overflow-hidden ${activeFaq === i ? 'max-h-[200px] pb-5' : 'max-h-0'}`}>
-                        {faq.a}
-                      </div>
-                  </div>
-                ))}
+  {/* FAQ SECTION */ }
+  <section className="py-24 bg-slate-50 border-y border-slate-100 relative z-10">
+    <div className="container mx-auto px-6 max-w-4xl">
+      <ScrollReveal direction="up" delay={0}>
+        <h2 className="text-4xl font-bold text-slate-900 mb-12 text-center">
+          <ScrollTextReveal text="Frequently Asked Questions" splitBy="word" />
+        </h2>
+      </ScrollReveal>
+      <div className="space-y-4">
+        {[
+          { q: "How quickly can I really create a Voice AI agent?", a: "You can create a fully functional Voice AI agent in just a few minutes. Simply choose a voice, set your goals, add scripts or knowledge, and your agent is ready to make calls instantly." },
+          { q: "Do I need any technical or coding knowledge?", a: "No technical or coding skills are required. Everything is no-code. However, developers can use our API, webhook events, and Zapier integrations for deeper customization." },
+          { q: "What kind of Voice AI agents can I build?", a: "You can build agents for sales, support, appointment booking, lead qualification, automated callbacks, follow-ups, surveys, and more—fully customizable for any workflow." },
+          { q: "Can I customize how the AI agent sounds and responds?", a: "Yes. You can customize the voice, tone, speaking style, accent, and full behavior. You can even create dynamic responses using conditions, memory, and custom prompts." },
+          { q: "What happens after I create my agent?", a: "Once created, your agent can immediately start making or receiving calls. You can monitor conversations, analyze transcripts, track performance, and refine the agent anytime." },
+          { q: "Is there a free trial or demo available?", a: "Yes. You can try the platform for free with demo minutes included. No credit card required. A live demo with our team is also available." },
+          { q: "Can I integrate my AI agent with existing systems?", a: "Absolutely. We offer native integrations with Salesforce, HubSpot, Zoho, and Pipedrive, along with API access and Zapier for custom workflows." },
+
+        ].map((faq, i) => (
+          <div key={i} className={`bg-white rounded-2xl border border-slate-200 overflow-hidden transition-all ${activeFaq === i ? 'ring-2 ring-indigo-500/20' : ''}`}>
+            <div
+              className="px-6 py-4 flex justify-between items-center font-bold text-slate-900 cursor-pointer hover:bg-slate-50"
+              onClick={() => setActiveFaq(activeFaq === i ? null : i)}
+            >
+              {faq.q}
+              <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform ${activeFaq === i ? 'rotate-180' : ''}`} />
             </div>
+            <div className={`px-6 text-slate-500 text-sm transition-all duration-300 overflow-hidden ${activeFaq === i ? 'max-h-[200px] pb-5' : 'max-h-0'}`}>
+              {faq.a}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+  {/* FINAL CTA */ }
+  <section className="py-24 bg-slate-50 border-t border-slate-200 ">
+    <div className="container mx-auto px-6 flex justify-center bg-noise relative">
+      <div className="bg-white p-6 sm:p-8 rounded-[40px] shadow-lg border border-slate-100 max-w-lg w-full">
+        <div className="text-center mb-6">
+          <h3 className="text-2xl font-bold text-slate-900">C'mon, Make That Call!</h3>
+          <p className="text-slate-500 text-sm">Try Callers – Meet Paul / Cassie</p>
         </div>
-      </section>
-                {/* FINAL CTA */}
-      <section className="py-24 bg-slate-50 border-t border-slate-200 ">
-        <div className="container mx-auto px-6 flex justify-center bg-noise relative">
-          <div className="bg-white p-6 sm:p-8 rounded-[40px] shadow-lg border border-slate-100 max-w-lg w-full">
-            <div className="text-center mb-6">
-              <h3 className="text-2xl font-bold text-slate-900">C'mon, Make That Call!</h3>
-              <p className="text-slate-500 text-sm">Try Callers – Meet Paul / Cassie</p>
-            </div>
 
-            <div className="flex gap-4 mb-6">
-              <div className="flex-1 relative rounded-3xl overflow-hidden aspect-[3/4] cursor-pointer group">
-                <img
-                  src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80"
-                  alt="Cassie"
-                  className="w-full h-full object-cover grayscale opacity-60 group-hover:opacity-80 transition-all duration-300"
-                />
-                <div className="absolute bottom-3 left-3 text-white font-bold drop-shadow-md">Cassie</div>
-              </div>
-              <div className="flex-1 relative rounded-3xl overflow-hidden aspect-[3/4] cursor-pointer ring-4 ring-indigo-600 shadow-lg transform scale-105">
-                <div className="absolute top-3 left-3 bg-indigo-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md z-10">
-                  <i className="fas fa-check"></i>
-                </div>
-                <img
-                  src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80"
-                  alt="Paul"
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-                <div className="absolute bottom-3 left-3 text-white">
-                  <div className="font-bold text-lg">Paul</div>
-                  <div className="text-[10px] opacity-90">(Male AI Agent)</div>
-                </div>
-              </div>
+        <div className="flex gap-4 mb-6">
+          <div className="flex-1 relative rounded-3xl overflow-hidden aspect-[3/4] cursor-pointer group">
+            <img
+              src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80"
+              alt="Cassie"
+              className="w-full h-full object-cover grayscale opacity-60 group-hover:opacity-80 transition-all duration-300"
+            />
+            <div className="absolute bottom-3 left-3 text-white font-bold drop-shadow-md">Cassie</div>
+          </div>
+          <div className="flex-1 relative rounded-3xl overflow-hidden aspect-[3/4] cursor-pointer ring-4 ring-indigo-600 shadow-lg transform scale-105">
+            <div className="absolute top-3 left-3 bg-indigo-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md z-10">
+              <i className="fas fa-check"></i>
             </div>
-
-            <div className="flex items-center border border-slate-200 rounded-2xl px-3 sm:px-4 py-2 sm:py-3 mb-4 bg-slate-50 shadow-inner">
-              <div className="flex items-center gap-2 border-r border-slate-300 pr-2 sm:pr-3 mr-2 sm:mr-3 cursor-pointer">
-                <span className="fi fi-in rounded-sm text-xl shadow-sm"></span>
-                <span className="text-slate-800 font-bold text-sm">+91</span>
-                <i className="fas fa-chevron-down text-[10px] text-slate-400"></i>
-              </div>
-              <input type="tel" placeholder="081234 56789" className="bg-transparent w-full outline-none text-slate-900 font-bold placeholder-slate-400 text-base sm:text-lg" />
+            <img
+              src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80"
+              alt="Paul"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+            <div className="absolute bottom-3 left-3 text-white">
+              <div className="font-bold text-lg">Paul</div>
+              <div className="text-[10px] opacity-90">(Male AI Agent)</div>
             </div>
-
-            <button className="w-full bg-cyan-600 hover:bg-indigo-700 text-white font-bold py-3 sm:py-4 rounded-2xl shadow-lg shadow-indigo-200 transition-all flex items-center justify-center gap-2 text-base sm:text-lg">
-              <FontAwesomeIcon icon={faPhoneVolume} /> Receive AI Call
-            </button>
           </div>
         </div>
-      </section>
 
-      {/* SECURITY STRIP */}
-      <div className="bg-slate-900 py-12 border-t border-slate-800 z-10 relative">
-        <div className="container mx-auto px-6 text-center">
-            <p className="text-slate-400 text-sm uppercase tracking-widest mb-6">Enterprise-Grade Protection</p>
-            <div className="flex justify-center gap-12 items-center flex-wrap opacity-70">
-                <div className="flex items-center gap-2 text-white font-bold"><ShieldCheck className="text-green-500" /> SOC2 Type II</div>
-                <div className="flex items-center gap-2 text-white font-bold"><div className="w-5 h-5 bg-blue-500 rounded-sm flex items-center justify-center text-[10px]">ISO</div> ISO 27001</div>
-                <div className="flex items-center gap-2 text-white font-bold"><Globe className="text-purple-500" /> GDPR Compliant</div>
-                <div className="flex items-center gap-2 text-white font-bold"><HeartPulse className="text-orange-500" /> HIPAA Ready</div>
-            </div>
+        <div className="flex items-center border border-slate-200 rounded-2xl px-3 sm:px-4 py-2 sm:py-3 mb-4 bg-slate-50 shadow-inner">
+          <div className="flex items-center gap-2 border-r border-slate-300 pr-2 sm:pr-3 mr-2 sm:mr-3 cursor-pointer">
+            <span className="fi fi-in rounded-sm text-xl shadow-sm"></span>
+            <span className="text-slate-800 font-bold text-sm">+91</span>
+            <i className="fas fa-chevron-down text-[10px] text-slate-400"></i>
+          </div>
+          <input type="tel" placeholder="081234 56789" className="bg-transparent w-full outline-none text-slate-900 font-bold placeholder-slate-400 text-base sm:text-lg" />
         </div>
-      </div>
 
-      {/* ASK AI */}
+        <button className="w-full bg-cyan-600 hover:bg-indigo-700 text-white font-bold py-3 sm:py-4 rounded-2xl shadow-lg shadow-indigo-200 transition-all flex items-center justify-center gap-2 text-base sm:text-lg">
+          <FontAwesomeIcon icon={faPhoneVolume} /> Receive AI Call
+        </button>
+      </div>
+    </div>
+  </section>
+
+  {/* SECURITY STRIP */ }
+  <div className="bg-slate-900 py-12 border-t border-slate-800 z-10 relative">
+    <div className="container mx-auto px-6 text-center">
+      <p className="text-slate-400 text-sm uppercase tracking-widest mb-6">Enterprise-Grade Protection</p>
+      <div className="flex justify-center gap-12 items-center flex-wrap opacity-70">
+        <div className="flex items-center gap-2 text-white font-bold"><ShieldCheck className="text-green-500" /> SOC2 Type II</div>
+        <div className="flex items-center gap-2 text-white font-bold"><div className="w-5 h-5 bg-blue-500 rounded-sm flex items-center justify-center text-[10px]">ISO</div> ISO 27001</div>
+        <div className="flex items-center gap-2 text-white font-bold"><Globe className="text-purple-500" /> GDPR Compliant</div>
+        <div className="flex items-center gap-2 text-white font-bold"><HeartPulse className="text-orange-500" /> HIPAA Ready</div>
+      </div>
+    </div>
+  </div>
+
+  {/* ASK AI */ }
       <section className="py-24 bg-slate-100 border-t border-slate-200 relative z-10">
         <div className="container mx-auto px-6 text-center">
             <ScrollReveal direction="up" delay={0}>
@@ -1465,7 +1462,7 @@ export default function CallersPage() {
 
 
 
-    <Footer />
-    </main>
+       <Footer />
+</main >
   );
 }
