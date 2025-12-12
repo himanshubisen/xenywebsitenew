@@ -9,6 +9,9 @@ import Header from "@/components/header"
 import Footer from "@/components/footer"
 // Assuming HeroCanvas is defined in your components directory
 import HeroCanvas from "@/components/hero-canvas"
+import ScrollReveal from "@/components/animations/ScrollReveal"
+import ScrollTextReveal from "@/components/animations/ScrollTextReveal"
+import StaggerReveal from "@/components/animations/StaggerReveal"
 
 // --- 1. Data Structure from Images ---
 const CORE_RATE = {
@@ -62,10 +65,17 @@ export default function Pricing() {
           transition={{ duration: 0.8 }}
           className="max-w-7xl mx-auto"
         >
-          <h1 className="text-5xl font-bold text-center mb-6 text-gradient">AI Voicebot Pricing</h1>
-          <p className="text-xl text-gray-600 text-center mb-16 max-w-2xl mx-auto">
-            Deliver seamless, human-like customer conversations powered by AI – with flexible credit-based pricing designed for every business.
-          </p>
+          <ScrollReveal direction="up" delay={0}>
+            <h1 className="text-5xl font-bold text-center mb-6 text-gradient">
+              <ScrollTextReveal text="AI Voicebot Pricing" splitBy="word" />
+            </h1>
+            <p className="text-xl text-gray-600 text-center mb-16 max-w-2xl mx-auto">
+              <ScrollTextReveal 
+                text="Deliver seamless, human-like customer conversations powered by AI – with flexible credit-based pricing designed for every business." 
+                splitBy="word"
+              />
+            </p>
+          </ScrollReveal>
 
           {/* Main Price Card */}
           <div className="flex justify-center mb-20">
@@ -96,10 +106,14 @@ export default function Pricing() {
       {/* --- Section 2: Why Credit-Based (Feature Cards) --- */}
       <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white/70 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-4 text-gray-800">Why Credit-Based?</h2>
-          <p className="text-lg text-gray-600 text-center mb-12">Flexible pricing that grows with your business</p>
+          <ScrollReveal direction="up" delay={0}>
+            <h2 className="text-3xl font-bold text-center mb-4 text-gray-800">
+              <ScrollTextReveal text="Why Credit-Based?" splitBy="word" />
+            </h2>
+            <p className="text-lg text-gray-600 text-center mb-12">Flexible pricing that grows with your business</p>
+          </ScrollReveal>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <StaggerReveal staggerDelay={100} direction="up" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {whyCreditBased.map((item, index) => (
               <motion.div
                 key={index}
@@ -114,14 +128,18 @@ export default function Pricing() {
                 <p className="text-sm text-gray-500">{item.description}</p>
               </motion.div>
             ))}
-          </div>
+          </StaggerReveal>
         </div>
       </section>
 
       {/* --- Section 3: Full Feature/Credit Table --- */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">Credit Add-ons & Feature Breakdown</h2>
+          <ScrollReveal direction="up" delay={0}>
+            <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
+              <ScrollTextReveal text="Credit Add-ons & Feature Breakdown" splitBy="word" />
+            </h2>
+          </ScrollReveal>
           
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -169,8 +187,12 @@ export default function Pricing() {
       {/* --- Section 4: Enterprise Solutions & Free Trial (from image_37c36f.png) --- */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50/50">
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">Enterprise Solutions</h2>
-          <p className="text-lg text-gray-600 mb-12">Scale your operations with custom solutions tailored to your business needs</p>
+          <ScrollReveal direction="up" delay={0}>
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">
+              <ScrollTextReveal text="Enterprise Solutions" splitBy="word" />
+            </h2>
+            <p className="text-lg text-gray-600 mb-12">Scale your operations with custom solutions tailored to your business needs</p>
+          </ScrollReveal>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20">
             <motion.div
@@ -212,8 +234,12 @@ export default function Pricing() {
             viewport={{ once: true }}
             className="bg-gradient-to-r from-blue-700 to-cyan-600 p-12 rounded-3xl shadow-2xl text-white"
           >
-            <h2 className="text-4xl font-bold mb-4">Start Your Free Trial</h2>
-            <p className="text-xl mb-6">Get **100 free credits** to experience real conversations powered by AI Voicebot.</p>
+            <ScrollReveal direction="up" delay={0}>
+              <h2 className="text-4xl font-bold mb-4">
+                <ScrollTextReveal text="Start Your Free Trial" splitBy="word" />
+              </h2>
+              <p className="text-xl mb-6">Get **100 free credits** to experience real conversations powered by AI Voicebot.</p>
+            </ScrollReveal>
             <p className="text-sm text-blue-200 mb-8">Upgrade anytime – scale effortlessly.</p>
             <div className="flex justify-center space-x-4">
               <motion.button

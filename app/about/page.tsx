@@ -8,6 +8,9 @@ import Footer from "@/components/footer"
 import HeroCanvas from "@/components/hero-canvas"
 // Importing relevant Lucide icons for Core Values
 import { Rocket, Eye, HeartHandshake, Users, Map, Globe, CheckCircle } from "lucide-react"
+import ScrollReveal from "@/components/animations/ScrollReveal"
+import ScrollTextReveal from "@/components/animations/ScrollTextReveal"
+import StaggerReveal from "@/components/animations/StaggerReveal"
 
 // --- Data Structure based on images ---
 const aboutData = {
@@ -68,18 +71,20 @@ export default function About() {
           className="w-full mx-auto"
         >
           {/* --- Section 1: About Xeny.ai Header and Parent Info (Center Aligned with Gradient) --- */}
-          <div className="text-center mb-16">
-            <GradientText className="text-5xl font-bold mb-4">
-              About Xeny.ai
-            </GradientText>
-            <p className="text-xl text-gray-700 font-medium mb-2">
-              {aboutData.powering}
-            </p>
+          <ScrollReveal direction="up" delay={0}>
+            <div className="text-center mb-16">
+              <GradientText className="text-5xl font-bold mb-4">
+                <ScrollTextReveal text="About Xeny.ai" splitBy="word" />
+              </GradientText>
+              <p className="text-xl text-gray-700 font-medium mb-2">
+                <ScrollTextReveal text={aboutData.powering} splitBy="word" />
+              </p>
             <p className="text-sm text-gray-500">
               **Business Name:** {aboutData.businessName} | **Merchant Name:** {aboutData.merchantName}
             </p>
-            <div className="w-24 h-1 bg-blue-600 mx-auto mt-6 rounded-full"></div>
-          </div>
+              <div className="w-24 h-1 bg-blue-600 mx-auto mt-6 rounded-full"></div>
+            </div>
+          </ScrollReveal>
 
           {/* About Xeny Content Card (Aligned left but container is centered) */}
           <div className="flex justify-center">
@@ -98,17 +103,13 @@ export default function About() {
           </div>
 
           {/* --- Section 2: Our Core Values (Center Aligned) --- */}
-          <GradientText className="text-4xl font-bold text-center mb-12">
-            Our Core Values
-          </GradientText>
+          <ScrollReveal direction="up" delay={0}>
+            <GradientText className="text-4xl font-bold text-center mb-12">
+              <ScrollTextReveal text="Our Core Values" splitBy="word" />
+            </GradientText>
+          </ScrollReveal>
           
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ staggerChildren: 0.2 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20"
-          >
+          <StaggerReveal staggerDelay={150} direction="up" className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
             {coreValues.map((value, index) => (
               <motion.div
                 key={index}
@@ -121,13 +122,17 @@ export default function About() {
               >
                 <value.icon className="w-8 h-8 text-blue-600 mb-4 mx-auto md:mx-0" />
                 <h3 className="text-xl font-bold mb-3 text-blue-700">{value.title}</h3>
-                <p className="text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: value.content }} />
+                <p className="text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: value.content }}></p>
               </motion.div>
             ))}
-          </motion.div>
+          </StaggerReveal>
 
           {/* --- Section 3: Parent Organization - Triotech (Center Aligned) --- */}
-          <h2 className="text-3xl font-bold text-center mb-8 text-gray-900">Our Parent Organization - Triotech</h2>
+          <ScrollReveal direction="up" delay={0}>
+            <h2 className="text-3xl font-bold text-center mb-8 text-gray-900">
+              <ScrollTextReveal text="Our Parent Organization - Triotech" splitBy="word" />
+            </h2>
+          </ScrollReveal>
           
           {/* Triotech Description Card (Container centered) */}
           <div className="flex justify-center">
@@ -146,13 +151,7 @@ export default function About() {
 
 
           {/* Triotech Stats Grid */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ staggerChildren: 0.1 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20"
-          >
+          <StaggerReveal staggerDelay={100} direction="up" className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
             {triotechData.stats.map((stat, index) => (
               <motion.div
                 key={index}
@@ -167,7 +166,7 @@ export default function About() {
                 <p className="text-sm text-gray-600">{stat.label}</p>
               </motion.div>
             ))}
-          </motion.div>
+          </StaggerReveal>
           
         </motion.div>
       </section>
@@ -182,7 +181,7 @@ export default function About() {
             viewport={{ once: true }}
             className="text-3xl font-bold text-white mb-8"
           >
-            Ready to transform your customer experience?
+            <ScrollTextReveal text="Ready to transform your customer experience?" splitBy="word" />
           </motion.h2>
           <motion.button
             whileHover={{ scale: 1.05 }}

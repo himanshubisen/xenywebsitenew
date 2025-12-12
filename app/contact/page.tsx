@@ -7,6 +7,9 @@ import { useState } from "react"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import { Mail, Phone, MapPin } from "lucide-react"
+import ScrollReveal from "@/components/animations/ScrollReveal"
+import ScrollTextReveal from "@/components/animations/ScrollTextReveal"
+import StaggerReveal from "@/components/animations/StaggerReveal"
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -59,12 +62,19 @@ export default function Contact() {
           transition={{ duration: 0.8 }}
           className="max-w-7xl mx-auto"
         >
-          <h1 className="text-5xl font-bold text-center mb-6 text-gray-900">Get in Touch</h1>
-          <p className="text-xl text-gray-600 text-center mb-16 max-w-2xl mx-auto">
-            Have questions? We'd love to hear from you. Reach out to our team and we'll respond as soon as possible.
-          </p>
+          <ScrollReveal direction="up" delay={0}>
+            <h1 className="text-5xl font-bold text-center mb-6 text-gray-900">
+              <ScrollTextReveal text="Get in Touch" splitBy="word" />
+            </h1>
+            <p className="text-xl text-gray-600 text-center mb-16 max-w-2xl mx-auto">
+              <ScrollTextReveal 
+                text="Have questions? We'd love to hear from you. Reach out to our team and we'll respond as soon as possible." 
+                splitBy="word"
+              />
+            </p>
+          </ScrollReveal>
 
-          <div className="grid lg:grid-cols-3 gap-8 mb-16">
+          <StaggerReveal staggerDelay={100} direction="up" className="grid lg:grid-cols-3 gap-8 mb-16">
             {contactMethods.map((method, index) => {
               const Icon = method.icon
               return (
@@ -84,7 +94,7 @@ export default function Contact() {
                 </motion.div>
               )
             })}
-          </div>
+          </StaggerReveal>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
