@@ -30,6 +30,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as THREE from 'three';
 import HeroCanvas from "@/components/hero-canvas"
 import Footer from "@/components/footer"
+import ScrollReveal from "@/components/animations/ScrollReveal"
+import TextReveal from "@/components/animations/TextReveal"
+import ScrollTextReveal from "@/components/animations/ScrollTextReveal"
+import StaggerReveal from "@/components/animations/StaggerReveal"
 
 // --- Types ---
 type TabId = 'real_estate' | 'growth' | 'hr' | 'finance' | 'cx' | 'ops' | 'marketing';
@@ -240,18 +244,11 @@ const UrbanPiperSection = () => {
 
                 <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight mb-12 relative z-20 text-white">
                     <span className="text-indigo-500 text-4xl md:text-6xl absolute -ml-8 md:-ml-12 -mt-4 opacity-50">"</span>
-                    {words.map((word, i) => (
-                      <span 
-                        key={i} 
-                        className="inline-block transition-opacity duration-300 mr-3"
-                        style={{ 
-                          opacity: (i / words.length) < scrollProgress ? 1 : 0.2,
-                          transitionDelay: `${i * 20}ms`
-                        }}
-                      >
-                        {word}
-                      </span>
-                    ))}
+                    <ScrollTextReveal 
+                      text={quote}
+                      splitBy="word"
+                      staggerDelay={20}
+                    />
                 </h2>
 
                 <div 
@@ -428,39 +425,7 @@ export default function CallersPage() {
   return (
     <main className="font-sans text-slate-900 bg-slate-50 selection:bg-indigo-100 selection:text-indigo-900">
       <ThreeBackground />
-        {/* <Header onDemoClick={() => {}} /> */}
-
-      {/* NAVBAR */}
-      <nav className="fixed top-0 w-full z-50 transition-all duration-300">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-            <div className="bg-white/70 backdrop-blur-md border border-white/50 shadow-sm rounded-full px-6 py-3 flex justify-between items-center">
-                <a href="#" className="flex items-center gap-0.5 group">
-                    {/* <span className="text-2xl font-bold text-slate-900 tracking-tight group-hover:text-indigo-600 transition-colors">Xeny<sup className="text-xs font-bold text-indigo-600 ml-0.5">AI</sup></span> */}
-                       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <Image src="/logo/xeny-logo.png" alt="Xeny Logo" width={102} height={102} />
-        
-          </Link>
-        </motion.div>
-                </a>
-                
-                <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
-                   <a href="/" className="hover:text-indigo-600 transition-colors">Home</a>
-  
-                       {/* <a href="#stats" className="hover:text-indigo-600 transition-colors"></a> */}
-                          <a href="/use-cases" className="hover:text-indigo-600 transition-colors">Use Cases</a>
-                     
-                                <a href="/pricing" className="hover:text-indigo-600 transition-colors">Pricing</a>
-                                        <a href="/about" className="hover:text-indigo-600 transition-colors">About</a>
-              
-                </div>
-
-                <button className="bg-slate-900 text-white px-6 py-2.5 rounded-full font-bold text-sm hover:bg-indigo-600 transition-all shadow-lg hover:shadow-indigo-500/30">
-                    Book Demo
-                </button>
-            </div>
-        </div>
-      </nav>
+      <Header />
 
       {/* HERO SECTION */}
       <section className="relative pt-32 pb-20 overflow-hidden">
@@ -474,39 +439,34 @@ export default function CallersPage() {
                 <span className="text-xs font-bold text-slate-600  tracking-widest">Christmas discount is live</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold leading-[1.1] mb-6 text-slate-900">
-                Your 24/7 AI Voice Employee  For
-           {/* <span
-  className="
-    text-3xl 
-    italic 
-text-cyan-700
-    
-  "
->
-  for
-</span> */}
-
+            <ScrollReveal direction="up" delay={100}>
+              <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold leading-[1.1] mb-6 text-slate-900">
+                <ScrollTextReveal 
+                  text="Your 24/7 AI Voice Employee For" 
+                  splitBy="word"
+                  className="block mb-4"
+                />
                  <br />
                 <HeroTypewriter />
                 <span className="animate-pulse text-indigo-600">|</span>
-            </h1>
+              </h1>
+            </ScrollReveal>
 
-            {/* <p className="text-xl text-slate-500 mb-12 max-w-3xl mx-auto leading-relaxed">
-                Stop losing leads to voicemail. Our AI agents call leads instantly, book meetings, and solve support tickets while your team sleeps. No sick days. No training gaps.
-            </p> */}
-                <p className="text-xl text-slate-500 mb-12 max-w-4xl mx-auto leading-relaxed">
-Xeny automates calls, callbacks, and bookings—powering your digital transformation and 
-<br />
-keeping your business responsive, consistent, and miles ahead of competitors.
-            </p>
+            <ScrollReveal direction="up" delay={300}>
+              <p className="text-xl text-slate-500 mb-12 max-w-4xl mx-auto leading-relaxed">
+                <ScrollTextReveal 
+                  text="Xeny automates calls, callbacks, and bookings—powering your digital transformation and keeping your business responsive, consistent, and miles ahead of competitors." 
+                  splitBy="word"
+                />
+              </p>
+            </ScrollReveal>
 
 
             {/* Simulated Input */}
             <div className="w-full max-w-md bg-white p-2 sm:p-3 rounded-[24px] shadow-lg border border-slate-200 transform hover:scale-[1.02] transition-transform duration-300">
             <div className="flex flex-col gap-2">
               <div className="flex items-center bg-slate-50 rounded-xl px-3 sm:px-4 py-2 sm:py-3 border border-slate-100 focus-within:border-indigo-500/50 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
-                <div className="flex items-center gap-2 border-r border-slate-300 pr-2 sm:pr-3 mr-2 sm:mr-3 cursor-pointer" onClick={() => handleCountrySelect(selectedCountry === '+91' ? '+971' : '+91')}>
+                <div className="flex items-center gap-2 border-r border-slate-300 pr-2 sm:pr-3 mr-2 sm:mr-3 cursor-pointer" onClick={handleCountrySelect}>
                   <span className={`fi ${selectedCountry === '+91' ? 'fi-in' : 'fi-ae'} rounded-sm text-lg shadow-sm`}></span>
                   <span className="text-slate-800 font-bold text-sm">{selectedCountry}</span>
                   <FontAwesomeIcon icon={faChevronDown} className="text-[10px] text-slate-400" />
@@ -578,19 +538,25 @@ keeping your business responsive, consistent, and miles ahead of competitors.
       {/* STATS SECTION */}
       <section id="stats" className="py-24 bg-white z-10 relative">
         <div className="container mx-auto px-6">
-            <div className="text-center mb-16">
+            <ScrollReveal direction="up" delay={0}>
+              <div className="text-center mb-16">
                 <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">Proven Results</span>
-                <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">Real Numbers, Real Growth</h2>
+                <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">
+                  <ScrollTextReveal text="Real Numbers, Real Growth" splitBy="word" />
+                </h2>
                 <p className="text-slate-500">Here is the impact we deliver to businesses like yours.</p>
-            </div>
+              </div>
+            </ScrollReveal>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 text-center">
+              <StaggerReveal staggerDelay={100} direction="up">
                 <div className="group"><div className="text-4xl font-bold text-indigo-600 mb-2">90%</div><p className="text-xs font-bold uppercase text-slate-400">Call Automation</p></div>
                 <div className="group"><div className="text-4xl font-bold text-green-500 mb-2">90%</div><p className="text-xs font-bold uppercase text-slate-400">Less Staffing</p></div>
                 <div className="group"><div className="text-4xl font-bold text-blue-500 mb-2">50%</div><p className="text-xs font-bold uppercase text-slate-400">Fewer Errors</p></div>
                 <div className="group"><div className="text-4xl font-bold text-orange-500 mb-2">60%</div><p className="text-xs font-bold uppercase text-slate-400">Cost Savings</p></div>
                 <div className="group"><div className="text-4xl font-bold text-purple-500 mb-2">60%</div><p className="text-xs font-bold uppercase text-slate-400">Qualified Leads</p></div>
                 <div className="group"><div className="text-4xl font-bold text-pink-500 mb-2">10X</div><p className="text-xs font-bold uppercase text-slate-400">Sales Velocity</p></div>
+              </StaggerReveal>
             </div>
         </div>
       </section>
@@ -600,37 +566,43 @@ keeping your business responsive, consistent, and miles ahead of competitors.
       {/* 4. WHAT POWERS EVERY CALL (Features) */}
       <section id="features" className="py-24 ">
         <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">What Powers Every Call</h2>
-            <p className="text-slate-500">The technology stack behind the voice.</p>
-          </div>
+          <ScrollReveal direction="up" delay={0}>
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold text-slate-900 mb-4">
+                <ScrollTextReveal text="What Powers Every Call" splitBy="word" />
+              </h2>
+              <p className="text-slate-500">The technology stack behind the voice.</p>
+            </div>
+          </ScrollReveal>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all group">
-              <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">01</div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Multilingual AI Agent</h3>
-              <p className="text-sm text-slate-600">Speaks naturally, handles interruptions, and switches languages mid-call - no IVR, no robotic pauses.</p>
-            </div>
-            <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all group">
-              <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">02</div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">LLM-Powered Understanding</h3>
-              <p className="text-sm text-slate-600">Understands meaning, tone, and context to respond, clarify, and adjust the flow in real time.</p>
-            </div>
-            <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all group">
-              <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">03</div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Smooth Handoff</h3>
-              <p className="text-sm text-slate-600">When a lead shows intent, AI hands off instantly with full context—no repeats, no friction.</p>
-            </div>
-            <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all group">
-              <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">04</div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Instant Post-Call Actions</h3>
-              <p className="text-sm text-slate-600">Sends confirmations, reminders, messages, quotes, or summaries automatically right after the call.</p>
-            </div>
-            <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all group">
-              <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">05</div>
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Smart Interruption Handling</h3>
-              <p className="text-sm text-slate-600">Stays on track through noise, overlap, or sudden questions and adapts without breaking the flow.</p>
-            </div>
+            <StaggerReveal staggerDelay={150} direction="up">
+              <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all group">
+                <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">01</div>
+                <h3 className="text-xl font-bold text-slate-900 mb-2">Multilingual AI Agent</h3>
+                <p className="text-sm text-slate-600">Speaks naturally, handles interruptions, and switches languages mid-call - no IVR, no robotic pauses.</p>
+              </div>
+              <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all group">
+                <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">02</div>
+                <h3 className="text-xl font-bold text-slate-900 mb-2">LLM-Powered Understanding</h3>
+                <p className="text-sm text-slate-600">Understands meaning, tone, and context to respond, clarify, and adjust the flow in real time.</p>
+              </div>
+              <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all group">
+                <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">03</div>
+                <h3 className="text-xl font-bold text-slate-900 mb-2">Smooth Handoff</h3>
+                <p className="text-sm text-slate-600">When a lead shows intent, AI hands off instantly with full context—no repeats, no friction.</p>
+              </div>
+              <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all group">
+                <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">04</div>
+                <h3 className="text-xl font-bold text-slate-900 mb-2">Instant Post-Call Actions</h3>
+                <p className="text-sm text-slate-600">Sends confirmations, reminders, messages, quotes, or summaries automatically right after the call.</p>
+              </div>
+              <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all group">
+                <div className="text-4xl font-bold text-slate-200 mb-4 group-hover:text-indigo-600 transition-colors">05</div>
+                <h3 className="text-xl font-bold text-slate-900 mb-2">Smart Interruption Handling</h3>
+                <p className="text-sm text-slate-600">Stays on track through noise, overlap, or sudden questions and adapts without breaking the flow.</p>
+              </div>
+            </StaggerReveal>
           </div>
         </div>
       </section>
@@ -638,8 +610,11 @@ keeping your business responsive, consistent, and miles ahead of competitors.
            {/* 5. INDUSTRIES (Service Tabs) */}
       <section id="industries" className="py-24 bg-white border-y border-slate-100">
         <div className="container mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">Our Network. <br /> Your Growth.</h2>
+          <ScrollReveal direction="up" delay={0}>
+            <div className="text-center mb-12">
+              <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
+                <ScrollTextReveal text="Our Network. Your Growth." splitBy="word" />
+              </h2>
 
             <div className="flex flex-wrap justify-center gap-4 mt-8">
                 <button
@@ -673,7 +648,8 @@ keeping your business responsive, consistent, and miles ahead of competitors.
                     <FontAwesomeIcon icon={faCoins} /> Financial Services
                 </button>
             </div>
-          </div>
+            </div>
+          </ScrollReveal>
 
           {/* SERVICE CONTENT: EDUCATION */}
           {activeServiceTab === 'edu' && (
@@ -878,9 +854,12 @@ keeping your business responsive, consistent, and miles ahead of competitors.
       {/* USE CASES TABS */}
       <section id="use-cases" className="py-24 bg-white relative z-10">
         <div className="container mx-auto px-6">
-            <div className="text-center mb-12">
+            <ScrollReveal direction="up" delay={0}>
+              <div className="text-center mb-12">
                 <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">Applications</span>
-                <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mt-2 mb-4">Workflows That Save You Time</h2>
+                <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mt-2 mb-4">
+                  <ScrollTextReveal text="Workflows That Save You Time" splitBy="word" />
+                </h2>
                 
                 <div className="flex overflow-x-auto pb-4 gap-2 mt-8 justify-start md:justify-center no-scrollbar">
                     {['real_estate', 'growth', 'hr', 'finance', 'cx', 'ops', 'marketing'].map((tab) => (
@@ -897,7 +876,8 @@ keeping your business responsive, consistent, and miles ahead of competitors.
                       </button>
                     ))}
                 </div>
-            </div>
+              </div>
+            </ScrollReveal>
 
             {/* Use Cases Content */}
             <div className="max-w-5xl mx-auto min-h-[400px]">
@@ -950,11 +930,15 @@ keeping your business responsive, consistent, and miles ahead of competitors.
       {/* DASHBOARD SECTION */}
       <section id="dashboard" className="py-24 bg-slate-50 relative overflow-hidden">
         <div className="container mx-auto px-6 relative z-10">
-            <div className="text-center mb-16 hidden md:block">
+            <ScrollReveal direction="up" delay={0}>
+              <div className="text-center mb-16 hidden md:block">
                 <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">The Control Room</span>
-                <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">Your AI Command Center</h2>
+                <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">
+                  <ScrollTextReveal text="Your AI Command Center" splitBy="word" />
+                </h2>
                 <p className="text-slate-500">Watch your agents work, listen to calls, and track ROI in real-time.</p>
-            </div>
+              </div>
+            </ScrollReveal>
             
             <div className="max-w-5xl mx-auto bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden transform hover:scale-[1.01] transition-transform duration-500">
                 <div className="bg-slate-100 px-6 py-3 border-b border-slate-200 flex gap-2">
@@ -1032,11 +1016,15 @@ keeping your business responsive, consistent, and miles ahead of competitors.
       <section id="calculator" className="py-24 bg-slate-100 border-y border-slate-100 relative overflow-hidden">
         <div className="absolute inset-0 opacity-5 bg-noise"></div>
         <div className="container mx-auto px-6 relative z-10">
-            <div className="text-center mb-16">
+            <ScrollReveal direction="up" delay={0}>
+              <div className="text-center mb-16">
                 <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">ROI Engine</span>
-                <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">See How Much You'll Save</h2>
+                <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">
+                  <ScrollTextReveal text="See How Much You'll Save" splitBy="word" />
+                </h2>
                 <p className="text-slate-500">Stop overpaying for manual calls.</p>
-            </div>
+              </div>
+            </ScrollReveal>
             <SavingsCalculator />
         </div>
       </section>
@@ -1074,7 +1062,11 @@ keeping your business responsive, consistent, and miles ahead of competitors.
       {/* FAQ SECTION */}
       <section className="py-24 bg-slate-50 border-y border-slate-100 relative z-10">
         <div className="container mx-auto px-6 max-w-4xl">
-            <h2 className="text-4xl font-bold text-slate-900 mb-12 text-center">Frequently Asked Questions</h2>
+            <ScrollReveal direction="up" delay={0}>
+              <h2 className="text-4xl font-bold text-slate-900 mb-12 text-center">
+                <ScrollTextReveal text="Frequently Asked Questions" splitBy="word" />
+              </h2>
+            </ScrollReveal>
             <div className="space-y-4">
                 {[
                   { q: "How quickly can I really create a Voice AI agent?", a: "You can create a fully functional Voice AI agent in just a few minutes. Simply choose a voice, set your goals, add scripts or knowledge, and your agent is ready to make calls instantly." },
@@ -1169,7 +1161,11 @@ keeping your business responsive, consistent, and miles ahead of competitors.
       {/* ASK AI */}
       <section className="py-24 bg-slate-100 border-t border-slate-200 relative z-10">
         <div className="container mx-auto px-6 text-center">
-            <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-6">Still not sure? Ask the AI.</h2>
+            <ScrollReveal direction="up" delay={0}>
+              <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-6">
+                <ScrollTextReveal text="Still not sure? Ask the AI." splitBy="word" />
+              </h2>
+            </ScrollReveal>
             <div className="flex flex-col md:flex-row justify-center gap-6 max-w-4xl mx-auto">
                 <a href="#" className="flex-1 bg-[#4129F9] hover:bg-[#3520D0] text-white py-5 px-8 rounded-full font-bold shadow-lg flex items-center justify-center gap-3 transition-transform hover:-translate-y-1"><Bot className="w-5 h-5"/> Ask ChatGPT</a>
                 <a href="#" className="flex-1 bg-[#D97757] hover:bg-[#C56545] text-white py-5 px-8 rounded-full font-bold shadow-lg flex items-center justify-center gap-3 transition-transform hover:-translate-y-1"><Bot className="w-5 h-5"/> Ask Claude</a>

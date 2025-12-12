@@ -5,6 +5,9 @@ import Header from "@/components/header"
 import Footer from "@/components/footer"
 import HeroCanvas from "@/components/hero-canvas"
 import { ArrowRight, Phone, Zap, TrendingUp, Users } from "lucide-react"
+import ScrollReveal from "@/components/animations/ScrollReveal"
+import ScrollTextReveal from "@/components/animations/ScrollTextReveal"
+import StaggerReveal from "@/components/animations/StaggerReveal"
 
 const useCases = [
   {
@@ -70,26 +73,24 @@ export default function UseCases() {
           transition={{ duration: 0.8 }}
           className="max-w-7xl mx-auto"
         >
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-center mb-6 text-gradient">
-            Real-World Use Cases
-          </h1>
-          <p className="text-lg text-gray-600 text-center mb-16 max-w-2xl mx-auto">
-            Discover how businesses across industries are using Xeny.ai to automate conversations and scale operations
-          </p>
+          <ScrollReveal direction="up" delay={0}>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-center mb-6 text-gradient">
+              <ScrollTextReveal text="Real-World Use Cases" splitBy="word" />
+            </h1>
+            <p className="text-lg text-gray-600 text-center mb-16 max-w-2xl mx-auto">
+              <ScrollTextReveal 
+                text="Discover how businesses across industries are using Xeny.ai to automate conversations and scale operations" 
+                splitBy="word"
+              />
+            </p>
+          </ScrollReveal>
 
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="grid grid-cols-1 md:grid-cols-2 gap-8"
-          >
+          <StaggerReveal staggerDelay={150} direction="up" className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {useCases.map((useCase, index) => {
               const Icon = useCase.icon
               return (
-                <motion.div
+                <div
                   key={index}
-                  variants={itemVariants}
-                  whileHover={{ y: -5, transition: { duration: 0.3 } }}
                   className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100"
                 >
                   <div
@@ -122,10 +123,10 @@ export default function UseCases() {
                   >
                     Learn More <ArrowRight className="w-4 h-4 ml-2" />
                   </motion.button>
-                </motion.div>
+                </div>
               )
             })}
-          </motion.div>
+          </StaggerReveal>
         </motion.div>
       </section>
 

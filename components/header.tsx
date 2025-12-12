@@ -8,72 +8,62 @@ import Image from "next/image"
 import Link from "next/link"
 
 interface HeaderProps {
-  onDemoClick: () => void
+  onDemoClick?: () => void
 }
 
 export default function Header({ onDemoClick }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <header className="fixed top-0 w-full z-50 bg-gradient-to-b from-white/80 via-white/60 to-white/0 backdrop-blur-md border-b border-gray-200/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-        {/* Logo */}
-        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <Image src="/logo/xeny-logo.png" alt="Xeny Logo" width={52} height={52} />
-        
-          </Link>
-        </motion.div>
-
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex gap-8">
-          {[
-            { label: "Home", href: "/" },
-            { label: "Use Cases", href: "/use-cases" },
-            { label: "About", href: "/about" },
-            { label: "Pricing", href: "/pricing" },
-            { label: "Blog", href: "/blog" },
-          ].map((item, idx) => (
-            <motion.div
-              key={item.href}
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1 }}
-            >
-              <Link
-                href={item.href}
-                className="text-sm text-gray-700 hover:text-blue-600 transition-colors font-medium"
-              >
-                {item.label}
-              </Link>
-            </motion.div>
-          ))}
-        </nav>
-
-        {/* CTA Buttons */}
-        <div className="hidden md:flex gap-3">
-          <Link href="https://app.xeny.ai/login" className="text-sm text-gray-700 hover:text-blue-600 transition-colors font-medium" target="_blank" rel="noopener noreferrer">
-            Sign In
-          </Link>
+    <nav className="fixed top-0 w-full z-50 transition-all duration-300">
+      <div className="max-w-7xl mx-auto px-6 py-4">
+        <div className="bg-white/70 backdrop-blur-md border border-white/50 shadow-sm rounded-full px-6 py-3 flex justify-between items-center">
+          {/* Logo */}
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Button
-              onClick={() => window.open('https://app.xeny.ai/signup-with-voiceagent', '_blank')}
-              className=" bg-cyan-600 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-6"
-            >
-              Get Start
-            </Button>
+            <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+              <Image src="/logo/xeny-logo.png" alt="Xeny Logo" width={102} height={102} />
+            </Link>
           </motion.div>
-        </div>
 
-        {/* Mobile Menu */}
-        <motion.button
-          className="md:hidden"
-          onClick={() => setIsOpen(!isOpen)}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          {isOpen ? <X size={24} className="text-gray-900" /> : <Menu size={24} className="text-gray-900" />}
-        </motion.button>
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
+            <Link href="/" className="hover:text-indigo-600 transition-colors">Home</Link>
+            <Link href="/use-cases" className="hover:text-indigo-600 transition-colors">Use Cases</Link>
+            <Link href="/pricing" className="hover:text-indigo-600 transition-colors">Pricing</Link>
+            <Link href="/about" className="hover:text-indigo-600 transition-colors">About</Link>
+          </div>
+
+          {/* Desktop CTA Buttons */}
+          <div className="hidden md:flex items-center gap-3">
+            <Link 
+              href="https://app.xeny.ai/login" 
+              className="text-sm text-slate-600 hover:text-indigo-600 transition-colors font-medium" 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              Sign In
+            </Link>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button
+                onClick={() => window.open('https://app.xeny.ai/signup-with-voiceagent', '_blank')}
+                className="bg-cyan-600 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-6 rounded-full font-bold text-sm shadow-lg hover:shadow-indigo-500/30"
+              >
+                Get Started
+              </Button>
+            </motion.div>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <motion.button
+            className="md:hidden p-2"
+            onClick={() => setIsOpen(!isOpen)}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            aria-label="Toggle menu"
+          >
+            {isOpen ? <X size={24} className="text-slate-900" /> : <Menu size={24} className="text-slate-900" />}
+          </motion.button>
+        </div>
       </div>
 
       {/* Mobile Navigation */}
@@ -82,29 +72,47 @@ export default function Header({ onDemoClick }: HeaderProps) {
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: 0 }}
-          className="md:hidden border-t border-gray-200/30 bg-white/80 backdrop-blur-md p-4 space-y-3"
+          className="md:hidden fixed top-[88px] left-0 right-0 bg-white/95 backdrop-blur-md border-b border-white/50 shadow-lg mx-4 rounded-2xl overflow-hidden"
         >
-          {[
-            { label: "Home", href: "/" },
-            { label: "Use Cases", href: "/use-cases" },
-            { label: "About", href: "/about" },
-            { label: "Pricing", href: "/pricing" },
-            { label: "Blog", href: "/blog" },
-          ].map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="block text-sm text-gray-700 hover:text-blue-600 font-medium"
-              onClick={() => setIsOpen(false)}
-            >
-              {item.label}
-            </Link>
-          ))}
-          <Button onClick={() => window.open('https://app.xeny.ai/signup-with-voiceagent', '_blank')} className="w-full bg-gradient-to-r from-blue-600 to-cyan-600">
-            Book a Demo
-          </Button>
+          <div className="p-4 space-y-3">
+            {[
+              { label: "Home", href: "/" },
+              { label: "Use Cases", href: "/use-cases" },
+              { label: "Pricing", href: "/pricing" },
+              { label: "About", href: "/about" },
+            ].map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="block text-sm text-slate-700 hover:text-indigo-600 font-medium py-2 px-4 rounded-lg hover:bg-slate-50 transition-colors"
+                onClick={() => setIsOpen(false)}
+              >
+                {item.label}
+              </Link>
+            ))}
+            <div className="pt-2 border-t border-slate-200 space-y-2">
+              <Link
+                href="https://app.xeny.ai/login"
+                className="block text-sm text-slate-700 hover:text-indigo-600 font-medium py-2 px-4 rounded-lg hover:bg-slate-50 transition-colors text-center"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsOpen(false)}
+              >
+                Sign In
+              </Link>
+              <Button 
+                onClick={() => {
+                  window.open('https://app.xeny.ai/signup-with-voiceagent', '_blank')
+                  setIsOpen(false)
+                }} 
+                className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white rounded-full font-bold"
+              >
+                Get Started
+              </Button>
+            </div>
+          </div>
         </motion.div>
       )}
-    </header>
+    </nav>
   )
 }
