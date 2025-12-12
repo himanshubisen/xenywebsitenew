@@ -861,10 +861,14 @@ export default function CallersPage() {
         {/* 4. WHAT POWERS EVERY CALL (Features) */}
          <section id="features" className="py-24 ">
         <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">What Powers Every Call</h2>
-            <p className="text-slate-500">The technology stack behind the voice.</p>
-          </div>
+          <ScrollReveal direction="up" delay={0}>
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold text-slate-900 mb-4">
+                <ScrollTextReveal text="What Powers Every Call" splitBy="word" />
+              </h2>
+              <p className="text-slate-500">The technology stack behind the voice.</p>
+            </div>
+          </ScrollReveal>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all group">
