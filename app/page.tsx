@@ -48,6 +48,7 @@ import ScrollReveal from "@/components/animations/ScrollReveal"
 import TextReveal from "@/components/animations/TextReveal"
 import ScrollTextReveal from "@/components/animations/ScrollTextReveal"
 import StaggerReveal from "@/components/animations/StaggerReveal"
+import AnimatedFeatureDashboard from "@/components/animated-feature-dashboard"
 
 import { Points, PointMaterial } from '@react-three/drei';
 import { useFrame, Canvas } from '@react-three/fiber';
@@ -1246,49 +1247,7 @@ export default function CallersPage() {
         </div>
       </section>
 
-  {/* DASHBOARD SECTION */ }
-      <section id="dashboard" className="py-24 bg-slate-50 relative overflow-hidden">
-        <div className="container mx-auto px-6 relative z-10">
-            <div className="text-center mb-16 hidden md:block">
-              <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">The Control Room</span>
-              <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">
-                Your AI Command Center
-              </h2>
-              <p className="text-slate-500">Watch your agents work, listen to calls, and track ROI in real-time.</p>
-            </div>
-            
-            <div className="max-w-5xl mx-auto bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden transform hover:scale-[1.01] transition-transform duration-500">
-                <div className="bg-slate-100 px-6 py-3 border-b border-slate-200 flex gap-2">
-                   <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                   <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                   <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                </div>
-                <div className="flex h-[400px] md:h-[500px]">
-                   {/* Sidebar */}
-                   <div className="w-64 bg-slate-50 border-r border-slate-200 p-6 hidden md:block">
-                       <div className="flex items-center gap-3 mb-10"><div className="w-8 h-8 bg-indigo-600 rounded-lg"></div><span className="font-bold text-slate-800">Callers</span></div>
-                       <div className="space-y-2">
-                          <div className="flex items-center gap-3 px-4 py-3 bg-white border border-slate-200 rounded-xl text-indigo-600 font-bold shadow-sm"><BarChart3 className="w-4 h-4"/> Overview</div>
-                          <div className="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-100 rounded-xl cursor-pointer"><User className="w-4 h-4"/> Agents</div>
-                       </div>
-                   </div>
-                   {/* Main Content */}
-                   <div className="flex-1 p-8 overflow-hidden bg-white">
-                       <div className="flex justify-between items-center mb-8">
-                         <div><h3 className="text-2xl font-bold text-slate-900">Dashboard</h3><p className="text-slate-400 text-sm">Welcome back</p></div>
-                       </div>
-                       <div className="grid grid-cols-3 gap-6 mb-8">
-                           <div className="p-5 rounded-2xl bg-blue-50 border border-blue-100"><p className="text-xs font-bold text-blue-400 uppercase mb-2">Total Calls</p><p className="text-3xl font-bold text-slate-900">12,450</p></div>
-                           <div className="p-5 rounded-2xl bg-purple-50 border border-purple-100"><p className="text-xs font-bold text-purple-400 uppercase mb-2">Avg Duration</p><p className="text-3xl font-bold text-slate-900">4m 12s</p></div>
-                           <div className="p-5 rounded-2xl bg-orange-50 border border-orange-100"><p className="text-xs font-bold text-orange-400 uppercase mb-2">Success Rate</p><p className="text-3xl font-bold text-slate-900">94.2%</p></div>
-                       </div>
-                       {/* Chart Placeholder */}
-                       <div className="h-40 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-center text-slate-300">Live Call Volume Chart</div>
-                   </div>
-                </div>
-            </div>
-        </div>
-      </section>
+     <AnimatedFeatureDashboard />
 
               <section className="py-24 bg-white border-y border-slate-100 z-10 relative">
         <div className="container mx-auto px-6 text-center">
