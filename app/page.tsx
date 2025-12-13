@@ -716,7 +716,7 @@ export default function CallersPage() {
       </section>
 
       {/* INDUSTRIES SECTION */}
-      <section id="industries" className="py-24 bg-slate-50 border-y border-slate-100 relative z-10">
+      <section id="industries" className="py-10 bg-slate-50 border-y border-slate-100 relative z-10">
 
         {/* 4. WHAT POWERS EVERY CALL (Features) */}
          {/* <section id="features" className="py-24 ">
@@ -762,7 +762,7 @@ export default function CallersPage() {
         {/* 5. INDUSTRIES (Service Tabs) */}
   
 
-        <div className="container mx-auto px-6 pt-20">
+        <div className="container mx-auto px-1     pt-3">
           <div className="text-center mb-12">
             <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">Industries</span>
             <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mt-2 mb-4">
@@ -908,7 +908,7 @@ export default function CallersPage() {
 
           <div className="flex overflow-x-auto pb-4 gap-2 mt-8 justify-start md:justify-center no-scrollbar">
             {/* {['real_estate', 'growth', 'hr', 'finance', 'cx', 'ops', 'marketing'].map((tab) => ( */}
-              {['real_estate',  'hr', 'finance', 'marketing'].map((tab) => (
+              {['real_estate',  'growth', 'finance', 'marketing'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveUseCaseTab(tab as TabId)}
