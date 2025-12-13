@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { faGraduationCap, faTruckLoading, faCoins, faMagnet, faPhoneAlt, faUserPlus, faFileInvoiceDollar, faMicrophoneAlt, faClock, faCalendarCheck, faGlobe, faFilter, faPaperPlane, faCalendarAlt, faSearch, faCheckCircle, faHistory, faCreditCard, faChartBar, faRoute, faBoxOpen, faClipboardCheck, faChartPie, faRocket, faPhoneVolume, faHeadset, faChartLine, faBolt, faRobot, faBrain, faSearch as faSearchIcon, faPlay, faChevronDown, faLock, faCheck, faBars, faTimes, faSpinner, faCircle } from "@fortawesome/free-solid-svg-icons"
 import { faAmazon, faGoogle, faSpotify, faAirbnb, faUber, faStripe, faMicrosoft, faSalesforce, faHubspot, faWhatsapp, faSlack } from "@fortawesome/free-brands-svg-icons"
 import { motion } from "framer-motion"
@@ -27,7 +27,9 @@ import {
   CreditCard,
   Headphones,
   Settings,
-  Megaphone
+  Megaphone,
+  DollarSign,
+  Download
 } from 'lucide-react';
 import Header from "@/components/header"
 import Image from "next/image"
@@ -555,62 +557,302 @@ const UrbanPiperSection = () => {
   );
 };
 
-/**
- * Calculator Component
- */
+// --- Configuration Constants ---
+const BASE_RATE_CREDITS = 5; // India Base Credits per minute
+const DID_RENTAL_CREDITS = 100; // Not directly used in per-minute calculation, but good to keep in mind
+const INR_PER_CREDIT_RATE = 5 / 5; // Assuming 5 INR / 5 credits base rate means 1 INR = 1 Credit for simplicity.
+                                    // You might need to adjust this conversion factor if the exchange is different.
+const INITIAL_MONTHLY_MINUTES = 5000;
+const INITIAL_MANUAL_COST_INR = 15.00;
+
+// --- Pricing Tiers ---
+const VOICE_QUALITY_OPTIONS = [
+    { label: 'Standard', value: 'standard', credits: 0 },
+    { label: 'Premium', value: 'premium', credits: 0.5 },
+    { label: 'Premium Realistic', value: 'premium_realistic', credits: 1 },
+    { label: 'Premium Ultrarealistic', value: 'premium_ultrarealistic', credits: 1.5 },
+];
+
+const PHONE_CATEGORY_OPTIONS = [
+    { label: 'Standard', value: 'standard', credits: 0 },
+    { label: 'Premium', value: 'premium', credits: 1 },
+];
+
+// --- Savings Calculator Component ---
 const SavingsCalculator = () => {
-  const [volume, setVolume] = useState(5000);
-  const [cost, setCost] = useState(20);
+    const [monthlyMinutes, setMonthlyMinutes] = useState(INITIAL_MONTHLY_MINUTES);
+    const [manualCostINR, setManualCostINR] = useState(INITIAL_MANUAL_COST_INR);
+    const [callType, setCallType] = useState('live'); // 'live' or 'test'
+    const [qualityLevel, setQualityLevel] = useState(VOICE_QUALITY_OPTIONS[0]);
+    const [phoneCategory, setPhoneCategory] = useState(PHONE_CATEGORY_OPTIONS[0]);
+    const [isQualityDropdownOpen, setIsQualityDropdownOpen] = useState(false);
+    const [isPremiumNumberActive, setIsPremiumNumberActive] = useState(false);
 
-  const manualCost = Math.round(volume * 5 * (cost / 60));
-  const aiCost = Math.round(volume * 5 * 0.12);
-  const savings = manualCost - aiCost;
+    // Toggle logic for Phone Number Category (based on the switch in the design)
+    const handlePremiumNumberToggle = () => {
+        const isCurrentlyPremium = phoneCategory.value === 'premium';
+        setIsPremiumNumberActive(!isCurrentlyPremium);
+        setPhoneCategory(isCurrentlyPremium ? PHONE_CATEGORY_OPTIONS[0] : PHONE_CATEGORY_OPTIONS[1]);
+    };
 
-  return (
-    <div className="grid lg:grid-cols-2 gap-12 items-center">
-      <div className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
-        <div className="space-y-8">
-          <div>
-            <div className="flex justify-between mb-2">
-              <label className="text-sm font-bold text-slate-700">Monthly Call Volume</label>
-              <span className="text-sm font-bold text-indigo-600">{volume.toLocaleString()}</span>
+    // --- Core Calculation Logic ---
+    const calculateCost = useCallback(() => {
+        let costPerMinute = 0;
+        let qualityCredits = 0;
+        let numberCredits = 0;
+
+        if (callType === 'test') {
+            // Rule: Test Calls have a flat rate of 1 credit/minute, ignoring other factors
+            costPerMinute = 1;
+        } else {
+            // Rule: Live Calls use full pricing logic
+            
+            // 1. Base Rate
+            costPerMinute += BASE_RATE_CREDITS;
+            
+            // 2. Voice Quality
+            qualityCredits = qualityLevel.credits;
+            costPerMinute += qualityCredits;
+            
+            // 3. Phone Number Category
+            numberCredits = isPremiumNumberActive ? PHONE_CATEGORY_OPTIONS[1].credits : PHONE_CATEGORY_OPTIONS[0].credits;
+            costPerMinute += numberCredits;
+        }
+
+        const totalMonthlyCredits = costPerMinute * monthlyMinutes;
+        const totalMonthlyCostINR = totalMonthlyCredits * INR_PER_CREDIT_RATE;
+
+        // Savings Calculation
+        const totalManualCostINR = monthlyMinutes * manualCostINR;
+        const estimatedINRSavings = totalManualCostINR - totalMonthlyCostINR;
+
+        // Credit Savings (as credits saved compared to a benchmark, e.g., 10 credits/min industry average)
+        // For simplicity, we compare to the Base Rate (5 credits/min) + Credit Savings is the difference.
+        // A more realistic calculation might be comparing to a perceived manual cost in credits.
+        const benchmarkCreditCostPerMin = 10; // A high estimate for manual call cost in credits
+        const estimatedCreditSavings = (benchmarkCreditCostPerMin * monthlyMinutes) - totalMonthlyCredits;
+        
+        return {
+            costPerMinute,
+            totalMonthlyCredits,
+            estimatedINRSavings,
+            estimatedCreditSavings,
+            qualityCredits,
+            numberCredits,
+            totalManualCostINR,
+            totalMonthlyCostINR,
+        };
+    }, [monthlyMinutes, manualCostINR, callType, qualityLevel, isPremiumNumberActive]);
+
+
+    const {
+        costPerMinute,
+        totalMonthlyCredits,
+        estimatedINRSavings,
+        estimatedCreditSavings,
+        qualityCredits,
+        numberCredits,
+        totalManualCostINR,
+        totalMonthlyCostINR,
+    } = useMemo(calculateCost, [monthlyMinutes, manualCostINR, callType, qualityLevel, isPremiumNumberActive]);
+
+
+    // --- UI Component Logic ---
+    const InputField = ({ label, value, unit, onChange, type = 'text' }) => (
+        <div className="flex flex-col mb-4">
+            <label className="text-sm font-medium text-slate-700 mb-1">{label}</label>
+            <div className="relative">
+                <input
+                    type={type}
+                    value={value}
+                    onChange={(e) => onChange(type === 'number' ? parseFloat(e.target.value) || 0 : e.target.value)}
+                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 text-slate-900"
+                    min={type === 'number' ? 0 : undefined}
+                />
+                {unit && <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 text-sm">{unit}</span>}
             </div>
-            <input
-              type="range" min="1000" max="50000" step="500" value={volume}
-              onChange={(e) => setVolume(Number(e.target.value))}
-              className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
-            />
-          </div>
-          <div>
-            <div className="flex justify-between mb-2">
-              <label className="text-sm font-bold text-slate-700">Agent Hourly Cost</label>
-              <span className="text-sm font-bold text-indigo-600">${cost}</span>
+        </div>
+    );
+
+    const Dropdown = ({ label, options, selected, onSelect, isOpen, setIsOpen, disabled = false }) => (
+        <div className="flex flex-col mb-4">
+            <label className="text-sm font-medium text-slate-700 mb-1">{label}</label>
+            <div className="relative">
+                <button
+                    type="button"
+                    onClick={() => !disabled && setIsOpen(!isOpen)}
+                    className={`w-full flex justify-between items-center px-4 py-2 border rounded-lg transition-all ${
+                        disabled ? 'bg-slate-50 text-slate-400 border-slate-200 cursor-not-allowed' : 'bg-white border-slate-300 hover:border-indigo-500 text-slate-900'
+                    }`}
+                    disabled={disabled}
+                >
+                    <span>{selected.label} ({selected.credits} credits/min)</span>
+                    <ChevronDown className={`w-4 h-4 transition-transform ${isOpen && !disabled ? 'rotate-180' : ''}`} />
+                </button>
+                {isOpen && !disabled && (
+                    <div className="absolute z-20 w-full mt-1 bg-white border border-slate-300 rounded-lg shadow-xl max-h-60 overflow-y-auto">
+                        {options.map((option) => (
+                            <div
+                                key={option.value}
+                                onClick={() => { onSelect(option); setIsOpen(false); }}
+                                className="px-4 py-2 cursor-pointer hover:bg-slate-100 text-slate-900 text-sm"
+                            >
+                                {option.label} ({option.credits} credits/min)
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
-            <input
-              type="range" min="10" max="100" step="1" value={cost}
-              onChange={(e) => setCost(Number(e.target.value))}
-              className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
-            />
-          </div>
         </div>
-      </div>
-      <div className="bg-slate-900 p-8 rounded-3xl shadow-2xl text-white">
-        <div className="mb-8">
-          <p className="text-slate-400 text-sm font-medium mb-1">Estimated Monthly Savings</p>
-          <div className="text-5xl font-bold text-green-400">${savings.toLocaleString()}</div>
+    );
+
+    const ToggleInput = ({ label, checked, onChange, credits, disabled = false }) => (
+        <div className="flex items-center justify-between py-2 border-b border-slate-200 last:border-b-0">
+            <label className="text-sm font-medium text-slate-700">{label}</label>
+            <div className="flex items-center space-x-2">
+                <span className="text-sm text-slate-500">{credits} credit/min</span>
+                <label className="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" checked={checked} onChange={onChange} className="sr-only peer" disabled={disabled} />
+                    <div className="w-11 h-6 bg-slate-200 rounded-full peer peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-indigo-600"></div>
+                </label>
+            </div>
         </div>
-        <div className="mt-8 pt-6 border-t border-slate-700 flex justify-between items-center">
-          <div>
-            <p className="text-3xl font-bold text-white">10X</p>
-            <p className="text-xs text-slate-400">ROI Multiplier</p>
-          </div>
-          <button className="bg-white text-slate-900 px-6 py-2 rounded-full font-bold text-sm hover:bg-slate-200 transition-colors">
-            Start Saving
-          </button>
+    );
+
+    const CallTypeSelector = ({ selected, onSelect }) => (
+        <div className="flex space-x-2 my-4">
+            <label className="text-sm font-medium text-slate-700 mr-2">Call Type</label>
+            {['live', 'test'].map((type) => (
+                <button
+                    key={type}
+                    onClick={() => onSelect(type)}
+                    className={`px-4 py-1 text-sm rounded-full transition-colors ${
+                        selected === type
+                            ? 'bg-cyan-600 text-white font-semibold'
+                            : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
+                    }`}
+                >
+                    {type === 'live' ? 'Live Calls' : 'Test Calls'}
+                </button>
+            ))}
         </div>
-      </div>
-    </div>
-  );
+    );
+
+    const formatCurrency = (amount) => `₹${Math.max(0, amount).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+    const formatCredits = (amount) => `${Math.max(0, amount).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+
+    return (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            {/* --- Left Column: Scenario Configuration --- */}
+            <div className="p-8 bg-white shadow-2xl rounded-xl">
+                <h3 className="text-xl font-bold text-slate-900 mb-6">Scenario Configuration</h3>
+
+                <InputField
+                    label="Monthly Call Minutes"
+                    type="number"
+                    value={monthlyMinutes}
+                    unit="mins"
+                    onChange={setMonthlyMinutes}
+                />
+                
+                <InputField
+                    label="Average Manual Cost/Min (INR)"
+                    type="number"
+                    value={manualCostINR}
+                    unit="INR"
+                    onChange={setManualCostINR}
+                />
+
+                <CallTypeSelector selected={callType} onSelect={setCallType} />
+
+                <div className="mt-6 p-4 border border-slate-200 rounded-lg">
+                    <h4 className="text-md font-semibold text-slate-800 mb-3">Pricing Factors</h4>
+                    
+                    {/* Voice Quality Level Dropdown */}
+                    <Dropdown
+                        label="Voice Quality Level"
+                        options={VOICE_QUALITY_OPTIONS}
+                        selected={qualityLevel}
+                        onSelect={setQualityLevel}
+                        isOpen={isQualityDropdownOpen}
+                        setIsOpen={setIsQualityDropdownOpen}
+                        disabled={callType === 'test'} // Disabled for Test Calls
+                    />
+
+                    {/* Phone Number Category Toggle */}
+                    <div className="mb-4">
+                        <label className="text-sm font-medium text-slate-700 mb-1 block">Phone Number Category</label>
+                        <div className={`p-3 border rounded-lg ${callType === 'test' ? 'bg-slate-50 border-slate-200' : 'bg-white border-slate-300'}`}>
+                            <ToggleInput
+                                label="Premium Number Category"
+                                checked={isPremiumNumberActive}
+                                onChange={handlePremiumNumberToggle}
+                                credits={PHONE_CATEGORY_OPTIONS[1].credits}
+                                disabled={callType === 'test'} // Disabled for Test Calls
+                            />
+                        </div>
+                        {callType === 'test' && (
+                            <p className="text-xs text-indigo-500 mt-1">Pricing factors are ignored for Test Calls (Flat 1 credit/min).</p>
+                        )}
+                    </div>
+                </div>
+
+                <div className="mt-6 p-4 bg-indigo-50 rounded-lg flex items-center space-x-3">
+                    <Globe className="w-5 h-5 text-indigo-600" />
+                    <span className="font-semibold text-indigo-800">India (INR)</span>
+                    <span className="text-sm text-indigo-600">Base Rate: {BASE_RATE_CREDITS} credits/min</span>
+                </div>
+            </div>
+
+            {/* --- Right Column: Estimated Savings --- */}
+            <div className="p-8 bg-white shadow-2xl rounded-xl flex flex-col justify-between">
+                <div>
+                    <h3 className="text-xl font-bold text-slate-900 mb-8">Your Estimated Savings</h3>
+
+                    <div className="mb-8 p-4 border-b border-slate-200">
+                        <DollarSign className="w-6 h-6 text-green-500 mb-2" />
+                        <p className="text-5xl font-extrabold text-slate-900">{formatCurrency(estimatedINRSavings)}</p>
+                        <p className="text-slate-500 mt-1">Estimated Monthly INR Savings</p>
+                        <p className="text-xs text-slate-400 mt-2">
+                            (Savings = Manual Cost {formatCurrency(totalManualCostINR)} - TechnoTask Cost {formatCurrency(totalMonthlyCostINR)})
+                        </p>
+                    </div>
+
+                    <div className="mb-8 p-4 border-b border-slate-200">
+                        <CreditCard className="w-6 h-6 text-indigo-500 mb-2" />
+                        <p className="text-5xl font-extrabold text-slate-900">{formatCredits(totalMonthlyCredits)}</p>
+                        <p className="text-slate-500 mt-1">Estimated Monthly Credit Usage</p>
+                        <p className="text-xs text-slate-400 mt-2">
+                             ({formatCredits(estimatedCreditSavings)} credits saved compared to a benchmark)
+                        </p>
+                    </div>
+
+                    {/* Cost Per Minute Breakdown */}
+                    <div className="p-4 bg-slate-50 rounded-lg">
+                        <p className="text-3xl font-extrabold text-slate-900 mb-2">
+                            {costPerMinute.toFixed(1)} <span className="text-xl text-slate-500">credits/min</span>
+                        </p>
+                        <div className="text-sm text-slate-600">
+                            {callType === 'test' ? (
+                                <p className="font-semibold text-indigo-600">Flat rate for Testing & Development.</p>
+                            ) : (
+                                <>
+                                    <p>({BASE_RATE_CREDITS.toFixed(1)} base</p>
+                                    <p>+ {qualityCredits.toFixed(1)} {qualityLevel.label.toLowerCase()} quality</p>
+                                    <p>+ {numberCredits.toFixed(1)} {phoneCategory.label.toLowerCase()} number)</p>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                </div>
+
+                <button className="w-full mt-8 flex items-center justify-center space-x-2 px-6 py-3 bg-cyan-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition-colors">
+                    <Download className="w-5 h-5" />
+                    <span>Download Detailed Report (PDF)</span>
+                </button>
+            </div>
+        </div>
+    );
 };
 
 // --- Main Page Component ---
@@ -737,12 +979,12 @@ export default function CallersPage() {
           </ScrollReveal>
 
           <ScrollReveal direction="up" delay={300}>
-            <p className="text-xl text-slate-500 mb-12 max-w-4xl mx-auto leading-relaxed">
+            <div className="text-xl text-slate-500 mb-12 max-w-4xl mx-auto leading-relaxed">
               <ScrollTextReveal
                 text="Xeny automates calls, callbacks, and bookings—powering your digital transformation and keeping your business responsive, consistent, and miles ahead of competitors."
                 splitBy="word"
               />
-            </p>
+            </div>
           </ScrollReveal>
 
 
