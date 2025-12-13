@@ -707,7 +707,7 @@ export default function CallersPage() {
   }, []);
 
   return (
-<main className="font-sans text-slate-900 bg-slate-50 selection:bg-indigo-100 selection:text-indigo-900">
+<main className="font-sans text-slate-900 bg-slate-50 selection:bg-indigo-100 selection:text-indigo-900 overflow-x-hidden">
       <ThreeBackground />
       <Header />
 
