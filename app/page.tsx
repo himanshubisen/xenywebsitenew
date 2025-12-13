@@ -1247,7 +1247,10 @@ export default function CallersPage() {
         </div>
       </section>
 
+      <section id="Dashboard" className="z-1 relative">
      <AnimatedFeatureDashboard />
+
+     </section>
 
               <section className="py-24 bg-white border-y border-slate-100 z-10 relative">
         <div className="container mx-auto px-6 text-center">
