@@ -272,7 +272,7 @@ const UrbanPiperSection = () => {
 
           <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight mb-12 relative z-20 text-white">
             <span className="text-indigo-500 text-4xl md:text-6xl absolute -ml-8 md:-ml-12 -mt-4 opacity-50">"</span>
-            <ScrollTextReveal
+               <ScrollTextReveal
               text={quote}
               splitBy="word"
               staggerDelay={20}
@@ -681,15 +681,13 @@ export default function CallersPage() {
       {/* STATS SECTION */}
       <section id="stats" className="py-24 bg-white z-10 relative">
         <div className="container mx-auto px-6">
-          <ScrollReveal direction="up" delay={0}>
-            <div className="text-center mb-16">
-              <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">Proven Results</span>
-              <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">
-                <ScrollTextReveal text="Real Numbers, Real Growth" splitBy="word" />
-              </h2>
-              <p className="text-slate-500">Here is the impact we deliver to businesses like yours.</p>
-            </div>
-          </ScrollReveal>
+          <div className="text-center mb-16">
+            <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">Proven Results</span>
+            <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">
+              Real Numbers, Real Growth
+            </h2>
+            <p className="text-slate-500">Here is the impact we deliver to businesses like yours.</p>
+          </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 text-center">
             <StaggerReveal staggerDelay={100} direction="up">
@@ -720,14 +718,12 @@ export default function CallersPage() {
         {/* 4. WHAT POWERS EVERY CALL (Features) */}
          <section id="features" className="py-24 ">
         <div className="container mx-auto px-6">
-          <ScrollReveal direction="up" delay={0}>
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-slate-900 mb-4">
-                <ScrollTextReveal text="What Powers Every Call" splitBy="word" />
-              </h2>
-              <p className="text-slate-500">The technology stack behind the voice.</p>
-            </div>
-          </ScrollReveal>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-slate-900 mb-4">
+              What Powers Every Call
+            </h2>
+            <p className="text-slate-500">The technology stack behind the voice.</p>
+          </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-lg transition-all group">
@@ -764,12 +760,11 @@ export default function CallersPage() {
   
 
         <div className="container mx-auto px-6 pt-20">
-          <ScrollReveal direction="up" delay={0}>
-            <div className="text-center mb-12">
-              <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">Industries</span>
-              <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mt-2 mb-4">
-                <ScrollTextReveal text="Expertise in Every Sector" splitBy="word" />
-              </h2>
+          <div className="text-center mb-12">
+            <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">Industries</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mt-2 mb-4">
+              Expertise in Every Sector
+            </h2>
               <div className="flex flex-wrap justify-center gap-4 mt-8">
                 {[
                   { id: 'edu', label: 'Education', icon: <User className="w-4 h-4" /> },
@@ -792,7 +787,6 @@ export default function CallersPage() {
                 ))}
               </div>
             </div>
-          </ScrollReveal>
 
           {/* Dynamic Content for Industries */}
           <div className="max-w-4xl mx-auto min-h-[300px]">
@@ -903,15 +897,15 @@ export default function CallersPage() {
       {/* USE CASES TABS */ }
     <section id="use-cases" className="py-24 bg-white relative z-10">
     <div className="container mx-auto px-6">
-      <ScrollReveal direction="up" delay={0}>
-        <div className="text-center mb-12">
-          <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">Applications</span>
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mt-2 mb-4">
-            <ScrollTextReveal text="Workflows That Save You Time" splitBy="word" />
-          </h2>
+      <div className="text-center mb-12">
+        <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">Applications</span>
+        <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mt-2 mb-4">
+          Workflows That Save You Time
+        </h2>
 
           <div className="flex overflow-x-auto pb-4 gap-2 mt-8 justify-start md:justify-center no-scrollbar">
-            {['real_estate', 'growth', 'hr', 'finance', 'cx', 'ops', 'marketing'].map((tab) => (
+            {/* {['real_estate', 'growth', 'hr', 'finance', 'cx', 'ops', 'marketing'].map((tab) => ( */}
+              {['real_estate',  'hr', 'finance', 'marketing'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveUseCaseTab(tab as TabId)}
@@ -925,7 +919,6 @@ export default function CallersPage() {
             ))}
           </div>
         </div>
-      </ScrollReveal>
 
       {/* Use Cases Content */}
       <div className="max-w-5xl mx-auto min-h-[400px]">
@@ -1183,15 +1176,13 @@ export default function CallersPage() {
   {/* DASHBOARD SECTION */ }
       <section id="dashboard" className="py-24 bg-slate-50 relative overflow-hidden">
         <div className="container mx-auto px-6 relative z-10">
-            <ScrollReveal direction="up" delay={0}>
-              <div className="text-center mb-16 hidden md:block">
-                <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">The Control Room</span>
-                <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">
-                  <ScrollTextReveal text="Your AI Command Center" splitBy="word" />
-                </h2>
-                <p className="text-slate-500">Watch your agents work, listen to calls, and track ROI in real-time.</p>
-              </div>
-            </ScrollReveal>
+            <div className="text-center mb-16 hidden md:block">
+              <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">The Control Room</span>
+              <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">
+                Your AI Command Center
+              </h2>
+              <p className="text-slate-500">Watch your agents work, listen to calls, and track ROI in real-time.</p>
+            </div>
             
             <div className="max-w-5xl mx-auto bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden transform hover:scale-[1.01] transition-transform duration-500">
                 <div className="bg-slate-100 px-6 py-3 border-b border-slate-200 flex gap-2">
@@ -1372,11 +1363,9 @@ export default function CallersPage() {
   {/* FAQ SECTION */ }
   <section className="py-24 bg-slate-50 border-y border-slate-100 relative z-10">
     <div className="container mx-auto px-6 max-w-4xl">
-      <ScrollReveal direction="up" delay={0}>
-        <h2 className="text-4xl font-bold text-slate-900 mb-12 text-center">
-          <ScrollTextReveal text="Frequently Asked Questions" splitBy="word" />
-        </h2>
-      </ScrollReveal>
+      <h2 className="text-4xl font-bold text-slate-900 mb-12 text-center">
+        Frequently Asked Questions
+      </h2>
       <div className="space-y-4">
         {[
           { q: "How quickly can I really create a Voice AI agent?", a: "You can create a fully functional Voice AI agent in just a few minutes. Simply choose a voice, set your goals, add scripts or knowledge, and your agent is ready to make calls instantly." },
@@ -1471,11 +1460,9 @@ export default function CallersPage() {
   {/* ASK AI */ }
       <section className="py-24 bg-slate-100 border-t border-slate-200 relative z-10">
         <div className="container mx-auto px-6 text-center">
-            <ScrollReveal direction="up" delay={0}>
-              <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-6">
-                <ScrollTextReveal text="Still not sure? Ask the AI." splitBy="word" />
-              </h2>
-            </ScrollReveal>
+            <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-6">
+              Still not sure? Ask the AI.
+            </h2>
             <div className="flex flex-col md:flex-row justify-center gap-6 max-w-4xl mx-auto">
                 <a href="#" className="flex-1 bg-[#4129F9] hover:bg-[#3520D0] text-white py-5 px-8 rounded-full font-bold shadow-lg flex items-center justify-center gap-3 transition-transform hover:-translate-y-1"><Bot className="w-5 h-5"/> Ask ChatGPT</a>
                 <a href="#" className="flex-1 bg-[#D97757] hover:bg-[#C56545] text-white py-5 px-8 rounded-full font-bold shadow-lg flex items-center justify-center gap-3 transition-transform hover:-translate-y-1"><Bot className="w-5 h-5"/> Ask Claude</a>
