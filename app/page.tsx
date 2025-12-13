@@ -36,7 +36,7 @@ import {
   Mic,
   PlayCircle,
   Rocket,
-  
+
 
 } from 'lucide-react';
 import Header from "@/components/header"
@@ -716,10 +716,10 @@ export default function CallersPage() {
       </section>
 
       {/* INDUSTRIES SECTION */}
-      <section id="industries" className="py-24 bg-slate-100 border-y border-slate-100 relative z-10">
+      <section id="industries" className="py-24 bg-slate-50 border-y border-slate-100 relative z-10">
 
         {/* 4. WHAT POWERS EVERY CALL (Features) */}
-         <section id="features" className="py-24 ">
+         {/* <section id="features" className="py-24 ">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-slate-900 mb-4">
@@ -756,7 +756,7 @@ export default function CallersPage() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
 
         {/* 5. INDUSTRIES (Service Tabs) */}
