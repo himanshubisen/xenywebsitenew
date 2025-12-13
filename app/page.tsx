@@ -592,7 +592,7 @@ export default function CallersPage() {
           </div>
 
           <ScrollReveal direction="up" delay={100}>
-            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold leading-[1.1] mb-6 text-slate-900">
+            <h1 className="text-3xl sm:text-4xl md:text-7xl font-bold leading-[1.1] mb-6 text-slate-900">
               <ScrollTextReveal
                 text="Your 24/7 AI Voice Employee For"
                 splitBy="word"
