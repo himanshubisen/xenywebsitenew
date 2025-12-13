@@ -1,10 +1,8 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { faGraduationCap, faTruckLoading, faCoins, faMagnet, faPhoneAlt, faUserPlus, faFileInvoiceDollar, faMicrophoneAlt, faClock, faCalendarCheck, faGlobe, faFilter, faPaperPlane, faCalendarAlt, faSearch, faCheckCircle, faHistory, faCreditCard, faChartBar, faRoute, faBoxOpen, faClipboardCheck, faChartPie, faRocket, faPhoneVolume, faHeadset, faChartLine, faBolt, faRobot, faBrain, faSearch as faSearchIcon, faPlay, faChevronDown, faLock, faCheck, faBars, faTimes, faSpinner, faCircle } from "@fortawesome/free-solid-svg-icons"
+import { faGraduationCap, faTruckLoading, faCoins, faPhoneAlt, faUserPlus, faFileInvoiceDollar, faMicrophoneAlt, faClock, faCalendarCheck, faGlobe, faPaperPlane, faCalendarAlt, faSearch, faCheckCircle, faHistory, faCreditCard, faChartBar, faRoute, faBoxOpen, faClipboardCheck, faChartPie, faRocket, faPhoneVolume, faHeadset, faChartLine, faBolt, faRobot, faBrain, faPlay, faChevronDown, faLock, faCheck, faBars, faTimes, faSpinner, faCircle } from "@fortawesome/free-solid-svg-icons"
 import { faAmazon, faGoogle, faSpotify, faAirbnb, faUber, faStripe, faMicrosoft, faSalesforce, faHubspot, faWhatsapp, faSlack } from "@fortawesome/free-brands-svg-icons"
-import { motion } from "framer-motion"
-import Link from "next/link"
 import {
   Phone,
   BarChart3,
@@ -28,13 +26,13 @@ import {
   Headphones,
   Settings,
   Megaphone,
-  DollarSign,
-  Download
+  FileSpreadsheet,
+  Calendar,
+  Mail,
+  Zap
 } from 'lucide-react';
 import Header from "@/components/header"
-import Image from "next/image"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faChevronDown, faSpinner, faLock } from '@fortawesome/free-solid-svg-icons';
 import * as THREE from 'three';
 import HeroCanvas from "@/components/hero-canvas"
 import Footer from "@/components/footer"
@@ -165,278 +163,22 @@ const ThreeBackground = () => {
 
 
 
-gsap.registerPlugin(ScrollTrigger);
-
-// --- COMPONENT: 3D PARTICLE WAVE (Three.js + ScrollTrigger) ---
-const ParticleWave = () => {
-  const pointsRef = useRef<any>();
-  
-  // Create a grid of particles
-  const particles = useMemo(() => {
-    const count = 100;
-    const positions = new Float32Array(count * count * 3);
-    for (let i = 0; i < count; i++) {
-      for (let j = 0; j < count; j++) {
-        positions[(i * count + j) * 3] = i - count / 2;
-        positions[(i * count + j) * 3 + 1] = 0;
-        positions[(i * count + j) * 3 + 2] = j - count / 2;
-      }
-    }
-    return positions;
-  }, []);
-
-  useFrame((state) => {
-    const time = state.clock.getElapsedTime();
-    const positions = pointsRef.current.geometry.attributes.position.array;
-    
-    // Wave movement logic
-    for (let i = 0; i < 10000; i++) {
-      const x = positions[i * 3];
-      const z = positions[i * 3 + 2];
-      positions[i * 3 + 1] = Math.sin(x * 0.2 + time) * Math.cos(z * 0.2 + time) * 1.5;
-    }
-    pointsRef.current.geometry.attributes.position.needsUpdate = true;
-  });
-
-  useEffect(() => {
-    // GSAP ScrollTrigger to tilt the wave as user scrolls
-    gsap.to(pointsRef.current.rotation, {
-      x: 0.5,
-      z: 0.2,
-      scrollTrigger: {
-        trigger: "#stats",
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true,
-      }
-    });
-  }, []);
-
-  return (
-    <Points ref={pointsRef} positions={particles} stride={3}>
-      <PointMaterial
-        transparent
-        color="#6366f1"
-        size={0.15}
-        sizeAttenuation={true}
-        depthWrite={false}
-        blending={THREE.AdditiveBlending}
-      />
-    </Points>
-  );
-};
-
-// --- COMPONENT: PIXEL MORPH (GSAP + Canvas) ---
-const PixelMorphCanvas = ({ activeTab }: { activeTab: string }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    // Logic for "Melting" / Pixelating effect
-    // In a real app, you would drawImage() here.
-    // This mockup creates a "digital circuit" noise transition.
-    const tl = gsap.timeline();
-    tl.to(canvas, { opacity: 0.3, duration: 0.2 })
-      .to(canvas, { opacity: 1, duration: 0.4, ease: "power2.inOut" });
-
-    const draw = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#6366f1';
-      for (let i = 0; i < 50; i++) {
-        const size = Math.random() * 5;
-        ctx.globalAlpha = Math.random();
-        ctx.fillRect(Math.random() * canvas.width, Math.random() * canvas.height, size, size * 10);
-      }
-    };
-
-    gsap.ticker.add(draw);
-    return () => gsap.ticker.remove(draw);
-  }, [activeTab]);
-
-  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none opacity-20" />;
-};
-
-// --- COMPONENT: AI IMAGE MORPH ---
-const AIImageMorph = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    canvas.width = 400;
-    canvas.height = 400;
-
-    // Load face image
-    const img = document.createElement('img') as HTMLImageElement;
-    img.crossOrigin = 'anonymous';
-    img.src = 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80';
-
-    img.onload = () => {
-      ctx.drawImage(img, 0, 0, 400, 400);
-
-      // Animate pixelation
-      let pixelSize = 1;
-      const animate = () => {
-        if (pixelSize < 20) {
-          pixelSize += 0.5;
-          ctx.imageSmoothingEnabled = false;
-          ctx.drawImage(canvas, 0, 0, 400 / pixelSize, 400 / pixelSize);
-          ctx.drawImage(canvas, 0, 0, 400, 400);
-          requestAnimationFrame(animate);
-        } else {
-          // Draw digital mesh
-          ctx.clearRect(0, 0, 400, 400);
-          ctx.strokeStyle = '#6366f1';
-          ctx.lineWidth = 1;
-          for (let i = 0; i < 20; i++) {
-            ctx.beginPath();
-            ctx.moveTo(0, i * 20);
-            ctx.lineTo(400, i * 20);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(i * 20, 0);
-            ctx.lineTo(i * 20, 400);
-            ctx.stroke();
-          }
-          // Add some data points
-          ctx.fillStyle = '#6366f1';
-          for (let i = 0; i < 50; i++) {
-            ctx.beginPath();
-            ctx.arc(Math.random() * 400, Math.random() * 400, 2, 0, Math.PI * 2);
-            ctx.fill();
-          }
-        }
-      };
-      setTimeout(animate, 2000);
-    };
-  }, []);
-
-  return (
-    <div className="relative">
-      <canvas ref={canvasRef} className="w-full h-auto max-w-md rounded-3xl shadow-xl border border-slate-200" />
-      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent rounded-3xl pointer-events-none"></div>
-    </div>
-  );
-};
-
-// --- Component for the Animated Diagram (Based on Image 1) ---
-const AnimatedFlowDiagram = () => {
-    const svgRef = useRef<SVGSVGElement>(null);
-
-    useEffect(() => {
-        if (!svgRef.current) return;
-
-        const tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: svgRef.current,
-                start: "top 75%", // Start animation when diagram enters viewport
-                end: "bottom center",
-                toggleActions: "play none none reverse", // Play once and reverse when scrolling back up
-            }
-        });
-
-        // 1. Initial State: Hide all paths and set glow filters
-        const paths = svgRef.current.querySelectorAll('.flow-path');
-        gsap.set(paths, { strokeDasharray: 0, strokeDashoffset: 0, opacity: 0.5 });
-
-        // Use a filter for the glow effect (similar to LLM Glow Lines)
-        const glowFilter = "drop-shadow(0 0 4px #c084fc) drop-shadow(0 0 8px #e879f9)";
-
-        // 2. Animate the flow lines sequentially
-        tl.to(paths, {
-            strokeDashoffset: (i, target) => target.getTotalLength(), // Draw line segments
-            duration: 1.5,
-            ease: "none",
-            stagger: 0.2,
-            opacity: 1,
-        })
-        // 3. Continuous pulse effect on the main path (Optional: Represents 'live' flow)
-        .to('.main-flow', {
-            filter: glowFilter,
-            duration: 0.8,
-            repeat: -1,
-            yoyo: true,
-            ease: "power1.inOut"
-        }, 1.5); // Start the pulse slightly after the drawing finishes
-
-    }, []);
-
-
-    // This SVG structure mimics the visual flow diagram provided in the image
-    return (
-        <div className="w-full max-w-lg mx-auto p-8 rounded-3xl bg-slate-800 shadow-xl border border-indigo-700 relative h-[450px]">
-            <svg
-                ref={svgRef}
-                viewBox="0 0 400 400"
-                className="w-full h-full"
-                xmlns="http://www.w3.org/2000/svg"
-            >
-                <defs>
-                    {/* Define glow filters for the paths */}
-                    <filter id="glow">
-                        <feGaussianBlur stdDeviation="1" result="coloredBlur" />
-                        <feMerge>
-                            <feMergeNode in="coloredBlur" />
-                            <feMergeNode in="SourceGraphic" />
-                        </feMerge>
-                    </filter>
-                </defs>
-
-                {/* --- Diagram Nodes (Non-animated background elements) --- */}
-
-                {/* Multilingual AI Agent (Central Node) */}
-                <circle cx="200" cy="200" r="45" fill="#312e81" stroke="#4f46e5" strokeWidth="4" filter="url(#glow)" />
-                <text x="200" y="200" textAnchor="middle" fill="#e0e7ff" fontSize="12" fontWeight="bold">AI Agent</text>
-
-                {/* LLM Powered Understanding */}
-                <rect x="150" y="50" width="200" height="30" rx="10" fill="#374151" stroke="#6366f1" strokeWidth="2" />
-                <text x="250" y="70" textAnchor="middle" fill="#e0e7ff" fontSize="10">LLM Understanding</text>
-
-                {/* Lead Intent Detected (Decision Point) */}
-                <polygon points="200,300 170,330 200,360 230,330" fill="#374151" stroke="#f472b6" strokeWidth="2" />
-                <text x="200" y="340" textAnchor="middle" fill="#e0e7ff" fontSize="10">Intent Detected</text>
-
-                {/* Instant Post-Call Actions */}
-                <rect x="250" y="360" width="100" height="30" rx="5" fill="#374151" stroke="#f59e0b" strokeWidth="2" />
-                <text x="300" y="380" textAnchor="middle" fill="#e0e7ff" fontSize="8">Post-Call Action</text>
-
-                {/* --- Animated Paths (Using GSAP) --- */}
-
-                {/* Path 1: Initial Call to LLM Understanding (Blue) */}
-                <path d="M 200 150 L 200 100 L 250 100 L 250 80"
-                      className="flow-path stroke-indigo-400" fill="none" strokeWidth="3" />
-
-                {/* Path 2: LLM back to AI Agent (Main Flow - Pink) */}
-                <path d="M 350 70 L 350 160 C 350 180, 250 180, 200 180"
-                      className="flow-path main-flow stroke-pink-400" fill="none" strokeWidth="3" />
-
-                {/* Path 3: AI Agent to Intent Detected (Pink) */}
-                <path d="M 200 245 L 200 300"
-                      className="flow-path stroke-pink-400" fill="none" strokeWidth="3" />
-
-                {/* Path 4: Intent to Post-Call Actions (Yellow) */}
-                <path d="M 230 330 L 270 330 L 270 360"
-                      className="flow-path stroke-yellow-400" fill="none" strokeWidth="3" />
-
-                {/* Path 5: Smart Interruption Handling (Loop back to agent - Cyan) */}
-                <path d="M 170 330 L 100 330 L 100 200 L 155 200"
-                      className="flow-path stroke-cyan-400" fill="none" strokeWidth="3" />
-            </svg>
-        </div>
-    );
-};
 /**
  * Typewriter Effect for Hero Section
  */
 
 
+  const integrations = [
+    { name: "Google Sheets", icon: <FileSpreadsheet className="w-8 h-8 text-green-600" />, type: "component" },
+    { name: "Calendar", icon: <Calendar className="w-8 h-8 text-blue-500" />, type: "component" },
+    { name: "HubSpot", icon: "fab fa-hubspot text-3xl text-orange-500", type: "class" },
+    { name: "Zoho CRM", label: "Z", color: "bg-yellow-500", type: "text" },
+    { name: "Bitrix24", label: "B24", color: "bg-blue-400", type: "text" },
+    { name: "HighLevel", label: "GHL", color: "bg-indigo-600", type: "text" },
+    { name: "Salesforce", icon: "fab fa-salesforce text-4xl text-blue-600", type: "class" },
+    { name: "Gmail", icon: <Mail className="w-8 h-8 text-red-500" />, type: "component" },
+    { name: "Outlook", icon: "fab fa-microsoft text-3xl text-blue-700", type: "class" },
+  ];
 const HeroTypewriter = () => {
   const phrases = useMemo(() => ["Last Mile Delivery", "Lead Qualification", "Appointment Booking", "Customer Support", "Debt Collection"], []);
   const [text, setText] = useState("");
@@ -580,280 +322,149 @@ const PHONE_CATEGORY_OPTIONS = [
 
 // --- Savings Calculator Component ---
 const SavingsCalculator = () => {
-    const [monthlyMinutes, setMonthlyMinutes] = useState(INITIAL_MONTHLY_MINUTES);
-    const [manualCostINR, setManualCostINR] = useState(INITIAL_MANUAL_COST_INR);
-    const [callType, setCallType] = useState('live'); // 'live' or 'test'
-    const [qualityLevel, setQualityLevel] = useState(VOICE_QUALITY_OPTIONS[0]);
-    const [phoneCategory, setPhoneCategory] = useState(PHONE_CATEGORY_OPTIONS[0]);
-    const [isQualityDropdownOpen, setIsQualityDropdownOpen] = useState(false);
-    const [isPremiumNumberActive, setIsPremiumNumberActive] = useState(false);
+  const [currency, setCurrency] = useState<'USD' | 'INR' | 'AED'>('USD');
+  const [volume, setVolume] = useState(5000);
+  const [hourlyRate, setHourlyRate] = useState(25);
+  const [aht, setAht] = useState(4); 
 
-    // Toggle logic for Phone Number Category (based on the switch in the design)
-    const handlePremiumNumberToggle = () => {
-        const isCurrentlyPremium = phoneCategory.value === 'premium';
-        setIsPremiumNumberActive(!isCurrentlyPremium);
-        setPhoneCategory(isCurrentlyPremium ? PHONE_CATEGORY_OPTIONS[0] : PHONE_CATEGORY_OPTIONS[1]);
-    };
+  const config = useMemo(() => {
+    switch(currency) {
+        case 'INR': return { symbol: '₹', aiRate: 10, minRate: 500, maxRate: 5000, stepRate: 100, defaultRate: 1200 };
+        case 'AED': return { symbol: 'AED', aiRate: 0.6, minRate: 20, maxRate: 200, stepRate: 5, defaultRate: 50 };
+        case 'USD': 
+        default: return { symbol: '$', aiRate: 0.20, minRate: 10, maxRate: 100, stepRate: 1, defaultRate: 25 };
+    }
+  }, [currency]);
 
-    // --- Core Calculation Logic ---
-    const calculateCost = useCallback(() => {
-        let costPerMinute = 0;
-        let qualityCredits = 0;
-        let numberCredits = 0;
+  useEffect(() => {
+    setHourlyRate(config.defaultRate);
+  }, [currency, config.defaultRate]);
 
-        if (callType === 'test') {
-            // Rule: Test Calls have a flat rate of 1 credit/minute, ignoring other factors
-            costPerMinute = 1;
-        } else {
-            // Rule: Live Calls use full pricing logic
-            
-            // 1. Base Rate
-            costPerMinute += BASE_RATE_CREDITS;
-            
-            // 2. Voice Quality
-            qualityCredits = qualityLevel.credits;
-            costPerMinute += qualityCredits;
-            
-            // 3. Phone Number Category
-            numberCredits = isPremiumNumberActive ? PHONE_CATEGORY_OPTIONS[1].credits : PHONE_CATEGORY_OPTIONS[0].credits;
-            costPerMinute += numberCredits;
-        }
+  const manualCost = Math.round(volume * aht * (hourlyRate / 60));
+  const aiCost = Math.round(volume * aht * config.aiRate);
+  const savings = manualCost - aiCost;
+  const savingsPercent = manualCost > 0 ? Math.round((savings / manualCost) * 100) : 0;
 
-        const totalMonthlyCredits = costPerMinute * monthlyMinutes;
-        const totalMonthlyCostINR = totalMonthlyCredits * INR_PER_CREDIT_RATE;
-
-        // Savings Calculation
-        const totalManualCostINR = monthlyMinutes * manualCostINR;
-        const estimatedINRSavings = totalManualCostINR - totalMonthlyCostINR;
-
-        // Credit Savings (as credits saved compared to a benchmark, e.g., 10 credits/min industry average)
-        // For simplicity, we compare to the Base Rate (5 credits/min) + Credit Savings is the difference.
-        // A more realistic calculation might be comparing to a perceived manual cost in credits.
-        const benchmarkCreditCostPerMin = 10; // A high estimate for manual call cost in credits
-        const estimatedCreditSavings = (benchmarkCreditCostPerMin * monthlyMinutes) - totalMonthlyCredits;
-        
-        return {
-            costPerMinute,
-            totalMonthlyCredits,
-            estimatedINRSavings,
-            estimatedCreditSavings,
-            qualityCredits,
-            numberCredits,
-            totalManualCostINR,
-            totalMonthlyCostINR,
-        };
-    }, [monthlyMinutes, manualCostINR, callType, qualityLevel, isPremiumNumberActive]);
-
-
-    const {
-        costPerMinute,
-        totalMonthlyCredits,
-        estimatedINRSavings,
-        estimatedCreditSavings,
-        qualityCredits,
-        numberCredits,
-        totalManualCostINR,
-        totalMonthlyCostINR,
-    } = useMemo(calculateCost, [monthlyMinutes, manualCostINR, callType, qualityLevel, isPremiumNumberActive]);
-
-
-    // --- UI Component Logic ---
-    const InputField = ({ label, value, unit, onChange, type = 'text' }) => (
-        <div className="flex flex-col mb-4">
-            <label className="text-sm font-medium text-slate-700 mb-1">{label}</label>
-            <div className="relative">
-                <input
-                    type={type}
-                    value={value}
-                    onChange={(e) => onChange(type === 'number' ? parseFloat(e.target.value) || 0 : e.target.value)}
-                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 text-slate-900"
-                    min={type === 'number' ? 0 : undefined}
-                />
-                {unit && <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 text-sm">{unit}</span>}
-            </div>
-        </div>
-    );
-
-    const Dropdown = ({ label, options, selected, onSelect, isOpen, setIsOpen, disabled = false }) => (
-        <div className="flex flex-col mb-4">
-            <label className="text-sm font-medium text-slate-700 mb-1">{label}</label>
-            <div className="relative">
-                <button
-                    type="button"
-                    onClick={() => !disabled && setIsOpen(!isOpen)}
-                    className={`w-full flex justify-between items-center px-4 py-2 border rounded-lg transition-all ${
-                        disabled ? 'bg-slate-50 text-slate-400 border-slate-200 cursor-not-allowed' : 'bg-white border-slate-300 hover:border-indigo-500 text-slate-900'
-                    }`}
-                    disabled={disabled}
-                >
-                    <span>{selected.label} ({selected.credits} credits/min)</span>
-                    <ChevronDown className={`w-4 h-4 transition-transform ${isOpen && !disabled ? 'rotate-180' : ''}`} />
-                </button>
-                {isOpen && !disabled && (
-                    <div className="absolute z-20 w-full mt-1 bg-white border border-slate-300 rounded-lg shadow-xl max-h-60 overflow-y-auto">
-                        {options.map((option) => (
-                            <div
-                                key={option.value}
-                                onClick={() => { onSelect(option); setIsOpen(false); }}
-                                className="px-4 py-2 cursor-pointer hover:bg-slate-100 text-slate-900 text-sm"
-                            >
-                                {option.label} ({option.credits} credits/min)
-                            </div>
-                        ))}
-                    </div>
-                )}
-            </div>
-        </div>
-    );
-
-    const ToggleInput = ({ label, checked, onChange, credits, disabled = false }) => (
-        <div className="flex items-center justify-between py-2 border-b border-slate-200 last:border-b-0">
-            <label className="text-sm font-medium text-slate-700">{label}</label>
-            <div className="flex items-center space-x-2">
-                <span className="text-sm text-slate-500">{credits} credit/min</span>
-                <label className="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" checked={checked} onChange={onChange} className="sr-only peer" disabled={disabled} />
-                    <div className="w-11 h-6 bg-slate-200 rounded-full peer peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-indigo-600"></div>
-                </label>
-            </div>
-        </div>
-    );
-
-    const CallTypeSelector = ({ selected, onSelect }) => (
-        <div className="flex space-x-2 my-4">
-            <label className="text-sm font-medium text-slate-700 mr-2">Call Type</label>
-            {['live', 'test'].map((type) => (
-                <button
-                    key={type}
-                    onClick={() => onSelect(type)}
-                    className={`px-4 py-1 text-sm rounded-full transition-colors ${
-                        selected === type
-                            ? 'bg-cyan-600 text-white font-semibold'
-                            : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
-                    }`}
-                >
-                    {type === 'live' ? 'Live Calls' : 'Test Calls'}
-                </button>
-            ))}
-        </div>
-    );
-
-    const formatCurrency = (amount) => `₹${Math.max(0, amount).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
-    const formatCredits = (amount) => `${Math.max(0, amount).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
-
-    return (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            {/* --- Left Column: Scenario Configuration --- */}
-            <div className="p-8 bg-white shadow-2xl rounded-xl">
-                <h3 className="text-xl font-bold text-slate-900 mb-6">Scenario Configuration</h3>
-
-                <InputField
-                    label="Monthly Call Minutes"
-                    type="number"
-                    value={monthlyMinutes}
-                    unit="mins"
-                    onChange={setMonthlyMinutes}
-                />
-                
-                <InputField
-                    label="Average Manual Cost/Min (INR)"
-                    type="number"
-                    value={manualCostINR}
-                    unit="INR"
-                    onChange={setManualCostINR}
-                />
-
-                <CallTypeSelector selected={callType} onSelect={setCallType} />
-
-                <div className="mt-6 p-4 border border-slate-200 rounded-lg">
-                    <h4 className="text-md font-semibold text-slate-800 mb-3">Pricing Factors</h4>
-                    
-                    {/* Voice Quality Level Dropdown */}
-                    <Dropdown
-                        label="Voice Quality Level"
-                        options={VOICE_QUALITY_OPTIONS}
-                        selected={qualityLevel}
-                        onSelect={setQualityLevel}
-                        isOpen={isQualityDropdownOpen}
-                        setIsOpen={setIsQualityDropdownOpen}
-                        disabled={callType === 'test'} // Disabled for Test Calls
-                    />
-
-                    {/* Phone Number Category Toggle */}
-                    <div className="mb-4">
-                        <label className="text-sm font-medium text-slate-700 mb-1 block">Phone Number Category</label>
-                        <div className={`p-3 border rounded-lg ${callType === 'test' ? 'bg-slate-50 border-slate-200' : 'bg-white border-slate-300'}`}>
-                            <ToggleInput
-                                label="Premium Number Category"
-                                checked={isPremiumNumberActive}
-                                onChange={handlePremiumNumberToggle}
-                                credits={PHONE_CATEGORY_OPTIONS[1].credits}
-                                disabled={callType === 'test'} // Disabled for Test Calls
-                            />
-                        </div>
-                        {callType === 'test' && (
-                            <p className="text-xs text-indigo-500 mt-1">Pricing factors are ignored for Test Calls (Flat 1 credit/min).</p>
-                        )}
-                    </div>
-                </div>
-
-                <div className="mt-6 p-4 bg-indigo-50 rounded-lg flex items-center space-x-3">
-                    <Globe className="w-5 h-5 text-indigo-600" />
-                    <span className="font-semibold text-indigo-800">India (INR)</span>
-                    <span className="text-sm text-indigo-600">Base Rate: {BASE_RATE_CREDITS} credits/min</span>
+  return (
+    <div className="grid lg:grid-cols-2 gap-12 items-start">
+        <div className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100">
+            <div className="flex justify-between items-center mb-6">
+                <h3 className="text-2xl font-bold text-slate-900">Calculate Your Savings</h3>
+                <div className="flex bg-slate-100 p-1 rounded-lg">
+                    {['USD', 'AED', 'INR'].map((c) => (
+                        <button 
+                            key={c}
+                            onClick={() => setCurrency(c as any)}
+                            className={`px-3 py-1 text-xs font-bold rounded-md transition-all ${
+                                currency === c 
+                                ? 'bg-white text-indigo-600 shadow-sm' 
+                                : 'text-slate-500 hover:text-slate-700'
+                            }`}
+                        >
+                            {c}
+                        </button>
+                    ))}
                 </div>
             </div>
 
-            {/* --- Right Column: Estimated Savings --- */}
-            <div className="p-8 bg-white shadow-2xl rounded-xl flex flex-col justify-between">
+            <div className="space-y-8">
                 <div>
-                    <h3 className="text-xl font-bold text-slate-900 mb-8">Your Estimated Savings</h3>
-
-                    <div className="mb-8 p-4 border-b border-slate-200">
-                        <DollarSign className="w-6 h-6 text-green-500 mb-2" />
-                        <p className="text-5xl font-extrabold text-slate-900">{formatCurrency(estimatedINRSavings)}</p>
-                        <p className="text-slate-500 mt-1">Estimated Monthly INR Savings</p>
-                        <p className="text-xs text-slate-400 mt-2">
-                            (Savings = Manual Cost {formatCurrency(totalManualCostINR)} - TechnoTask Cost {formatCurrency(totalMonthlyCostINR)})
-                        </p>
+                    <div className="flex justify-between mb-2">
+                        <label className="text-sm font-bold text-slate-700 flex items-center gap-2">
+                            <Phone className="w-4 h-4 text-slate-400"/> Monthly Calls
+                        </label>
+                        <span className="text-sm font-bold text-indigo-600">{volume.toLocaleString()}</span>
                     </div>
+                    <input 
+                      type="range" min="500" max="100000" step="500" value={volume} 
+                      onChange={(e) => setVolume(Number(e.target.value))}
+                      className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                    />
+                </div>
 
-                    <div className="mb-8 p-4 border-b border-slate-200">
-                        <CreditCard className="w-6 h-6 text-indigo-500 mb-2" />
-                        <p className="text-5xl font-extrabold text-slate-900">{formatCredits(totalMonthlyCredits)}</p>
-                        <p className="text-slate-500 mt-1">Estimated Monthly Credit Usage</p>
-                        <p className="text-xs text-slate-400 mt-2">
-                             ({formatCredits(estimatedCreditSavings)} credits saved compared to a benchmark)
-                        </p>
+                <div>
+                    <div className="flex justify-between mb-2">
+                        <label className="text-sm font-bold text-slate-700 flex items-center gap-2">
+                            <User className="w-4 h-4 text-slate-400"/> Agent Hourly Cost
+                        </label>
+                        <span className="text-sm font-bold text-indigo-600">{config.symbol}{hourlyRate}/hr</span>
                     </div>
+                    <input 
+                      type="range" 
+                      min={config.minRate} 
+                      max={config.maxRate} 
+                      step={config.stepRate} 
+                      value={hourlyRate} 
+                      onChange={(e) => setHourlyRate(Number(e.target.value))}
+                      className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                    />
+                </div>
 
-                    {/* Cost Per Minute Breakdown */}
-                    <div className="p-4 bg-slate-50 rounded-lg">
-                        <p className="text-3xl font-extrabold text-slate-900 mb-2">
-                            {costPerMinute.toFixed(1)} <span className="text-xl text-slate-500">credits/min</span>
-                        </p>
-                        <div className="text-sm text-slate-600">
-                            {callType === 'test' ? (
-                                <p className="font-semibold text-indigo-600">Flat rate for Testing & Development.</p>
-                            ) : (
-                                <>
-                                    <p>({BASE_RATE_CREDITS.toFixed(1)} base</p>
-                                    <p>+ {qualityCredits.toFixed(1)} {qualityLevel.label.toLowerCase()} quality</p>
-                                    <p>+ {numberCredits.toFixed(1)} {phoneCategory.label.toLowerCase()} number)</p>
-                                </>
-                            )}
+                <div>
+                    <div className="flex justify-between mb-2">
+                        <label className="text-sm font-bold text-slate-700 flex items-center gap-2">
+                            <Clock className="w-4 h-4 text-slate-400"/> Avg. Handling Time (mins)
+                        </label>
+                        <span className="text-sm font-bold text-indigo-600">{aht} min</span>
+                    </div>
+                    <input 
+                      type="range" min="1" max="15" step="0.5" value={aht} 
+                      onChange={(e) => setAht(Number(e.target.value))}
+                      className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-600"
+                    />
+                </div>
+            </div>
+        </div>
+
+        <div className="bg-slate-900 p-8 rounded-3xl shadow-2xl text-white flex flex-col justify-center h-full">
+            <div className="space-y-6">
+                <div className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center text-red-400">
+                            <User className="w-5 h-5" />
+                        </div>
+                        <div>
+                            <p className="text-xs text-slate-400 uppercase tracking-wider font-bold">Manual Cost</p>
+                            <p className="text-lg font-bold text-white">{config.symbol}{manualCost.toLocaleString()}</p>
                         </div>
                     </div>
                 </div>
 
-                <button className="w-full mt-8 flex items-center justify-center space-x-2 px-6 py-3 bg-cyan-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition-colors">
-                    <Download className="w-5 h-5" />
-                    <span>Download Detailed Report (PDF)</span>
-                </button>
+                <div className="flex items-center justify-between p-4 rounded-xl bg-indigo-600/20 border border-indigo-500/30 relative overflow-hidden">
+                    <div className="absolute inset-0 bg-indigo-600/10 animate-pulse"></div>
+                    <div className="flex items-center gap-3 relative z-10">
+                        <div className="w-10 h-10 rounded-full bg-indigo-500 flex items-center justify-center text-white">
+                            <Bot className="w-5 h-5" />
+                        </div>
+                        <div>
+                            <p className="text-xs text-indigo-200 uppercase tracking-wider font-bold">AI Bot Cost</p>
+                            <p className="text-2xl font-bold text-white">{config.symbol}{aiCost.toLocaleString()}</p>
+                        </div>
+                    </div>
+                    {savingsPercent > 0 && (
+                        <div className="text-right relative z-10">
+                            <span className="text-xs font-bold bg-green-500 text-white px-2 py-1 rounded">
+                                -{savingsPercent}%
+                            </span>
+                        </div>
+                    )}
+                </div>
+
+                <div className="pt-6 border-t border-white/10 text-center">
+                    <p className="text-slate-400 text-sm mb-1">Total Monthly Savings</p>
+                    <div className="text-5xl font-bold text-green-400 tracking-tight">
+                        {config.symbol}{savings > 0 ? savings.toLocaleString() : 0}
+                    </div>
+                    <button className="mt-6 bg-white text-slate-900 px-8 py-3 rounded-full font-bold text-sm hover:bg-slate-200 transition-colors w-full">
+                        Start Saving Now
+                    </button>
+                </div>
             </div>
         </div>
-    );
+    </div>
+  );
 };
+
 
 // --- Main Page Component ---
 
@@ -874,8 +485,9 @@ export default function CallersPage() {
       return
     }
 
-    if (!phoneNumber.match(/^[0-9]{10}$/)) {
-      setError('Please enter a valid 10-digit phone number')
+    const expectedLength = selectedCountry === '+91' ? 10 : 9; // India: 10 digits, UAE: 9 digits
+    if (!phoneNumber.match(new RegExp(`^[0-9]{${expectedLength}}$`))) {
+      setError(`Please enter a valid ${expectedLength}-digit phone number`)
       return
     }
 
@@ -893,7 +505,7 @@ export default function CallersPage() {
       const fullPhoneNumber = `${selectedCountry}${phoneNumber}`
 
       // Make API call using environment variable
-      const baseUrl = process.env.NEXT_XENY_CRM_BASE_URL || 'https://app.xeny.ai/apis/api'
+      const baseUrl = process.env.NEXT_PUBLIC_XENY_CRM_BASE_URL || 'https://app.xeny.ai/apis/api'
       const response = await fetch(`${baseUrl}/public/test-outbound-call/${campaignId}`, {
         method: 'POST',
         headers: {
@@ -905,7 +517,8 @@ export default function CallersPage() {
       })
 
       if (!response.ok) {
-        throw new Error('Failed to initiate call')
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Failed to initiate call (${response.status})`)
       }
 
       const data = await response.json()
@@ -913,7 +526,11 @@ export default function CallersPage() {
       console.log('Call initiated:', data)
 
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to initiate call')
+      if (err instanceof TypeError && err.message.includes('fetch')) {
+        setError('Network error: Please check your internet connection')
+      } else {
+        setError(err instanceof Error ? err.message : 'Failed to initiate call')
+      }
       console.error('Call initiation error:', err)
     } finally {
       setIsLoading(false)
@@ -1144,185 +761,7 @@ export default function CallersPage() {
 
 
         {/* 5. INDUSTRIES (Service Tabs) */}
-        <section id="industries-tabs" className="py-24 bg-white border-y border-slate-100">
-          <div className="container mx-auto px-6">
-            <ScrollReveal direction="up" delay={0}>
-              <div className="text-center mb-12">
-                <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">
-                  <ScrollTextReveal text="Our Network. Your Growth." splitBy="word" />
-                </h2>
-
-                <div className="flex flex-wrap justify-center gap-4 mt-8">
-                  <button
-                    className={`px-8 py-3 rounded-full text-sm font-bold border flex items-center gap-2 transition-all ${activeServiceTab === 'edu'
-                        ? 'bg-slate-900 text-white shadow-lg'
-                        : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
-                      }`}
-                    onClick={() => setActiveServiceTab('edu')}
-                  >
-                    <FontAwesomeIcon icon={faGraduationCap} /> Education
-                  </button>
-                  <button
-                    className={`px-8 py-3 rounded-full text-sm font-bold border flex items-center gap-2 transition-all ${activeServiceTab === 'logistics'
-                        ? 'bg-slate-900 text-white shadow-lg'
-                        : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
-                      }`}
-                    onClick={() => setActiveServiceTab('logistics')}
-                  >
-                    <FontAwesomeIcon icon={faTruckLoading} /> Logistics
-                  </button>
-                  <button
-                    className={`px-8 py-3 rounded-full text-sm font-bold border flex items-center gap-2 transition-all ${activeServiceTab === 'finance_serv'
-                        ? 'bg-slate-900 text-white shadow-lg'
-                        : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
-                      }`}
-                    onClick={() => setActiveServiceTab('finance_serv')}
-                  >
-                    <FontAwesomeIcon icon={faCoins} /> Financial Services
-                  </button>
-                </div>
-              </div>
-            </ScrollReveal>
-
-            {/* SERVICE CONTENT: EDUCATION */}
-            {activeServiceTab === 'edu' && (
-              <div className="max-w-4xl mx-auto grid gap-8">
-                <div className="grid md:grid-cols-2 gap-8">
-                  <div className="flex items-start gap-6">
-                    <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 text-xl">
-                      <FontAwesomeIcon icon={faChartBar} />
-                    </div>
-                    <div>
-                      <h3 className="text-3xl font-bold text-slate-900 mb-1">1M+</h3>
-                      <p className="text-slate-500 leading-snug">leads qualified across universities</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-6">
-                    <div className="w-14 h-14 bg-yellow-100 rounded-2xl flex items-center justify-center text-yellow-600 text-xl">
-                      <i className="fas fa-phone-alt"></i>
-                    </div>
-                    <div>
-                      <h3 className="text-3xl font-bold text-slate-900 mb-1">7x</h3>
-                      <p className="text-slate-500 leading-snug">more outreach in half the time</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="grid md:grid-cols-2 gap-8">
-                  <div className="flex items-start gap-6">
-                    <div className="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600 text-xl">
-                      <i className="fas fa-headset"></i>
-                    </div>
-                    <div>
-                      <h3 className="text-3xl font-bold text-slate-900 mb-1">78%</h3>
-                      <p className="text-slate-500 leading-snug">inquiries resolved autonomously</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-6">
-                    <div className="w-14 h-14 bg-slate-100 rounded-2xl flex items-center justify-center text-slate-600 text-xl">
-                      <i className="fas fa-history"></i>
-                    </div>
-                    <div>
-                      <h3 className="text-3xl font-bold text-slate-900 mb-1">99.8%</h3>
-                      <p className="text-slate-500 leading-snug">uptime during peak admission</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* SERVICE CONTENT: LOGISTICS */}
-            {activeServiceTab === 'logistics' && (
-              <div className="max-w-4xl mx-auto grid gap-8">
-                <div className="grid md:grid-cols-2 gap-8">
-                  <div className="flex items-start gap-6">
-                    <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 text-xl">
-                      <i className="fas fa-chart-line"></i>
-                    </div>
-                    <div>
-                      <h3 className="text-3xl font-bold text-slate-900 mb-1">8M+</h3>
-                      <p className="text-slate-500 leading-snug">deliveries coordinated</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-6">
-                    <div className="w-14 h-14 bg-yellow-100 rounded-2xl flex items-center justify-center text-yellow-600 text-xl">
-                      <i className="fas fa-route"></i>
-                    </div>
-                    <div>
-                      <h3 className="text-3xl font-bold text-slate-900 mb-1">46%</h3>
-                      <p className="text-slate-500 leading-snug">reduction in last mile costs</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="grid md:grid-cols-2 gap-8">
-                  <div className="flex items-start gap-6">
-                    <div className="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600 text-xl">
-                      <i className="fas fa-box-open"></i>
-                    </div>
-                    <div>
-                      <h3 className="text-3xl font-bold text-slate-900 mb-1">92%</h3>
-                      <p className="text-slate-500 leading-snug">queries handled without humans</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-6">
-                    <div className="w-14 h-14 bg-slate-100 rounded-2xl flex items-center justify-center text-slate-600 text-xl">
-                      <i className="fas fa-clipboard-check"></i>
-                    </div>
-                    <div>
-                      <h3 className="text-3xl font-bold text-slate-900 mb-1">99.9%</h3>
-                      <p className="text-slate-500 leading-snug">uptime during peak shipping</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* SERVICE CONTENT: FINANCE */}
-            {activeServiceTab === 'finance_serv' && (
-              <div className="max-w-4xl mx-auto grid gap-8">
-                <div className="grid md:grid-cols-2 gap-8">
-                  <div className="flex items-start gap-6">
-                    <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 text-xl">
-                      <i className="fas fa-chart-pie"></i>
-                    </div>
-                    <div>
-                      <h3 className="text-3xl font-bold text-slate-900 mb-1">5.2M+</h3>
-                      <p className="text-slate-500 leading-snug">financial conversations handled</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-6">
-                    <div className="w-14 h-14 bg-yellow-100 rounded-2xl flex items-center justify-center text-yellow-600 text-xl">
-                      <i className="fas fa-rocket"></i>
-                    </div>
-                    <div>
-                      <h3 className="text-3xl font-bold text-slate-900 mb-1">8x</h3>
-                      <p className="text-slate-500 leading-snug">more productive than outbound</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="grid md:grid-cols-2 gap-8">
-                  <div className="flex items-start gap-6">
-                    <div className="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600 text-xl">
-                      <i className="fas fa-phone-volume"></i>
-                    </div>
-                    <div>
-                      <h3 className="text-3xl font-bold text-slate-900 mb-1">83%</h3>
-                      <p className="text-slate-500 leading-snug">queries resolved autonomously</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-6">
-                    <div className="w-14 h-14 bg-slate-100 rounded-2xl flex items-center justify-center text-slate-600 text-xl">
-                      <i className="fas fa-clock"></i>
-                    </div>
-                    <div>
-                      <h3 className="text-3xl font-bold text-slate-900 mb-1">99.9%</h3>
-                      <p className="text-slate-500 leading-snug">uptime during tax seasons</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </section>
+  
 
         <div className="container mx-auto px-6 pt-20">
           <ScrollReveal direction="up" delay={0}>
@@ -1335,9 +774,9 @@ export default function CallersPage() {
                 {[
                   { id: 'edu', label: 'Education', icon: <User className="w-4 h-4" /> },
                   { id: 'ecommerce', label: 'E-commerce', icon: <ShoppingBag className="w-4 h-4" /> },
-                  { id: 'realestate', label: 'Real Estate', icon: <Home className="w-4 h-4" /> },
+                  // { id: 'realestate', label: 'Real Estate', icon: <Home className="w-4 h-4" /> },
                   { id: 'healthcare', label: 'Health', icon: <HeartPulse className="w-4 h-4" /> },
-                  { id: 'logistics', label: 'Transportation', icon: <Truck className="w-4 h-4" /> },
+                  // { id: 'logistics', label: 'Transportation', icon: <Truck className="w-4 h-4" /> },
                   { id: 'finance_serv', label: 'Finance', icon: <Coins className="w-4 h-4" /> }
                 ].map((tab) => (
                   <button
@@ -1787,61 +1226,118 @@ export default function CallersPage() {
         </div>
       </section>
 
-                  <section className="py-24 bg-slate-50">
+              <section className="py-24 bg-white border-y border-slate-100 z-10 relative">
         <div className="container mx-auto px-6 text-center">
-          <h2 className="text-4xl font-bold text-slate-900 mb-12">Seamless Integrations, <br /> Seamless Actions</h2>
+            <h2 className="text-4xl font-bold text-slate-900 mb-12">Connects With Your Favorite Tools</h2>
+            <div className="relative max-w-3xl mx-auto h-[400px] flex items-center justify-center">
+                {/* Central Hub */}
+                <div className="w-24 h-24 bg-white rounded-full shadow-xl flex items-center justify-center z-20 relative">
+                    <div className="w-16 h-16 bg-gradient-to-br from-indigo-600 to-pink-500 rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                        <Zap className="w-8 h-8" />
+                    </div>
+                </div>
+                
+                {/* Rotating Container */}
+                 <div 
+                    className="absolute inset-0"
+                    style={{ animation: 'spin-slow 40s linear infinite' }}
+                 >
+                    {/* SVG Layer for Lines */}
+                    {integrations.map((_, index) => {
+                        const total = integrations.length;
+                        const angle = (360 / total) * index;
+                        const radius = 160; 
+                        
+                        return (
+                            <React.Fragment key={index}>
+                                {/* Static Line */}
+                                <div 
+                                    className="absolute top-1/2 left-1/2 h-[1px] bg-slate-200 origin-left -z-10"
+                                    style={{
+                                        width: `${radius}px`,
+                                        transform: `rotate(${angle}deg)`,
+                                    }}
+                                />
+                                
+                                {/* Data Particle moving inward */}
+                                <div 
+                                    className="absolute top-1/2 left-1/2 w-2 h-2 bg-indigo-500 rounded-full shadow-[0_0_8px_rgba(99,102,241,0.8)] -z-10"
+                                    style={{
+                                        animation: `flowIn 3s linear infinite`,
+                                        animationDelay: `${index * 0.2}s`,
+                                        // @ts-ignore
+                                        '--angle': `${angle}deg`,
+                                        // @ts-ignore
+                                        '--radius': `${radius}px`,
+                                    }}
+                                />
+                            </React.Fragment>
+                        );
+                    })}
 
-          <div className="relative max-w-3xl mx-auto h-[400px] flex items-center justify-center">
-            {/* Center Hub */}
-            <div className="w-24 h-24 bg-white rounded-full shadow-xl flex items-center justify-center z-10 relative">
-              <div className="w-16 h-16 bg-gradient-to-br from-indigo-600 to-pink-500 rounded-full flex items-center justify-center text-white text-2xl font-bold">
-                <i className="fas fa-bolt"></i>
-              </div>
+                    {/* Icons */}
+                    {integrations.map((item, index) => {
+                        const total = integrations.length;
+                        const angle = (360 / total) * index;
+                        const radius = 160; 
+                        const x = Math.cos((angle * Math.PI) / 180) * radius;
+                        const y = Math.sin((angle * Math.PI) / 180) * radius;
+
+                        return (
+                            <div 
+                                key={index}
+                                className="absolute w-14 h-14 bg-white rounded-2xl shadow-md flex items-center justify-center border border-slate-100 z-10"
+                                style={{
+                                    left: `calc(50% + ${x}px)`,
+                                    top: `calc(50% + ${y}px)`,
+                                    transform: `translate(-50%, -50%) rotate(${-angle}deg)`, 
+                                    animation: 'spin-reverse 40s linear infinite'
+                                }}
+                                title={item.name}
+                            >
+                                {item.type === 'component' ? item.icon : 
+                                 item.type === 'class' ? <i className={item.icon as string}></i> :
+                                 <span className={`text-xs font-bold text-white px-1.5 py-0.5 rounded ${item.color}`}>{item.label}</span>
+                                }
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
-
-            {/* Orbiting Logos */}
-            <div className="absolute inset-0 animate-spin" style={{animationDuration: '40s'}}>
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-6 w-16 h-16 bg-white rounded-2xl shadow-md flex items-center justify-center text-2xl text-blue-600">
-                <FontAwesomeIcon icon={faSalesforce} />
-              </div>
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-6 w-16 h-16 bg-white rounded-2xl shadow-md flex items-center justify-center text-2xl text-orange-500">
-                <FontAwesomeIcon icon={faHubspot} />
-              </div>
-              <div className="absolute left-0 top-1/2 -translate-x-6 -translate-y-1/2 w-16 h-16 bg-white rounded-2xl shadow-md flex items-center justify-center text-2xl text-green-500">
-                <FontAwesomeIcon icon={faWhatsapp} />
-              </div>
-              <div className="absolute right-0 top-1/2 translate-x-6 -translate-y-1/2 w-16 h-16 bg-white rounded-2xl shadow-md flex items-center justify-center text-2xl text-purple-500">
-                <FontAwesomeIcon icon={faSlack} />
-              </div>
-            </div>
-
-            {/* Connecting Lines */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{zIndex: 0}}>
-              <line x1="50%" y1="50%" x2="50%" y2="10%" stroke="#CBD5E1" strokeWidth="2" strokeDasharray="5,5" />
-              <line x1="50%" y1="50%" x2="50%" y2="90%" stroke="#CBD5E1" strokeWidth="2" strokeDasharray="5,5" />
-              <line x1="50%" y1="50%" x2="10%" y2="50%" stroke="#CBD5E1" strokeWidth="2" strokeDasharray="5,5" />
-              <line x1="50%" y1="50%" x2="90%" y2="50%" stroke="#CBD5E1" strokeWidth="2" strokeDasharray="5,5" />
-            </svg>
-          </div>
         </div>
+        <style dangerouslySetInnerHTML={{__html: `
+          @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+          @keyframes spin-reverse {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(-360deg); }
+          }
+          @keyframes flowIn {
+            0% { transform: rotate(var(--angle)) translateX(var(--radius)); opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: rotate(var(--angle)) translateX(0px); opacity: 0; } 
+          }
+        `}} />
       </section>
 
   {/* CALCULATOR */ }
-  <section id="calculator" className="py-24 bg-slate-100 border-y border-slate-100 relative overflow-hidden">
-    <div className="absolute inset-0 opacity-5 bg-noise"></div>
-    <div className="container mx-auto px-6 relative z-10">
-      <ScrollReveal direction="up" delay={0}>
-        <div className="text-center mb-16">
-          <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">ROI Engine</span>
-          <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">
-            <ScrollTextReveal text="See How Much You'll Save" splitBy="word" />
-          </h2>
-          <p className="text-slate-500">Stop overpaying for manual calls.</p>
+
+
+      {/* CALCULATOR */}
+      <section id="calculator" className="py-24 bg-slate-50 border-y border-slate-100 relative overflow-hidden z-10">
+        <div className="absolute inset-0 opacity-5 bg-noise"></div>
+        <div className="container mx-auto px-6 relative z-10">
+            <div className="text-center mb-16">
+                <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">ROI Engine</span>
+                <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">See How Much You'll Save</h2>
+                <p className="text-slate-500">Stop overpaying for manual calls.</p>
+            </div>
+            <SavingsCalculator />
         </div>
-      </ScrollReveal>
-      <SavingsCalculator />
-    </div>
-  </section>
+      </section>
 
   {/* INSIGHTS */ }
   {/* <section className="py-24 bg-white border-y border-slate-100">
@@ -1909,7 +1405,7 @@ export default function CallersPage() {
     </div>
   </section>
   {/* FINAL CTA */ }
-  <section className="py-24 bg-slate-50 border-t border-slate-200 ">
+  <section className="py-24 bg-slate-50 border-t border-slate-200 z-10 relative ">
     <div className="container mx-auto px-6 flex justify-center bg-noise relative">
       <div className="bg-white p-6 sm:p-8 rounded-[40px] shadow-lg border border-slate-100 max-w-lg w-full">
         <div className="text-center mb-6">
