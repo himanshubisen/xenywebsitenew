@@ -1,7 +1,8 @@
-'use client';
+"use client"
 
 import { Menu, X } from "lucide-react"
 import { useState, useEffect } from "react"
+import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import Link from "next/link"
@@ -26,9 +27,19 @@ export default function Header({ onDemoClick }: HeaderProps) {
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="bg-white/70 backdrop-blur-md border border-white/50 shadow-sm rounded-full px-6 py-3 flex justify-between items-center">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <Image src="/logo/xeny-logo.png" alt="Xeny Logo" width={102} height={102} />
-          </Link>
+          {isMobile ? (
+            <div>
+              <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                <Image src="/logo/xeny-logo.png" alt="Xeny Logo" width={102} height={102} />
+              </Link>
+            </div>
+          ) : (
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                <Image src="/logo/xeny-logo.png" alt="Xeny Logo" width={102} height={102} />
+              </Link>
+            </motion.div>
+          )}
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
@@ -48,12 +59,23 @@ export default function Header({ onDemoClick }: HeaderProps) {
             >
               Sign In
             </Link>
-            <Button
-              onClick={() => window.open('https://app.xeny.ai/signup-with-voiceagent', '_blank')}
-              className="bg-cyan-600 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-6 rounded-full font-bold text-sm shadow-lg hover:shadow-indigo-500/30"
-            >
-              Get Started
-            </Button>
+            {isMobile ? (
+              <Button
+                onClick={() => window.open('https://app.xeny.ai/signup-with-voiceagent', '_blank')}
+                className="bg-cyan-600 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-6 rounded-full font-bold text-sm shadow-lg hover:shadow-indigo-500/30"
+              >
+                Get Started
+              </Button>
+            ) : (
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  onClick={() => window.open('https://app.xeny.ai/signup-with-voiceagent', '_blank')}
+                  className="bg-cyan-600 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-6 rounded-full font-bold text-sm shadow-lg hover:shadow-indigo-500/30"
+                >
+                  Get Started
+                </Button>
+              </motion.div>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -69,7 +91,10 @@ export default function Header({ onDemoClick }: HeaderProps) {
 
       {/* Mobile Navigation */}
       {isOpen && (
-        <div
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          exit={{ opacity: 0, height: 0 }}
           className="md:hidden fixed top-[88px] left-0 right-0 bg-white/95 backdrop-blur-md border-b border-white/50 shadow-lg mx-4 rounded-2xl overflow-hidden"
         >
           <div className="p-4 space-y-3">
@@ -109,7 +134,7 @@ export default function Header({ onDemoClick }: HeaderProps) {
               </Button>
             </div>
           </div>
-      </div>
+        </motion.div>
       )}
     </nav>
   )
