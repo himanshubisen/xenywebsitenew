@@ -50,6 +50,8 @@ import ScrollTextReveal from "@/components/animations/ScrollTextReveal"
 import StaggerReveal from "@/components/animations/StaggerReveal"
 import AnimatedFeatureDashboard from "@/components/animated-feature-dashboard"
 
+import {  faChevronUp} from '@fortawesome/free-solid-svg-icons';
+
 import { Points, PointMaterial } from '@react-three/drei';
 import { useFrame, Canvas } from '@react-three/fiber';
 
@@ -62,7 +64,10 @@ type TabId = 'real_estate' | 'growth' | 'hr' | 'finance' | 'cx' | 'ops' | 'marke
 type ServiceId = 'edu' | 'ecommerce' | 'realestate' | 'healthcare' | 'logistics' | 'finance_serv';
 
 // --- Components ---
-
+const COUNTRIES = [
+  { code: '+91', flag: 'fi-in' },
+  { code: '+971', flag: 'fi-ae' },
+];
 /**
  * Three.js Background Component
  * Renders the Orb and the 3D "Xeny" text
@@ -261,9 +266,7 @@ const ThreeBackground = () => {
 /**
  * Typewriter Effect for Hero Section
  */
-
-
-  const integrations = [
+const integrations = [
     { name: "Google Sheets", icon: <FileSpreadsheet className="w-8 h-8 text-green-600" />, type: "component" },
     { name: "Calendar", icon: <Calendar className="w-8 h-8 text-blue-500" />, type: "component" },
     { name: "HubSpot", icon: "fab fa-hubspot text-3xl text-orange-500", type: "class" },
@@ -409,6 +412,7 @@ const UrbanPiperSection = () => {
 
   return (
     <section ref={sectionRef} className="relative min-h-[80vh] flex items-center justify-center bg-slate-900 overflow-hidden py-20 z-10">
+      <HeroCanvas/>
        <div ref={bgRef} className="absolute inset-0 z-0 pointer-events-none opacity-50" />
 
        <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-20 pointer-events-none">
@@ -641,6 +645,9 @@ export default function CallersPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
+
+  const currentFlag = COUNTRIES.find(c => c.code === selectedCountry)?.flag || 'fi-in';
 
   // Handle form submission
   const handleSubmit = async () => {
@@ -702,13 +709,14 @@ export default function CallersPage() {
   }
 
   // Handle country selection
-  const handleCountrySelect = () => {
-    setSelectedCountry(selectedCountry === '+91' ? '+971' : '+91');
+  const handleCountrySelect = (newCode: string) => {
+    setSelectedCountry(newCode);
+    setIsPickerOpen(false);
   };
 
   // Handle phone number change
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPhoneNumber(e.target.value);
+    setPhoneNumber(e.target.value.replace(/[^0-9]/g, '').slice(0, 10));
   };
 
   // Load external styles for specific brand icons (FontAwesome) and flags
@@ -731,7 +739,8 @@ export default function CallersPage() {
 
   return (
 <main className="font-sans text-slate-900 bg-slate-50 selection:bg-indigo-100 selection:text-indigo-900 overflow-x-hidden">
-      <ThreeBackground />
+      {/* <ThreeBackground /> */}
+      <HeroCanvas />
       <Header />
 
       {/* HERO SECTION */}
@@ -765,53 +774,81 @@ export default function CallersPage() {
 
 
           {/* Simulated Input */}
-          <div className="w-full max-w-md bg-white p-2 sm:p-3 rounded-[24px] shadow-lg border border-slate-200 transform hover:scale-[1.02] transition-transform duration-300">
-            <div className="flex flex-col gap-2">
-              <div className="flex items-center bg-slate-50 rounded-xl px-3 sm:px-4 py-2 sm:py-3 border border-slate-100 focus-within:border-indigo-500/50 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
-                <div className="flex items-center gap-2 border-r border-slate-300 pr-2 sm:pr-3 mr-2 sm:mr-3 cursor-pointer" onClick={handleCountrySelect}>
-                  <span className={`fi ${selectedCountry === '+91' ? 'fi-in' : 'fi-ae'} rounded-sm text-lg shadow-sm`}></span>
-                  <span className="text-slate-800 font-bold text-sm">{selectedCountry}</span>
-                  <FontAwesomeIcon icon={faChevronDown} className="text-[10px] text-slate-400" />
-                </div>
-                <input
-                  type="tel"
-                  placeholder="98765 43210"
-                  className="bg-transparent w-full outline-none text-slate-900 font-bold placeholder-slate-400 text-base sm:text-lg h-full"
-                  value={phoneNumber}
-                  onChange={handlePhoneChange}
-                  maxLength={10}
-                />
-              </div>
+     <div className="w-full max-w-md bg-white p-2 sm:p-3 rounded-[24px] shadow-lg border border-slate-200 transform hover:scale-[1.02] transition-transform duration-300">
+  <div className="flex flex-col gap-2">
+    
+    {/* Input and Picker Container */}
+    <div className="relative">
+      <div className="flex items-center bg-slate-50 rounded-xl px-3 sm:px-4 py-2 sm:py-3 border border-slate-100 focus-within:border-indigo-500/50 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
+        
+        {/* Country Code Selector - CLICKABLE (Assuming you implement the toggle logic) */}
+        <div 
+          className="flex items-center gap-2 border-r border-slate-300 pr-2 sm:pr-3 mr-2 sm:mr-3 cursor-pointer hover:bg-slate-100 p-1 rounded-md transition-colors" 
+          onClick={() => setIsPickerOpen(!isPickerOpen)} // Replace with your actual toggle function
+        >
+          {/* Flag Display - Example for +91 (Requires flag-icons library) */}
+          <span className={`fi ${currentFlag} rounded-sm text-lg shadow-sm`}></span>
+          
+          {/* Country Code */}
+          <span className="text-slate-800 font-bold text-sm">{selectedCountry}</span>
+          
+          {/* Dropdown Indicator */}
+          <FontAwesomeIcon 
+            icon={isPickerOpen ? faChevronUp : faChevronDown} // Replace with your state variable
+            className="text-[10px] text-slate-400 transition-transform" 
+          />
+        </div>
+        
+        {/* Phone Number Input Field */}
+        <input
+          type="tel"
+          // UPDATED, SHORTER PLACEHOLDER
+          placeholder="Enter your number for Xeny Call" 
+          className="bg-transparent w-full outline-none text-slate-900 font-bold placeholder-slate-400 text-base sm:text-lg h-full"
+          value={phoneNumber}
+          onChange={handlePhoneChange}
+          maxLength={10}
+        />
+      </div>
 
-              <button
-                className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 sm:py-4 rounded-xl shadow-lg shadow-indigo-200 transition-all flex items-center justify-center gap-3 text-base sm:text-lg disabled:opacity-70 disabled:cursor-not-allowed"
-                onClick={handleSubmit}
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <>
-                    <span className="animate-spin">
-                      <FontAwesomeIcon icon={faSpinner} className="text-white" />
-                    </span>
-                    Initiating Call...
-                  </>
-                ) : (
-                  <>
-                    <span className="relative flex h-3 w-3">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
-                    </span>
-                    Receive AI Call Now
-                  </>
-                )}
-              </button>
-            </div>
-            <p className="text-[10px] text-slate-400 mt-2 text-center flex items-center justify-center gap-1">
-              <FontAwesomeIcon icon={faLock} /> Free demo • No credit card required
-            </p>
-            {error && <p className="text-red-500 text-sm text-center mt-2">{error}</p>}
-            {success && <p className="text-green-500 text-sm text-center mt-2">{success}</p>}
-          </div>
+      {/* Country Code Picker Dropdown (Conditional rendering based on isPickerOpen state) */}
+      {/* ... (Your dropdown JSX content goes here) ... */}
+    </div>
+    
+    {/* Submit Button */}
+    <button
+      className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 sm:py-4 rounded-xl shadow-lg shadow-indigo-200 transition-all flex items-center justify-center gap-3 text-base sm:text-lg disabled:opacity-70 disabled:cursor-not-allowed"
+      onClick={handleSubmit}
+      disabled={isLoading}
+    >
+      {isLoading ? (
+        <>
+          <span className="animate-spin">
+            <FontAwesomeIcon icon={faSpinner} className="text-white" />
+          </span>
+          Initiating Call...
+        </>
+      ) : (
+        <>
+          <span className="relative flex h-3 w-3">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+          </span>
+          Receive AI Call Now
+        </>
+      )}
+    </button>
+  </div>
+  
+  {/* Footer Text */}
+  <p className="text-[10px] text-slate-400 mt-2 text-center flex items-center justify-center gap-1">
+    <FontAwesomeIcon icon={faLock} /> Free demo • No credit card required
+  </p>
+  
+  {/* Error/Success Messages */}
+  {error && <p className="text-red-500 text-sm text-center mt-2">{error}</p>}
+  {success && <p className="text-green-500 text-sm text-center mt-2">{success}</p>}
+</div>
         </div>
       </section>
 
