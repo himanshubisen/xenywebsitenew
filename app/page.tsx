@@ -60,7 +60,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 // AI Image Morph: A futuristic visual showing a human face transitioning into a complex digital data mesh through pixel-morphing effects.
 
 // --- Types ---
-type TabId = 'real_estate' | 'growth' | 'hr' | 'finance' | 'cx' | 'ops' | 'marketing';
+type TabId = 'real_estate' | 'growth' | 'hr' | 'finance' | 'cx' | 'ops' | 'marketing' | 'sales';
 type ServiceId = 'edu' | 'ecommerce' | 'realestate' | 'healthcare' | 'logistics' | 'finance_serv';
 
 // --- Components ---
@@ -638,7 +638,7 @@ const SavingsCalculator = () => {
 
 export default function CallersPage() {
   const [activeServiceTab, setActiveServiceTab] = useState<ServiceId>('edu');
-  const [activeUseCaseTab, setActiveUseCaseTab] = useState<TabId>('growth');
+  const [activeUseCaseTab, setActiveUseCaseTab] = useState<TabId>('sales');
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [selectedCountry, setSelectedCountry] = useState('+91');
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -946,6 +946,7 @@ export default function CallersPage() {
             </h2>
               <div className="flex flex-wrap justify-center gap-4 mt-8">
                 {[
+                    { id: 'realestate', label: 'Real Estate', icon: <Home className="w-4 h-4" /> },
                   { id: 'edu', label: 'Education', icon: <User className="w-4 h-4" /> },
                   { id: 'ecommerce', label: 'E-commerce', icon: <ShoppingBag className="w-4 h-4" /> },
                   // { id: 'realestate', label: 'Real Estate', icon: <Home className="w-4 h-4" /> },
@@ -1077,14 +1078,14 @@ export default function CallersPage() {
     <section id="use-cases" className="py-24 bg-white relative z-10">
     <div className="container mx-auto px-6">
       <div className="text-center mb-12">
-        <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">Applications</span>
+        <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">Use Cases</span>
         <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mt-2 mb-4">
           Workflows That Save You Time
         </h2>
 
           <div className="flex overflow-x-auto pb-4 gap-2 mt-8 justify-start md:justify-center no-scrollbar">
             {/* {['real_estate', 'growth', 'hr', 'finance', 'cx', 'ops', 'marketing'].map((tab) => ( */}
-              {['real_estate',  'growth', 'finance', 'marketing'].map((tab) => (
+              {['real_estate',  'sales', 'finance', 'marketing'].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveUseCaseTab(tab as TabId)}
@@ -1136,7 +1137,7 @@ export default function CallersPage() {
             </div>
           </StaggerReveal>
         )}
-        {activeUseCaseTab === 'growth' && (
+        {activeUseCaseTab === 'sales' && (
           <StaggerReveal staggerDelay={150} direction="up" className="grid md:grid-cols-2 gap-8 justify-center">
             <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
               <div className="h-48 overflow-hidden relative">
@@ -1422,10 +1423,25 @@ export default function CallersPage() {
         </div>
       </section>
 
-      <section id="Dashboard" className="z-1 relative">
-     <AnimatedFeatureDashboard />
+<section
+  id="Dashboard"
+  className="relative z-10 bg-slate-50 hidden md:block"
+>
+  <AnimatedFeatureDashboard />
+</section>
 
-     </section>
+{/* CALCULATOR */ }
+                            <section id="calculator" className="py-24 bg-slate-50 border-y border-slate-100 relative overflow-hidden z-10">
+        <div className="absolute inset-0 opacity-5 bg-noise"></div>
+        <div className="container mx-auto px-6 relative z-10">
+            <div className="text-center mb-16">
+                <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">ROI Engine</span>
+                <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">See How Much You'll Save</h2>
+                <p className="text-slate-500">Stop overpaying for manual calls.</p>
+            </div>
+            <SavingsCalculator />
+        </div>
+      </section>
 
               <section className="py-24 bg-white border-y border-slate-100 z-10 relative">
         <div className="container mx-auto px-6 text-center">
@@ -1528,20 +1544,10 @@ export default function CallersPage() {
 
 
       {/* CALCULATOR */}
-      <section id="calculator" className="py-24 bg-slate-50 border-y border-slate-100 relative overflow-hidden z-10">
-        <div className="absolute inset-0 opacity-5 bg-noise"></div>
-        <div className="container mx-auto px-6 relative z-10">
-            <div className="text-center mb-16">
-                <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">ROI Engine</span>
-                <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">See How Much You'll Save</h2>
-                <p className="text-slate-500">Stop overpaying for manual calls.</p>
-            </div>
-            <SavingsCalculator />
-        </div>
-      </section>
+
 
           {/* INSIGHTS */}
-      <section className="py-24 bg-white border-y border-slate-100 z-10 relative">
+      {/* <section className="py-24 bg-white border-y border-slate-100 z-10 relative">
         <div className="container mx-auto px-6">
             <h2 className="text-4xl font-bold text-slate-900 mb-12 text-center">Proven Results from <br /> 90M+ completed calls</h2>
             <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -1568,26 +1574,8 @@ export default function CallersPage() {
                 </div>
             </div>
         </div>
-      </section>
+      </section> */}
 
-      {/* CLIENTS MARQUEE */}
-      <div className="bg-white border-y border-slate-100 py-10 overflow-hidden relative z-10">
-        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10"></div>
-        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white to-transparent z-10"></div>
-        <div className="flex w-max gap-16 items-center opacity-60 grayscale hover:grayscale-0 transition-all duration-500 animate-[scroll_40s_linear_infinite]">
-             {[1, 2].map((i) => (
-                <div key={i} className="flex gap-16">
-                  <i className="fab fa-amazon text-4xl hover:text-[#FF9900] transition-colors"></i>
-                  <i className="fab fa-google text-3xl hover:text-[#4285F4] transition-colors"></i>
-                  <i className="fab fa-spotify text-4xl hover:text-[#1DB954] transition-colors"></i>
-                  <i className="fab fa-airbnb text-4xl hover:text-[#FF5A5F] transition-colors"></i>
-                  <i className="fab fa-uber text-4xl hover:text-black transition-colors"></i>
-                  <i className="fab fa-stripe text-5xl hover:text-[#635BFF] transition-colors"></i>
-                  <i className="fab fa-microsoft text-3xl hover:text-[#F25022] transition-colors"></i>
-                </div>
-             ))}
-        </div>
-      </div>
 
   {/* INSIGHTS */ }
   {/* <section className="py-24 bg-white border-y border-slate-100">
@@ -1619,6 +1607,38 @@ export default function CallersPage() {
         </div>
       </section> */}
 
+        {/* SECURITY STRIP */ }
+  <div className="bg-slate-900 py-12 border-t border-slate-800 z-10 relative">
+    <div className="container mx-auto px-6 text-center">
+      <p className="text-slate-400 text-sm uppercase tracking-widest mb-6">Enterprise-Grade Protection</p>
+      <div className="flex justify-center gap-12 items-center flex-wrap opacity-70">
+        <div className="flex items-center gap-2 text-white font-bold"><ShieldCheck className="text-green-500" /> SOC2 Type II</div>
+        <div className="flex items-center gap-2 text-white font-bold"><div className="w-5 h-5 bg-blue-500 rounded-sm flex items-center justify-center text-[10px]">ISO</div> ISO 27001</div>
+        <div className="flex items-center gap-2 text-white font-bold"><Globe className="text-purple-500" /> GDPR Compliant</div>
+        <div className="flex items-center gap-2 text-white font-bold"><HeartPulse className="text-orange-500" /> HIPAA Ready</div>
+      </div>
+    </div>
+  </div>
+
+
+      {/* CLIENTS MARQUEE */}
+      <div className="bg-white border-y border-slate-100 py-10 overflow-hidden relative z-10">
+        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10"></div>
+        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white to-transparent z-10"></div>
+        <div className="flex w-max gap-16 items-center opacity-60 grayscale hover:grayscale-0 transition-all duration-500 animate-[scroll_40s_linear_infinite]">
+             {[1, 2].map((i) => (
+                <div key={i} className="flex gap-16">
+                  <i className="fab fa-amazon text-4xl hover:text-[#FF9900] transition-colors"></i>
+                  <i className="fab fa-google text-3xl hover:text-[#4285F4] transition-colors"></i>
+                  <i className="fab fa-spotify text-4xl hover:text-[#1DB954] transition-colors"></i>
+                  <i className="fab fa-airbnb text-4xl hover:text-[#FF5A5F] transition-colors"></i>
+                  <i className="fab fa-uber text-4xl hover:text-black transition-colors"></i>
+                  <i className="fab fa-stripe text-5xl hover:text-[#635BFF] transition-colors"></i>
+                  <i className="fab fa-microsoft text-3xl hover:text-[#F25022] transition-colors"></i>
+                </div>
+             ))}
+        </div>
+      </div>
   {/* FAQ SECTION */ }
   <section className="py-24 bg-slate-50 border-y border-slate-100 relative z-10">
     <div className="container mx-auto px-6 max-w-4xl">
@@ -1652,7 +1672,24 @@ export default function CallersPage() {
       </div>
     </div>
   </section>
-  {/* FINAL CTA */ }
+
+
+
+
+  {/* ASK AI */ }
+      <section className="py-24 bg-slate-100 border-t border-slate-200 relative z-10">
+        <div className="container mx-auto px-6 text-center">
+            <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-6">
+              Still not sure? Ask the AI.
+            </h2>
+            <div className="flex flex-col md:flex-row justify-center gap-6 max-w-4xl mx-auto">
+                <a href="#" className="flex-1 bg-[#4129F9] hover:bg-[#3520D0] text-white py-5 px-8 rounded-full font-bold shadow-lg flex items-center justify-center gap-3 transition-transform hover:-translate-y-1"><Bot className="w-5 h-5"/> Ask ChatGPT</a>
+                <a href="#" className="flex-1 bg-[#D97757] hover:bg-[#C56545] text-white py-5 px-8 rounded-full font-bold shadow-lg flex items-center justify-center gap-3 transition-transform hover:-translate-y-1"><Bot className="w-5 h-5"/> Ask Claude</a>
+                <a href="#" className="flex-1 bg-[#1A7F85] hover:bg-[#14686D] text-white py-5 px-8 rounded-full font-bold shadow-lg flex items-center justify-center gap-3 transition-transform hover:-translate-y-1"><Search className="w-5 h-5"/> Ask Perplexity</a>
+            </div>
+        </div>
+      </section>
+             {/* FINAL CTA */ }
   <section className="py-24 bg-slate-50 border-t border-slate-200 z-10 relative ">
     <div className="container mx-auto px-6 flex justify-center bg-noise relative">
       <div className="bg-white p-6 sm:p-8 rounded-[40px] shadow-lg border border-slate-100 max-w-lg w-full">
@@ -1702,34 +1739,6 @@ export default function CallersPage() {
       </div>
     </div>
   </section>
-
-  {/* SECURITY STRIP */ }
-  <div className="bg-slate-900 py-12 border-t border-slate-800 z-10 relative">
-    <div className="container mx-auto px-6 text-center">
-      <p className="text-slate-400 text-sm uppercase tracking-widest mb-6">Enterprise-Grade Protection</p>
-      <div className="flex justify-center gap-12 items-center flex-wrap opacity-70">
-        <div className="flex items-center gap-2 text-white font-bold"><ShieldCheck className="text-green-500" /> SOC2 Type II</div>
-        <div className="flex items-center gap-2 text-white font-bold"><div className="w-5 h-5 bg-blue-500 rounded-sm flex items-center justify-center text-[10px]">ISO</div> ISO 27001</div>
-        <div className="flex items-center gap-2 text-white font-bold"><Globe className="text-purple-500" /> GDPR Compliant</div>
-        <div className="flex items-center gap-2 text-white font-bold"><HeartPulse className="text-orange-500" /> HIPAA Ready</div>
-      </div>
-    </div>
-  </div>
-
-  {/* ASK AI */ }
-      <section className="py-24 bg-slate-100 border-t border-slate-200 relative z-10">
-        <div className="container mx-auto px-6 text-center">
-            <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-6">
-              Still not sure? Ask the AI.
-            </h2>
-            <div className="flex flex-col md:flex-row justify-center gap-6 max-w-4xl mx-auto">
-                <a href="#" className="flex-1 bg-[#4129F9] hover:bg-[#3520D0] text-white py-5 px-8 rounded-full font-bold shadow-lg flex items-center justify-center gap-3 transition-transform hover:-translate-y-1"><Bot className="w-5 h-5"/> Ask ChatGPT</a>
-                <a href="#" className="flex-1 bg-[#D97757] hover:bg-[#C56545] text-white py-5 px-8 rounded-full font-bold shadow-lg flex items-center justify-center gap-3 transition-transform hover:-translate-y-1"><Bot className="w-5 h-5"/> Ask Claude</a>
-                <a href="#" className="flex-1 bg-[#1A7F85] hover:bg-[#14686D] text-white py-5 px-8 rounded-full font-bold shadow-lg flex items-center justify-center gap-3 transition-transform hover:-translate-y-1"><Search className="w-5 h-5"/> Ask Perplexity</a>
-            </div>
-        </div>
-      </section>
-
 
 
        <Footer />
