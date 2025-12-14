@@ -916,6 +916,7 @@ export default function CallersPage() {
   const [activeUseCaseTab, setActiveUseCaseTab] = useState<TabId>('sales');
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [selectedCountry, setSelectedCountry] = useState('+91');
+  const [selectedUseCase, setSelectedUseCase] = useState('Sales');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -1979,32 +1980,17 @@ export default function CallersPage() {
         <label className="block text-sm font-semibold text-slate-700 mb-2">
           Select Use Case
         </label>
-        
-        {/* Options Container (Horizontal Scroll/Wrap) */}
-        <div className="flex flex-wrap gap-2 overflow-x-auto pb-2 scrollbar-hide">
-          {['Sales', 'Appointment Booking', 'Recovery', 'Support', 'General'].map((useCase, index) => (
-            <div key={useCase}>
-              <input
-                type="radio"
-                id={`use-case-${index}`}
-                name="use-case"
-                value={useCase}
-                className="hidden peer"
-                defaultChecked={useCase === 'Sales'} // Default selection
-              />
-              <label
-                htmlFor={`use-case-${index}`}
-                className="flex items-center text-sm font-medium px-4 py-2 rounded-full cursor-pointer transition-all duration-200 
-                           border border-slate-300 bg-white text-slate-700 whitespace-nowrap 
-                           hover:bg-indigo-50 hover:border-indigo-400
-                           peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:border-indigo-600 
-                           peer-checked:shadow-md"
-              >
-                {useCase}
-              </label>
-            </div>
+
+        {/* Select Dropdown */}
+        <select
+          value={selectedUseCase}
+          onChange={(e) => setSelectedUseCase(e.target.value)}
+          className="w-full px-4 py-3 bg-white border border-slate-300 rounded-2xl text-slate-900 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all shadow-sm"
+        >
+          {['Sales', 'Appointment Booking', 'Recovery', 'Support', 'General'].map((useCase) => (
+            <option key={useCase} value={useCase}>• {useCase}</option>
           ))}
-        </div>
+        </select>
       </div>
       {/* ------------------------------------------- */}
 
@@ -2016,9 +2002,10 @@ export default function CallersPage() {
           <span className="text-slate-800 font-bold text-sm">{selectedCountry}</span>
           <i className="fas fa-chevron-down text-[10px] text-slate-400"></i>
         </div>
+        <span className="text-slate-600 font-medium text-sm mr-2">{selectedUseCase}:</span>
         <input
           type="tel"
-          placeholder="Enter your number for Xeny Call"
+          placeholder="Enter your number"
           className="bg-transparent w-full outline-none text-slate-900 font-bold placeholder-slate-400 text-base sm:text-lg"
         />
       </div>
