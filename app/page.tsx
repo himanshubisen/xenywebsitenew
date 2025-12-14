@@ -856,7 +856,24 @@ export default function CallersPage() {
 
       {/* CLIENTS MARQUEE */}
     
-
+     {/* CLIENTS MARQUEE */}
+      <div className="bg-white border-y border-slate-100 py-10 overflow-hidden relative z-10">
+        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10"></div>
+        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white to-transparent z-10"></div>
+        <div className="flex w-max gap-16 items-center opacity-60 grayscale hover:grayscale-0 transition-all duration-500 animate-[scroll_40s_linear_infinite]">
+             {[1, 2].map((i) => (
+                <div key={i} className="flex gap-16">
+                  <i className="fab fa-amazon text-4xl hover:text-[#FF9900] transition-colors"></i>
+                  <i className="fab fa-google text-3xl hover:text-[#4285F4] transition-colors"></i>
+                  <i className="fab fa-spotify text-4xl hover:text-[#1DB954] transition-colors"></i>
+                  <i className="fab fa-airbnb text-4xl hover:text-[#FF5A5F] transition-colors"></i>
+                  <i className="fab fa-uber text-4xl hover:text-black transition-colors"></i>
+                  <i className="fab fa-stripe text-5xl hover:text-[#635BFF] transition-colors"></i>
+                  <i className="fab fa-microsoft text-3xl hover:text-[#F25022] transition-colors"></i>
+                </div>
+             ))}
+        </div>
+      </div>
       {/* STATS SECTION */}
       <section id="stats" className="py-24 bg-white z-10 relative">
         <div className="container mx-auto px-6">
@@ -1621,24 +1638,7 @@ export default function CallersPage() {
   </div>
 
 
-      {/* CLIENTS MARQUEE */}
-      <div className="bg-white border-y border-slate-100 py-10 overflow-hidden relative z-10">
-        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10"></div>
-        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white to-transparent z-10"></div>
-        <div className="flex w-max gap-16 items-center opacity-60 grayscale hover:grayscale-0 transition-all duration-500 animate-[scroll_40s_linear_infinite]">
-             {[1, 2].map((i) => (
-                <div key={i} className="flex gap-16">
-                  <i className="fab fa-amazon text-4xl hover:text-[#FF9900] transition-colors"></i>
-                  <i className="fab fa-google text-3xl hover:text-[#4285F4] transition-colors"></i>
-                  <i className="fab fa-spotify text-4xl hover:text-[#1DB954] transition-colors"></i>
-                  <i className="fab fa-airbnb text-4xl hover:text-[#FF5A5F] transition-colors"></i>
-                  <i className="fab fa-uber text-4xl hover:text-black transition-colors"></i>
-                  <i className="fab fa-stripe text-5xl hover:text-[#635BFF] transition-colors"></i>
-                  <i className="fab fa-microsoft text-3xl hover:text-[#F25022] transition-colors"></i>
-                </div>
-             ))}
-        </div>
-      </div>
+ 
   {/* FAQ SECTION */ }
   <section className="py-24 bg-slate-50 border-y border-slate-100 relative z-10">
     <div className="container mx-auto px-6 max-w-4xl">
