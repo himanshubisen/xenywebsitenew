@@ -993,9 +993,9 @@ export default function CallersPage() {
         <div className="absolute inset-0 opacity-5 bg-noise"></div>
         <div className="container mx-auto px-6 relative z-10">
             <div className="text-center mb-16">
-                <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">ROI Engine</span>
+                {/* <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">ROI Engine</span> */}
                 <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">See How Much You'll Save</h2>
-                <p className="text-slate-500">Stop overpaying for manual calls.</p>
+                {/* <p className="text-slate-500">Stop overpaying for manual calls.</p> */}
             </div>
             <SavingsCalculator />
         </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Workflow,
   Mic,
@@ -8,10 +8,20 @@ import {
   CheckCircle2,
   TrendingUp
 } from 'lucide-react';
+import ScrollReveal from "@/components/animations/ScrollReveal";
+import StaggerReveal from "@/components/animations/StaggerReveal";
 
 const LandingPageFlow = () => {
   // Retained for logic/hover effect, even if not tied to a click handler
-  const [activeStep, setActiveStep] = useState(3); 
+  const [activeStep, setActiveStep] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveStep((prev) => (prev + 1) % steps.length);
+    }, 3000); // Change every 3 seconds
+
+    return () => clearInterval(interval);
+  }, []);
 
   const steps = [
     {
@@ -84,9 +94,13 @@ const LandingPageFlow = () => {
             How it works
           </div>
           {/* NOTE: Reduced text size on mobile (md:text-4xl) and removed mb-2 from base for h1 */}
-          <h1 className="text-2xl md:text-4xl  p-1 lg:text-5xl font-extrabold tracking-tight text-slate-900 mb-1">
-            Launch Fast. Scale Faster.
-          </h1>
+          <ScrollReveal direction="up" delay={100}>
+            <StaggerReveal staggerDelay={100} direction="up">
+              <h1 className="text-2xl md:text-4xl  p-1 lg:text-5xl font-extrabold tracking-tight text-slate-900 mb-1">
+                Launch Fast. Scale Faster.
+              </h1>
+            </StaggerReveal>
+          </ScrollReveal>
           {/* NOTE: Reduced max-w-md to max-w-sm for mobile. Reduced base text size slightly */}
           <p className="text-slate-500  p-2  text-sm md:text-base max-w-xs sm:max-w-md mx-auto leading-relaxed">
             From setup to first call in minutes.

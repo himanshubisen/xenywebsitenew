@@ -51,7 +51,8 @@ import TextReveal from "@/components/animations/TextReveal"
 import ScrollTextReveal from "@/components/animations/ScrollTextReveal"
 import StaggerReveal from "@/components/animations/StaggerReveal"
 import AnimatedFeatureDashboard from "@/components/animated-feature-dashboard"
-import HowItsWork from "@/components/LandingPageFlow"
+import TestCom from "@/components/test-component"
+import HowItsWork from "@/components/LandingPageFlow" 
 
 import {  faChevronUp} from '@fortawesome/free-solid-svg-icons';
 
@@ -316,16 +317,22 @@ const ICON_PATHS = {
 
 const ThreeBackground = () => {
     const containerRef = useRef<HTMLDivElement>(null);
-    
+    const [mounted, setMounted] = useState(false);
+
     // Arrays to hold the dynamically created icon meshes/sprites and their velocities
     const iconSprites: THREE.Sprite[] = [];
     const velocities: {x: number, y: number, z: number}[] = [];
-    
+
     // We will use a smaller particle count for distinct icons
-    const ICON_COUNT = 50; 
+    const ICON_COUNT = 50;
 
     useEffect(() => {
-        if (!containerRef.current) return;
+        setMounted(true);
+    }, []);
+
+    useEffect(() => {
+        if (!mounted || !containerRef.current || typeof window === 'undefined') return;
+        if (!containerRef.current || typeof window === 'undefined') return;
 
         // --- 1. SETUP: Scene, Camera, Renderer ---
         const scene = new THREE.Scene();
@@ -1168,9 +1175,15 @@ export default function CallersPage() {
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">Proven Results</span>
-            <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">
-              Real Numbers, Real Growth
-            </h2>
+            <ScrollReveal direction="up" delay={100}>
+              <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">
+                <ScrollTextReveal
+                  text="Real Numbers, Real Growth"
+                  splitBy="word"
+                  className="block"
+                />
+              </h2>
+            </ScrollReveal>
             <p className="text-slate-500">Here is the impact we deliver to businesses like yours.</p>
           </div>
 
@@ -1247,9 +1260,15 @@ export default function CallersPage() {
         <div className="container mx-auto px-1     pt-3">
           <div className="text-center mb-12">
             <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">Industries</span>
-            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mt-2 mb-4">
-              Expertise in Every Sector
-            </h2>
+            <ScrollReveal direction="up" delay={100}>
+              <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mt-2 mb-4">
+                <ScrollTextReveal
+                  text="Expertise in Every Sector"
+                  splitBy="word"
+                  className="block"
+                />
+              </h2>
+            </ScrollReveal>
               <div className="flex flex-wrap justify-center gap-4 mt-8">
                 {[
                     { id: 'realestate', label: 'Real Estate', icon: <Home className="w-4 h-4" /> },
@@ -1385,9 +1404,15 @@ export default function CallersPage() {
     <div className="container mx-auto px-6">
       <div className="text-center mb-12">
         <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">Use Cases</span>
-        <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mt-2 mb-4">
-          Workflows That Save You Time
-        </h2>
+        <ScrollReveal direction="up" delay={100}>
+          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mt-2 mb-4">
+            <ScrollTextReveal
+              text="Workflows That Save You Time"
+              splitBy="word"
+              className="block"
+            />
+          </h2>
+        </ScrollReveal>
 
           <div className="flex overflow-x-auto pb-4 gap-2 mt-8 justify-start md:justify-center no-scrollbar">
             {/* {['real_estate', 'growth', 'hr', 'finance', 'cx', 'ops', 'marketing'].map((tab) => ( */}
@@ -1669,7 +1694,7 @@ export default function CallersPage() {
             {/* Heading Area - Centered */}
             <div className="text-center mb-12 sm:mb-16">
                 <ScrollReveal direction="up" delay={100}>
-                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-4">
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-2">
                         <ScrollTextReveal
                             text="What Happens After the Call Ends?"
                             splitBy="word"
@@ -1678,10 +1703,7 @@ export default function CallersPage() {
                     </h2>
                 </ScrollReveal>
 
-                {/* 'Process' Tag Style */}
-                <span className="inline-flex items-center px-3 py-1 bg-indigo-600 text-white font-bold tracking-wider text-sm uppercase rounded-full">
-                    Process
-                </span>
+            
             </div>
 
             {/* Cards Grid: grid-cols-2 for mobile, lg:grid-cols-3 for desktop */}
@@ -1735,11 +1757,11 @@ export default function CallersPage() {
 </section>
 
 {/* CALCULATOR */ }
-                            <section id="calculator" className="py-24 bg-slate-50 border-y border-slate-100 relative overflow-hidden z-10">
+                            <section id="calculator" className="py-6 bg-slate-50 border-y border-slate-100 relative overflow-hidden z-10">
         <div className="absolute inset-0 opacity-5 bg-noise"></div>
         <div className="container mx-auto px-6 relative z-10">
-            <div className="text-center mb-16">
-                <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">ROI Engine</span>
+            <div className="text-center mb-10">
+                {/* <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">ROI Engine</span> */}
                 <ScrollReveal direction="up" delay={100}>
                     <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">
                         <ScrollTextReveal
@@ -1749,7 +1771,7 @@ export default function CallersPage() {
                         />
                     </h2>
                 </ScrollReveal>
-                <p className="text-slate-500">Stop overpaying for manual calls.</p>
+                {/* <p className="text-slate-500">Stop overpaying for manual calls.</p> */}
             </div>
             <SavingsCalculator />
         </div>
@@ -1757,7 +1779,15 @@ export default function CallersPage() {
 
               <section className="py-24 bg-white border-y border-slate-100 z-10 relative">
         <div className="container mx-auto px-6 text-center">
-            <h2 className="text-4xl font-bold text-slate-900 mb-12">Connects With Your Favorite Tools</h2>
+            <ScrollReveal direction="up" delay={100}>
+              <h2 className="text-4xl font-bold text-slate-900 mb-12">
+                <ScrollTextReveal
+                  text="Connects With Your Favorite Tools"
+                  splitBy="word"
+                  className="block"
+                />
+              </h2>
+            </ScrollReveal>
             <div className="relative max-w-3xl mx-auto h-[400px] flex items-center justify-center">
                 {/* Central Hub */}
                 <div className="w-24 h-24 bg-white rounded-full shadow-xl flex items-center justify-center z-20 relative">
@@ -1933,13 +1963,21 @@ export default function CallersPage() {
   </div>
 
 
+{/* <TestCom/> */}
  
   {/* FAQ SECTION */ }
+
   <section className="py-24 bg-slate-50 border-y border-slate-100 relative z-10">
     <div className="container mx-auto px-6 max-w-4xl">
-      <h2 className="text-4xl font-bold text-slate-900 mb-12 text-center">
-        Frequently Asked Questions
-      </h2>
+      <ScrollReveal direction="up" delay={100}>
+        <h2 className="text-4xl font-bold text-slate-900 mb-12 text-center">
+          <ScrollTextReveal
+            text="Frequently Asked Questions"
+            splitBy="word"
+            className="block"
+          />
+        </h2>
+      </ScrollReveal>
       <div className="space-y-4">
         {[
           { q: "How quickly can I really create a Voice AI agent?", a: "You can create a fully functional Voice AI agent in just a few minutes. Simply choose a voice, set your goals, add scripts or knowledge, and your agent is ready to make calls instantly." },
@@ -1974,9 +2012,15 @@ export default function CallersPage() {
   {/* ASK AI */ }
       <section className="py-24 bg-slate-100 border-t border-slate-200 relative z-10">
         <div className="container mx-auto px-6 text-center">
-            <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-6">
-              Still not sure? Ask the AI.
-            </h2>
+            <ScrollReveal direction="up" delay={100}>
+              <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-6">
+                <ScrollTextReveal
+                  text="Still not sure? Ask the AI."
+                  splitBy="word"
+                  className="block"
+                />
+              </h2>
+            </ScrollReveal>
             <div className="flex flex-col md:flex-row justify-center gap-6 max-w-4xl mx-auto">
                 <a href="#" className="flex-1 bg-[#4129F9] hover:bg-[#3520D0] text-white py-5 px-8 rounded-full font-bold shadow-lg flex items-center justify-center gap-3 transition-transform hover:-translate-y-1"><Bot className="w-5 h-5"/> Ask ChatGPT</a>
                 <a href="#" className="flex-1 bg-[#D97757] hover:bg-[#C56545] text-white py-5 px-8 rounded-full font-bold shadow-lg flex items-center justify-center gap-3 transition-transform hover:-translate-y-1"><Bot className="w-5 h-5"/> Ask Claude</a>

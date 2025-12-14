@@ -596,7 +596,7 @@ const AnimatedFeatureDashboard = () => {
     };
 
     return (
-        <section ref={ref} className="py-12 md:py-24 bg-slate-50 relative overflow-hidden font-sans">
+        <section ref={ref} className="py-6 md:py-14 bg-slate-50 relative overflow-hidden font-sans">
              <style jsx>{`
                 @keyframes growUp { from { height: 0; } }
                 @keyframes loadingBar { 0% { transform: scaleX(0); } 100% { transform: scaleX(1); } }
@@ -614,10 +614,8 @@ const AnimatedFeatureDashboard = () => {
             `}</style>
 
             <div className="container mx-auto px-4 md:px-6 relative z-10">
-                <div className="text-center mb-8 md:mb-12">
-                    <span className="text-indigo-600 font-bold tracking-wider text-xs md:text-sm uppercase bg-indigo-50 px-4 py-1 rounded-full border border-indigo-100">
-                        The Control Room
-                    </span>
+                <div className="text-center mb-2 md:mb-12">
+                
                     <ScrollReveal direction="up" delay={100}>
                         <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 mt-4 md:mt-6 mb-2 md:mb-4">
                             <ScrollTextReveal
@@ -627,9 +625,7 @@ const AnimatedFeatureDashboard = () => {
                             />
                         </h2>
                     </ScrollReveal>
-                    <p className="text-slate-500 max-w-2xl mx-auto text-sm md:text-lg px-4">
-                        Visualize your operation. From building agents to watching them close deals.
-                    </p>
+                 
                 </div>
                 
                 {/* Main Dashboard UI Card */}
