@@ -49,6 +49,7 @@ import TextReveal from "@/components/animations/TextReveal"
 import ScrollTextReveal from "@/components/animations/ScrollTextReveal"
 import StaggerReveal from "@/components/animations/StaggerReveal"
 import AnimatedFeatureDashboard from "@/components/animated-feature-dashboard"
+import HowItsWork from "@/components/LandingPageFlow"
 
 import {  faChevronUp} from '@fortawesome/free-solid-svg-icons';
 
@@ -1383,50 +1384,8 @@ export default function CallersPage() {
   </section>
 
       {/* NEW: LAUNCH PROCESS SECTION */}
-      <section className="py-24 bg-white border-y border-slate-100 z-10 relative">
-        <div className="container mx-auto px-6">
-            <div className="text-center mb-16">
-                <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">How It Works</span>
-                <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">Launch Your AI Voicebot in Minutes</h2>
-                <p className="text-slate-500">From setup to first call, the process is seamless.</p>
-            </div>
-
-            <div className="grid md:grid-cols-4 gap-8 relative">
-                {/* Connecting Line (Desktop) */}
-                <div className="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-gradient-to-r from-indigo-50 via-indigo-200 to-indigo-50 -z-10"></div>
-                
-                {[
-                    { 
-                        icon: <Layout className="w-6 h-6 text-indigo-600" />, 
-                        title: "1. Design Flow", 
-                        desc: "Use our drag-and-drop builder to create conversation paths and logic." 
-                    },
-                    { 
-                        icon: <Mic className="w-6 h-6 text-pink-600" />,
-                        title: "2. Select Voice", 
-                        desc: "Choose from 50+ lifelike voices or clone your own agent's voice." 
-                    },
-                    { 
-                        icon: <PlayCircle className="w-6 h-6 text-orange-600" />, 
-                        title: "3. Test & Train", 
-                        desc: "Simulate calls instantly and fine-tune responses with custom knowledge." 
-                    },
-                    { 
-                        icon: <Rocket className="w-6 h-6 text-green-600" />, 
-                        title: "4. Go Live", 
-                        desc: "Purchase a number or port yours, and start handling calls 24/7." 
-                    }
-                ].map((step, i) => (
-                    <div key={i} className="bg-white p-6 rounded-2xl border border-slate-100 shadow-lg hover:shadow-xl transition-all relative group">
-                        <div className="w-14 h-14 bg-slate-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-slate-100 shadow-sm">
-                            {step.icon}
-                        </div>
-                        <h4 className="font-bold text-lg text-slate-900 mb-2">{step.title}</h4>
-                        <p className="text-sm text-slate-500 leading-relaxed">{step.desc}</p>
-                    </div>
-                ))}
-            </div>
-        </div>
+      <section className="py-3  bg-slate-50 z-10 relative">
+    <HowItsWork/>
       </section>
 
       {/* NEW: WHAT HAPPENS AFTER THE CALL */}
