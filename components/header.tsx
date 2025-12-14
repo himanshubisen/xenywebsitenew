@@ -28,11 +28,23 @@ export default function Header({ onDemoClick }: HeaderProps) {
         <div className="bg-white/70 backdrop-blur-md border border-white/50 shadow-sm rounded-full px-6 py-3 flex justify-between items-center">
           {/* Logo */}
           {isMobile ? (
-            <div>
-              <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                <Image src="/logo/xeny-logo.png" alt="Xeny Logo" width={102} height={102} />
-              </Link>
-            </div>
+         <div>
+  <Link
+    href="/"
+    className="flex items-center gap-2 hover:opacity-90 transition-opacity"
+  >
+    <Image
+      src="/logo/xeny-logo.png"
+      alt="Xeny Logo"
+      width={102}
+      height={102}
+      priority
+      quality={100}
+      className="object-contain"
+    />
+  </Link>
+</div>
+
           ) : (
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
@@ -60,20 +72,58 @@ export default function Header({ onDemoClick }: HeaderProps) {
               Sign In
             </Link>
             {isMobile ? (
-              <Button
-                onClick={() => window.open('https://app.xeny.ai/signup-with-voiceagent', '_blank')}
-                className="bg-cyan-600 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-6 rounded-full font-bold text-sm shadow-lg hover:shadow-indigo-500/30"
-              >
-                Get Started
-              </Button>
+             <Button
+  onClick={() => window.open('https://app.xeny.ai/signup-with-voiceagent', '_blank')}
+  className="
+    bg-gradient-to-r
+    from-black
+    via-neutral-900
+    to-neutral-800
+    hover:from-neutral-900
+    hover:to-black
+    text-white
+    px-6
+    rounded-full
+    font-bold
+    text-sm
+    shadow-xl
+    hover:shadow-black/60
+    border border-white/10
+  "
+>
+  Get Started
+</Button>
+
             ) : (
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button
+                {/* <Button
                   onClick={() => window.open('https://app.xeny.ai/signup-with-voiceagent', '_blank')}
-                  className="bg-cyan-600 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-6 rounded-full font-bold text-sm shadow-lg hover:shadow-indigo-500/30"
+                  className="bg-slate-600 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-6 rounded-full font-bold text-sm shadow-lg hover:shadow-indigo-500/30"
                 >
                   Get Started
-                </Button>
+                </Button> */}
+                <Button
+  onClick={() => window.open('https://app.xeny.ai/signup-with-voiceagent', '_blank')}
+className="
+  bg-gradient-to-r
+  from-black
+  via-neutral-900
+  to-neutral-800
+  hover:from-neutral-900
+  hover:to-black
+  text-white
+  px-5
+  rounded-full
+  font-bold
+  text-sm
+  shadow-xl
+  hover:shadow-black/60
+"
+
+>
+  Get Started
+</Button>
+
               </motion.div>
             )}
           </div>
@@ -123,15 +173,31 @@ export default function Header({ onDemoClick }: HeaderProps) {
               >
                 Sign In
               </Link>
-              <Button 
-                onClick={() => {
-                  window.open('https://app.xeny.ai/signup-with-voiceagent', '_blank')
-                  setIsOpen(false)
-                }} 
-                className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white rounded-full font-bold"
-              >
-                Get Started
-              </Button>
+           <Button 
+  onClick={() => {
+    window.open('https://app.xeny.ai/signup-with-voiceagent', '_blank')
+    setIsOpen(false)
+  }} 
+  className="
+    w-full
+    bg-gradient-to-r
+    from-black
+    via-neutral-900
+    to-neutral-800
+    hover:from-neutral-900
+    hover:to-black
+    text-white
+    rounded-full
+    font-bold
+    shadow-xl
+    hover:shadow-black/60
+    border border-white/10
+    transition-all duration-300 ease-in-out
+  "
+>
+  Get Started
+</Button>
+
             </div>
           </div>
         </motion.div>
