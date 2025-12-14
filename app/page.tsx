@@ -70,80 +70,152 @@ type ServiceId = 'edu' | 'ecommerce' | 'realestate' | 'healthcare' | 'logistics'
 const ThreeBackground = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
-
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Scene Setup
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-
+    
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    
+    while (containerRef.current.firstChild) {
+      containerRef.current.removeChild(containerRef.current.firstChild);
+    }
     containerRef.current.appendChild(renderer.domElement);
 
-    // Orb
-    const geometry = new THREE.IcosahedronGeometry(2, 2);
-    const material = new THREE.MeshNormalMaterial({ wireframe: true, transparent: true, opacity: 0.15 });
-    const orb = new THREE.Mesh(geometry, material);
-    scene.add(orb);
+    // Neural Network Particles
+    const particleCount = 150;
+    const particles = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    const velocities: {x: number, y: number, z: number}[] = [];
 
-    // 3D Text "Xeny"
-    const textCanvas = document.createElement('canvas');
-    const ctx = textCanvas.getContext('2d');
-    const textTextureWidth = 1024;
-    const textTextureHeight = 512;
-
-    if (ctx) {
-      textCanvas.width = textTextureWidth;
-      textCanvas.height = textTextureHeight;
-      ctx.clearRect(0, 0, textTextureWidth, textTextureHeight);
-      ctx.font = 'bold 200px "Plus Jakarta Sans", sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillStyle = '#ffffff';
-      ctx.shadowColor = 'rgba(79, 70, 229, 1)';
-      ctx.shadowBlur = 40;
-      ctx.fillText('Xeny', textTextureWidth / 2, textTextureHeight / 2);
+    const range = 40;
+    for (let i = 0; i < particleCount; i++) {
+        positions[i * 3] = (Math.random() - 0.5) * range;
+        positions[i * 3 + 1] = (Math.random() - 0.5) * range;
+        positions[i * 3 + 2] = (Math.random() - 0.5) * range;
+        
+        velocities.push({
+            x: (Math.random() - 0.5) * 0.05,
+            y: (Math.random() - 0.5) * 0.05,
+            z: (Math.random() - 0.5) * 0.05
+        });
     }
+    particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
-    const texture = new THREE.CanvasTexture(textCanvas);
-    texture.minFilter = THREE.LinearFilter;
-
-    const textGeometry = new THREE.PlaneGeometry(4, 2);
-    const textMaterial = new THREE.MeshBasicMaterial({
-      map: texture,
-      transparent: true,
-      opacity: 1,
-      side: THREE.DoubleSide
+    const pMaterial = new THREE.PointsMaterial({
+        color: 0x6366f1,
+        size: 0.4,
+        transparent: true,
+        opacity: 0.8,
+        blending: THREE.AdditiveBlending
     });
-    const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-    scene.add(textMesh);
 
-    camera.position.z = 6;
+    const particleSystem = new THREE.Points(particles, pMaterial);
+    scene.add(particleSystem);
+
+    // Connection Lines
+    const lineMaterial = new THREE.LineBasicMaterial({
+        color: 0x818cf8,
+        transparent: true,
+        opacity: 0.15 
+    });
+
+    const lineGeometry = new THREE.BufferGeometry();
+    const lineMesh = new THREE.LineSegments(lineGeometry, lineMaterial);
+    scene.add(lineMesh);
+
+    // Main Orbiting Ring
+    const orbitGeometry = new THREE.TorusGeometry(12, 0.1, 64, 100);
+    const orbitMaterial = new THREE.MeshBasicMaterial({ color: 0x6366f1, transparent: true, opacity: 0.15 });
+    const orbitRing = new THREE.Mesh(orbitGeometry, orbitMaterial);
+    orbitRing.rotation.x = Math.PI / 2;
+    scene.add(orbitRing);
+
+    // Central Icosahedron
+    const icoGeometry = new THREE.IcosahedronGeometry(3, 1);
+    const icoMaterial = new THREE.MeshBasicMaterial({ 
+      color: 0x4f46e5, 
+      wireframe: true, 
+      transparent: true, 
+      opacity: 0.1 
+    });
+    const icosahedron = new THREE.Mesh(icoGeometry, icoMaterial);
+    scene.add(icosahedron);
+
+    camera.position.z = 30;
+
+    // Mouse Interaction
+    const mouse = new THREE.Vector2();
+    const onMouseMove = (event: MouseEvent) => {
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    };
+    window.addEventListener('mousemove', onMouseMove);
 
     // Animation Loop
     let animationId: number;
     const animate = () => {
       animationId = requestAnimationFrame(animate);
 
-      const time = Date.now() * 0.001;
+      // Update Particles
+      const positions = particleSystem.geometry.attributes.position.array as Float32Array;
+      for (let i = 0; i < particleCount; i++) {
+          positions[i * 3] += velocities[i].x;
+          positions[i * 3 + 1] += velocities[i].y;
+          positions[i * 3 + 2] += velocities[i].z;
 
-      // Orb Rotation
-      orb.rotation.y += 0.002;
-      orb.rotation.x = Math.sin(time * 0.5) * 0.1;
+          const limit = range / 2;
+          if (positions[i*3] > limit || positions[i*3] < -limit) velocities[i].x *= -1;
+          if (positions[i*3+1] > limit || positions[i*3+1] < -limit) velocities[i].y *= -1;
+          if (positions[i*3+2] > limit || positions[i*3+2] < -limit) velocities[i].z *= -1;
+      }
+      particleSystem.geometry.attributes.position.needsUpdate = true;
 
-      // Text Sway
-      textMesh.position.y = Math.sin(time) * 0.1;
-      textMesh.rotation.y = Math.sin(time * 0.5) * 0.15;
-      textMesh.lookAt(camera.position);
+      // Update Lines
+      const linePositions: number[] = [];
+      const connectionDistance = 6;
+
+      for (let i = 0; i < particleCount; i++) {
+          for (let j = i + 1; j < particleCount; j++) {
+              const x1 = positions[i*3];
+              const y1 = positions[i*3+1];
+              const z1 = positions[i*3+2];
+
+              const x2 = positions[j*3];
+              const y2 = positions[j*3+1];
+              const z2 = positions[j*3+2];
+
+              const dist = Math.sqrt((x1-x2)**2 + (y1-y2)**2 + (z1-z2)**2);
+
+              if (dist < connectionDistance) {
+                  linePositions.push(x1, y1, z1);
+                  linePositions.push(x2, y2, z2);
+              }
+          }
+      }
+      lineMesh.geometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+
+      // Rotation with mouse interaction
+      const time = Date.now() * 0.0005;
+      const scrollY = window.scrollY;
+      
+      scene.rotation.y = time * 0.05 + (mouse.x * 0.1);
+      scene.rotation.x = (mouse.y * 0.1) + (scrollY * 0.0002);
+
+      orbitRing.rotation.z = time * 0.1;
+      orbitRing.rotation.x = Math.PI / 2 + Math.sin(time * 0.2) * 0.1;
+
+      icosahedron.rotation.y = time * 0.15;
+      icosahedron.rotation.x = scrollY * 0.0005;
+      icosahedron.position.y = Math.sin(time) * 0.3;
 
       renderer.render(scene, camera);
     };
     animate();
 
-    // Resize Handler
     const handleResize = () => {
       if (!containerRef.current) return;
       camera.aspect = window.innerWidth / window.innerHeight;
@@ -156,18 +228,32 @@ const ThreeBackground = () => {
     return () => {
       cancelAnimationFrame(animationId);
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('mousemove', onMouseMove);
       if (containerRef.current && containerRef.current.contains(renderer.domElement)) {
         containerRef.current.removeChild(renderer.domElement);
       }
-      geometry.dispose();
-      material.dispose();
-      textGeometry.dispose();
-      textMaterial.dispose();
+      particles.dispose();
+      pMaterial.dispose();
+      lineGeometry.dispose();
+      lineMaterial.dispose();
+      orbitGeometry.dispose();
+      orbitMaterial.dispose();
+      icoGeometry.dispose();
+      icoMaterial.dispose();
       renderer.dispose();
     };
   }, []);
 
-  return <div ref={containerRef} className="fixed top-0 left-0 w-full h-full -z-10 opacity-80 pointer-events-none" />;
+  return (
+    <div 
+      ref={containerRef} 
+      className="fixed top-0 left-0 w-full h-full pointer-events-none"
+      style={{ 
+        zIndex: 0, 
+        background: 'linear-gradient(to bottom, #f8fafc 0%, #eef2ff 50%, #faf5ff 100%)' 
+      }}
+    />
+  );
 };
 
 
@@ -230,29 +316,91 @@ const HeroTypewriter = () => {
  */
 const UrbanPiperSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (!bgRef.current) return;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, bgRef.current.clientWidth / bgRef.current.clientHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    
+    renderer.setSize(bgRef.current.clientWidth, bgRef.current.clientHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    bgRef.current.appendChild(renderer.domElement);
+
+    const geometry = new THREE.IcosahedronGeometry(2.5, 1); 
+    const material = new THREE.MeshBasicMaterial({ 
+        color: 0x6366f1, 
+        wireframe: true, 
+        transparent: true, 
+        opacity: 0.08 
+    });
+    const orb = new THREE.Mesh(geometry, material);
+    scene.add(orb);
+    
+    const orbitGeometry = new THREE.TorusGeometry(3.5, 0.05, 16, 100);
+    const orbitMaterial = new THREE.MeshBasicMaterial({ color: 0x6366f1, transparent: true, opacity: 0.2 });
+    const orbitRing = new THREE.Mesh(orbitGeometry, orbitMaterial);
+    orbitRing.rotation.x = Math.PI / 2;
+    scene.add(orbitRing);
+
+    camera.position.z = 5;
+
+    let animationId: number;
+    const animate = () => {
+        animationId = requestAnimationFrame(animate);
+        orb.rotation.y += 0.002;
+        orb.rotation.x += 0.001;
+        
+        orbitRing.rotation.z -= 0.005;
+        orbitRing.rotation.x = Math.PI / 2 + Math.sin(Date.now() * 0.001) * 0.1;
+
+        renderer.render(scene, camera);
+    };
+    animate();
+
+    const handleResize = () => {
+       if (!bgRef.current) return;
+       camera.aspect = bgRef.current.clientWidth / bgRef.current.clientHeight;
+       camera.updateProjectionMatrix();
+       renderer.setSize(bgRef.current.clientWidth, bgRef.current.clientHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+        cancelAnimationFrame(animationId);
+        window.removeEventListener('resize', handleResize);
+        if (bgRef.current && bgRef.current.contains(renderer.domElement)) {
+            bgRef.current.removeChild(renderer.domElement);
+        }
+        geometry.dispose();
+        material.dispose();
+        orbitGeometry.dispose();
+        orbitMaterial.dispose();
+        renderer.dispose();
+    };
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
       if (!sectionRef.current) return;
       const rect = sectionRef.current.getBoundingClientRect();
       const windowHeight = window.innerHeight;
-
-      // Determine if section is generally visible
+      
       const isSectionVisible = rect.top < windowHeight && rect.bottom > 0;
       setIsVisible(isSectionVisible);
 
       if (isSectionVisible) {
-        // Calculate progress as element crosses the viewport
-        // 0 when top is at bottom of viewport, 1 when top is at top of viewport (approx)
-        const progress = Math.min(Math.max(1 - (rect.top / (windowHeight * 0.6)), 0), 1);
-        setScrollProgress(progress);
+         const progress = Math.min(Math.max(1 - (rect.top / (windowHeight * 0.6)), 0), 1);
+         setScrollProgress(progress);
       }
     };
 
     window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Init check
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -260,34 +408,41 @@ const UrbanPiperSection = () => {
   const words = quote.split(' ');
 
   return (
-    <section ref={sectionRef} className="relative min-h-[80vh] flex items-center justify-center bg-slate-900 overflow-hidden py-20">
-      {/* Background Accents */}
-      <HeroCanvas />
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-20 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-600 rounded-full blur-[120px]"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600 rounded-full blur-[120px]"></div>
-      </div>
+    <section ref={sectionRef} className="relative min-h-[80vh] flex items-center justify-center bg-slate-900 overflow-hidden py-20 z-10">
+       <div ref={bgRef} className="absolute inset-0 z-0 pointer-events-none opacity-50" />
 
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="max-w-5xl mx-auto">
-          <div
-            className={`flex items-center gap-3 mb-12 transition-all duration-1000 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-          >
-            <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-slate-900 text-xl font-bold">X</div>
-            <span className="text-white font-bold tracking-wide text-xl">xeny</span>
-            <span className="h-px w-12 bg-white/20 ml-4"></span>
-            <span className="text-slate-400 text-xs uppercase tracking-widest">Enterprise Case Study</span>
-          </div>
+       <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-20 pointer-events-none">
+            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-600 rounded-full blur-[120px]"></div>
+            <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600 rounded-full blur-[120px]"></div>
+        </div>
 
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight mb-12 relative z-20 text-white">
-            <span className="text-indigo-500 text-4xl md:text-6xl absolute -ml-8 md:-ml-12 -mt-4 opacity-50">"</span>
-               <ScrollTextReveal
-              text={quote}
-              splitBy="word"
-              staggerDelay={20}
-            />
-          </h2>
-          {/* 
+        <div className="container mx-auto px-6 relative z-10">
+            <div className="max-w-5xl mx-auto">
+                <div 
+                  className={`flex items-center gap-3 mb-12 transition-all duration-1000 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                >
+                    <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-slate-900 text-xl font-bold">U</div>
+                    <span className="text-white font-bold tracking-wide text-xl">urbanpiper</span>
+                    <span className="h-px w-12 bg-white/20 ml-4"></span>
+                    <span className="text-slate-400 text-xs uppercase tracking-widest">Enterprise Case Study</span>
+                </div>
+
+                <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight mb-12 relative z-20 text-white">
+                    <span className="text-indigo-500 text-4xl md:text-6xl absolute -ml-8 md:-ml-12 -mt-4 opacity-50">"</span>
+                    {words.map((word, i) => (
+                      <span 
+                        key={i} 
+                        className="inline-block transition-opacity duration-300 mr-3"
+                        style={{ 
+                          opacity: (i / words.length) < scrollProgress ? 1 : 0.2,
+                          transitionDelay: `${i * 20}ms`
+                        }}
+                      >
+                        {word}
+                      </span>
+                    ))}
+                </h2>
+
                 <div 
                   className={`flex items-center gap-6 transition-all duration-1000 delay-200 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                 >
@@ -301,9 +456,9 @@ const UrbanPiperSection = () => {
                         <span className="text-green-400 font-bold text-2xl">85%</span>
                         <span className="text-slate-500 text-xs uppercase">Support Automated</span>
                     </div>
-                </div> */}
+                </div>
+            </div>
         </div>
-      </div>
     </section>
   );
 };
@@ -592,11 +747,11 @@ export default function CallersPage() {
           </div>
 
           <ScrollReveal direction="up" delay={100}>
-            <h1 className="text-3xl sm:text-4xl md:text-7xl font-bold leading-[1.1] mb-6 text-slate-900">
+            <h1 className="text-3xl sm:text-4xl md:text-7xl font-bold leading-[1.1] mb-2 text-slate-900">
               <ScrollTextReveal
                 text="Your 24/7 AI Voice Employee For"
                 splitBy="word"
-                className="block mb-4"
+                className="block "
               />
               <br />
               <HeroTypewriter />
@@ -663,24 +818,7 @@ export default function CallersPage() {
       <UrbanPiperSection />
 
       {/* CLIENTS MARQUEE */}
-      <div className="bg-white border-y border-slate-100 py-10 overflow-hidden relative">
-        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10"></div>
-        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white to-transparent z-10"></div>
-        <div className="flex w-max gap-16 items-center opacity-60 grayscale hover:grayscale-0 transition-all duration-500 animate-[scroll_40s_linear_infinite]">
-          {/* Note: Using FontAwesome classes for brands as Lucide doesn't have them all */}
-          {[1, 2].map((i) => (
-            <div key={i} className="flex gap-16">
-              <i className="fab fa-amazon text-4xl hover:text-[#FF9900] transition-colors"></i>
-              <i className="fab fa-google text-3xl hover:text-[#4285F4] transition-colors"></i>
-              <i className="fab fa-spotify text-4xl hover:text-[#1DB954] transition-colors"></i>
-              <i className="fab fa-airbnb text-4xl hover:text-[#FF5A5F] transition-colors"></i>
-              <i className="fab fa-uber text-4xl hover:text-black transition-colors"></i>
-              <i className="fab fa-stripe text-5xl hover:text-[#635BFF] transition-colors"></i>
-              <i className="fab fa-microsoft text-3xl hover:text-[#F25022] transition-colors"></i>
-            </div>
-          ))}
-        </div>
-      </div>
+    
 
       {/* STATS SECTION */}
       <section id="stats" className="py-24 bg-white z-10 relative">
@@ -1364,6 +1502,55 @@ export default function CallersPage() {
             <SavingsCalculator />
         </div>
       </section>
+
+          {/* INSIGHTS */}
+      <section className="py-24 bg-white border-y border-slate-100 z-10 relative">
+        <div className="container mx-auto px-6">
+            <h2 className="text-4xl font-bold text-slate-900 mb-12 text-center">Proven Results from <br /> 90M+ completed calls</h2>
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+                <div className="bg-white p-8 rounded-[40px] shadow-lg border border-slate-100">
+                    <div className="flex items-center gap-4 mb-6">
+                        <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center text-blue-600"><Phone /></div>
+                        <h3 className="text-xl font-bold text-slate-900">73% of Customers Prefer Voice!</h3>
+                    </div>
+                    <p className="text-slate-600 mb-8 leading-relaxed">Most customers love voice, so you connect better and win more trust. <strong>Get the edge.</strong></p>
+                    <div className="relative h-48 rounded-3xl bg-gradient-to-r from-cyan-400 to-blue-500 p-6 flex items-center justify-center overflow-hidden">
+                         <div className="absolute right-0 top-0 opacity-20"><div className="text-9xl text-white font-bold opacity-20">73%</div></div>
+                        <div className="relative z-10 flex gap-8 items-center text-white"><div className="w-24 h-24 rounded-full border-8 border-white/30 border-t-white flex items-center justify-center text-xl font-bold">73%</div><div><p className="text-2xl font-bold">Voice</p><p className="text-sm opacity-80">Preferred Channel</p></div></div>
+                    </div>
+                </div>
+                <div className="space-y-6">
+                    <div className="bg-white p-6 rounded-3xl border border-slate-100 hover:shadow-md transition-all flex gap-4 items-start">
+                        <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-600 flex-shrink-0"><Clock /></div>
+                        <div><h4 className="font-bold text-slate-900">Speed to Lead</h4><p className="text-sm text-slate-500">Contacting a lead within 1 minute increases conversion by 391%.</p></div>
+                    </div>
+                    <div className="bg-white p-6 rounded-3xl border border-slate-100 hover:shadow-md transition-all flex gap-4 items-start">
+                        <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 flex-shrink-0"><CheckCircle /></div>
+                        <div><h4 className="font-bold text-slate-900">Consistency</h4><p className="text-sm text-slate-500">AI never has a "bad day". Every customer gets your best pitch, every time.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </section>
+
+      {/* CLIENTS MARQUEE */}
+      <div className="bg-white border-y border-slate-100 py-10 overflow-hidden relative z-10">
+        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10"></div>
+        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white to-transparent z-10"></div>
+        <div className="flex w-max gap-16 items-center opacity-60 grayscale hover:grayscale-0 transition-all duration-500 animate-[scroll_40s_linear_infinite]">
+             {[1, 2].map((i) => (
+                <div key={i} className="flex gap-16">
+                  <i className="fab fa-amazon text-4xl hover:text-[#FF9900] transition-colors"></i>
+                  <i className="fab fa-google text-3xl hover:text-[#4285F4] transition-colors"></i>
+                  <i className="fab fa-spotify text-4xl hover:text-[#1DB954] transition-colors"></i>
+                  <i className="fab fa-airbnb text-4xl hover:text-[#FF5A5F] transition-colors"></i>
+                  <i className="fab fa-uber text-4xl hover:text-black transition-colors"></i>
+                  <i className="fab fa-stripe text-5xl hover:text-[#635BFF] transition-colors"></i>
+                  <i className="fab fa-microsoft text-3xl hover:text-[#F25022] transition-colors"></i>
+                </div>
+             ))}
+        </div>
+      </div>
 
   {/* INSIGHTS */ }
   {/* <section className="py-24 bg-white border-y border-slate-100">

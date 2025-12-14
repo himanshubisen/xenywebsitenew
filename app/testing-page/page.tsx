@@ -36,19 +36,23 @@ import {
   PlayCircle,
   Rocket,
   FileSpreadsheet,
-  Mail
+  Mail,
+  Check,
+  ArrowRight,
+  PhoneIncoming,
+  PhoneOutgoing,
+  Play
 } from 'lucide-react';
 import * as THREE from 'three';
 
 // --- Types ---
-type TabId = 'real_estate' | 'growth' | 'hr' | 'finance' | 'cx' | 'ops' | 'marketing';
+type TabId = 'inbound' | 'outbound';
 type ServiceId = 'edu' | 'ecommerce' | 'realestate' | 'healthcare' | 'logistics' | 'finance_serv';
 
 // --- Components ---
 
 /**
- * Three.js Background Component
- * Handles the 3D Orb and Background Color
+ * Enhanced Three.js Background with Multiple Visual Elements
  */
 const ThreeBackground = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -56,65 +60,144 @@ const ThreeBackground = () => {
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Scene Setup
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    
+    while (containerRef.current.firstChild) {
+      containerRef.current.removeChild(containerRef.current.firstChild);
+    }
     containerRef.current.appendChild(renderer.domElement);
 
-    // Orb
-    const geometry = new THREE.IcosahedronGeometry(2.2, 2);
-    const material = new THREE.MeshBasicMaterial({ 
-      color: 0x4f46e5, // Indigo-600
+    // Neural Network Particles
+    const particleCount = 150;
+    const particles = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    const velocities: {x: number, y: number, z: number}[] = [];
+
+    const range = 40;
+    for (let i = 0; i < particleCount; i++) {
+        positions[i * 3] = (Math.random() - 0.5) * range;
+        positions[i * 3 + 1] = (Math.random() - 0.5) * range;
+        positions[i * 3 + 2] = (Math.random() - 0.5) * range;
+        
+        velocities.push({
+            x: (Math.random() - 0.5) * 0.05,
+            y: (Math.random() - 0.5) * 0.05,
+            z: (Math.random() - 0.5) * 0.05
+        });
+    }
+    particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+    const pMaterial = new THREE.PointsMaterial({
+        color: 0x6366f1,
+        size: 0.4,
+        transparent: true,
+        opacity: 0.8,
+        blending: THREE.AdditiveBlending
+    });
+
+    const particleSystem = new THREE.Points(particles, pMaterial);
+    scene.add(particleSystem);
+
+    // Connection Lines
+    const lineMaterial = new THREE.LineBasicMaterial({
+        color: 0x818cf8,
+        transparent: true,
+        opacity: 0.15 
+    });
+
+    const lineGeometry = new THREE.BufferGeometry();
+    const lineMesh = new THREE.LineSegments(lineGeometry, lineMaterial);
+    scene.add(lineMesh);
+
+    // Main Orbiting Ring
+    const orbitGeometry = new THREE.TorusGeometry(12, 0.1, 64, 100);
+    const orbitMaterial = new THREE.MeshBasicMaterial({ color: 0x6366f1, transparent: true, opacity: 0.15 });
+    const orbitRing = new THREE.Mesh(orbitGeometry, orbitMaterial);
+    orbitRing.rotation.x = Math.PI / 2;
+    scene.add(orbitRing);
+
+    // Central Icosahedron
+    const icoGeometry = new THREE.IcosahedronGeometry(3, 1);
+    const icoMaterial = new THREE.MeshBasicMaterial({ 
+      color: 0x4f46e5, 
       wireframe: true, 
       transparent: true, 
-      opacity: 0.08 
+      opacity: 0.1 
     });
-    const orb = new THREE.Mesh(geometry, material);
-    scene.add(orb);
+    const icosahedron = new THREE.Mesh(icoGeometry, icoMaterial);
+    scene.add(icosahedron);
 
-    // Particles
-    const particlesGeometry = new THREE.BufferGeometry();
-    const particlesCount = 700;
-    const posArray = new Float32Array(particlesCount * 3);
-    
-    for(let i = 0; i < particlesCount * 3; i++) {
-        posArray[i] = (Math.random() - 0.5) * 15; 
-    }
-    
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-    const particlesMaterial = new THREE.PointsMaterial({
-        size: 0.02,
-        color: 0x8b5cf6, 
-        transparent: true,
-        opacity: 0.5,
-    });
-    const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-    scene.add(particlesMesh);
+    camera.position.z = 30;
 
-    camera.position.z = 6;
+    // Mouse Interaction
+    const mouse = new THREE.Vector2();
+    const onMouseMove = (event: MouseEvent) => {
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    };
+    window.addEventListener('mousemove', onMouseMove);
 
     // Animation Loop
     let animationId: number;
     const animate = () => {
       animationId = requestAnimationFrame(animate);
-      
+
+      // Update Particles
+      const positions = particleSystem.geometry.attributes.position.array as Float32Array;
+      for (let i = 0; i < particleCount; i++) {
+          positions[i * 3] += velocities[i].x;
+          positions[i * 3 + 1] += velocities[i].y;
+          positions[i * 3 + 2] += velocities[i].z;
+
+          const limit = range / 2;
+          if (positions[i*3] > limit || positions[i*3] < -limit) velocities[i].x *= -1;
+          if (positions[i*3+1] > limit || positions[i*3+1] < -limit) velocities[i].y *= -1;
+          if (positions[i*3+2] > limit || positions[i*3+2] < -limit) velocities[i].z *= -1;
+      }
+      particleSystem.geometry.attributes.position.needsUpdate = true;
+
+      // Update Lines
+      const linePositions: number[] = [];
+      const connectionDistance = 6;
+
+      for (let i = 0; i < particleCount; i++) {
+          for (let j = i + 1; j < particleCount; j++) {
+              const x1 = positions[i*3];
+              const y1 = positions[i*3+1];
+              const z1 = positions[i*3+2];
+
+              const x2 = positions[j*3];
+              const y2 = positions[j*3+1];
+              const z2 = positions[j*3+2];
+
+              const dist = Math.sqrt((x1-x2)**2 + (y1-y2)**2 + (z1-z2)**2);
+
+              if (dist < connectionDistance) {
+                  linePositions.push(x1, y1, z1);
+                  linePositions.push(x2, y2, z2);
+              }
+          }
+      }
+      lineMesh.geometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+
+      // Rotation with mouse interaction
       const time = Date.now() * 0.0005;
-      const scrollY = window.scrollY; 
-
-      // Orb Rotation
-      orb.rotation.y = time * 0.15; 
-      orb.rotation.x = scrollY * 0.0005; 
+      const scrollY = window.scrollY;
       
-      // Particles Rotation
-      particlesMesh.rotation.y = -time * 0.05;
-      particlesMesh.rotation.x = scrollY * 0.0002;
+      scene.rotation.y = time * 0.05 + (mouse.x * 0.1);
+      scene.rotation.x = (mouse.y * 0.1) + (scrollY * 0.0002);
 
-      // Gentle floating
-      orb.position.y = Math.sin(time) * 0.1;
+      orbitRing.rotation.z = time * 0.1;
+      orbitRing.rotation.x = Math.PI / 2 + Math.sin(time * 0.2) * 0.1;
+
+      icosahedron.rotation.y = time * 0.15;
+      icosahedron.rotation.x = scrollY * 0.0005;
+      icosahedron.position.y = Math.sin(time) * 0.3;
 
       renderer.render(scene, camera);
     };
@@ -132,13 +215,18 @@ const ThreeBackground = () => {
     return () => {
       cancelAnimationFrame(animationId);
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('mousemove', onMouseMove);
       if (containerRef.current && containerRef.current.contains(renderer.domElement)) {
         containerRef.current.removeChild(renderer.domElement);
       }
-      geometry.dispose();
-      material.dispose();
-      particlesGeometry.dispose();
-      particlesMaterial.dispose();
+      particles.dispose();
+      pMaterial.dispose();
+      lineGeometry.dispose();
+      lineMaterial.dispose();
+      orbitGeometry.dispose();
+      orbitMaterial.dispose();
+      icoGeometry.dispose();
+      icoMaterial.dispose();
       renderer.dispose();
     };
   }, []);
@@ -148,8 +236,8 @@ const ThreeBackground = () => {
       ref={containerRef} 
       className="fixed top-0 left-0 w-full h-full pointer-events-none"
       style={{ 
-        zIndex: -1, 
-        background: 'radial-gradient(circle at 50% 30%, rgba(238, 242, 255, 0.8) 0%, rgba(248, 250, 252, 1) 70%)' 
+        zIndex: 0, 
+        background: 'linear-gradient(to bottom, #f8fafc 0%, #eef2ff 50%, #faf5ff 100%)' 
       }}
     />
   );
@@ -195,12 +283,77 @@ const HeroTypewriter = () => {
 };
 
 /**
- * Scroll Reveal Section (UrbanPiper Case Study)
+ * Enhanced UrbanPiper Section with 3D Background
  */
 const UrbanPiperSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const bgRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (!bgRef.current) return;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, bgRef.current.clientWidth / bgRef.current.clientHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    
+    renderer.setSize(bgRef.current.clientWidth, bgRef.current.clientHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    bgRef.current.appendChild(renderer.domElement);
+
+    const geometry = new THREE.IcosahedronGeometry(2.5, 1); 
+    const material = new THREE.MeshBasicMaterial({ 
+        color: 0x6366f1, 
+        wireframe: true, 
+        transparent: true, 
+        opacity: 0.08 
+    });
+    const orb = new THREE.Mesh(geometry, material);
+    scene.add(orb);
+    
+    const orbitGeometry = new THREE.TorusGeometry(3.5, 0.05, 16, 100);
+    const orbitMaterial = new THREE.MeshBasicMaterial({ color: 0x6366f1, transparent: true, opacity: 0.2 });
+    const orbitRing = new THREE.Mesh(orbitGeometry, orbitMaterial);
+    orbitRing.rotation.x = Math.PI / 2;
+    scene.add(orbitRing);
+
+    camera.position.z = 5;
+
+    let animationId: number;
+    const animate = () => {
+        animationId = requestAnimationFrame(animate);
+        orb.rotation.y += 0.002;
+        orb.rotation.x += 0.001;
+        
+        orbitRing.rotation.z -= 0.005;
+        orbitRing.rotation.x = Math.PI / 2 + Math.sin(Date.now() * 0.001) * 0.1;
+
+        renderer.render(scene, camera);
+    };
+    animate();
+
+    const handleResize = () => {
+       if (!bgRef.current) return;
+       camera.aspect = bgRef.current.clientWidth / bgRef.current.clientHeight;
+       camera.updateProjectionMatrix();
+       renderer.setSize(bgRef.current.clientWidth, bgRef.current.clientHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+        cancelAnimationFrame(animationId);
+        window.removeEventListener('resize', handleResize);
+        if (bgRef.current && bgRef.current.contains(renderer.domElement)) {
+            bgRef.current.removeChild(renderer.domElement);
+        }
+        geometry.dispose();
+        material.dispose();
+        orbitGeometry.dispose();
+        orbitMaterial.dispose();
+        renderer.dispose();
+    };
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -212,8 +365,8 @@ const UrbanPiperSection = () => {
       setIsVisible(isSectionVisible);
 
       if (isSectionVisible) {
-        const progress = Math.min(Math.max(1 - (rect.top / (windowHeight * 0.6)), 0), 1);
-        setScrollProgress(progress);
+         const progress = Math.min(Math.max(1 - (rect.top / (windowHeight * 0.6)), 0), 1);
+         setScrollProgress(progress);
       }
     };
 
@@ -227,6 +380,8 @@ const UrbanPiperSection = () => {
 
   return (
     <section ref={sectionRef} className="relative min-h-[80vh] flex items-center justify-center bg-slate-900 overflow-hidden py-20 z-10">
+       <div ref={bgRef} className="absolute inset-0 z-0 pointer-events-none opacity-50" />
+
        <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-20 pointer-events-none">
             <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-600 rounded-full blur-[120px]"></div>
             <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600 rounded-full blur-[120px]"></div>
@@ -430,7 +585,7 @@ const SavingsCalculator = () => {
 
 export default function CallersPage() {
   const [activeIndustry, setActiveIndustry] = useState<ServiceId>('edu');
-  const [activeUseCase, setActiveUseCase] = useState<TabId>('real_estate');
+  const [activeUseCase, setActiveUseCase] = useState<TabId>('inbound');
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
 
   useEffect(() => {
@@ -454,7 +609,7 @@ export default function CallersPage() {
   ];
 
   return (
-    <main className="font-sans text-slate-900 selection:bg-indigo-100 selection:text-indigo-900 relative">
+    <main className="font-sans text-slate-900 selection:bg-indigo-100 selection:text-indigo-900 relative overflow-x-hidden">
       <ThreeBackground />
 
       {/* NAVBAR */}
@@ -527,25 +682,6 @@ export default function CallersPage() {
 
       <UrbanPiperSection />
 
-      {/* CLIENTS MARQUEE */}
-      <div className="bg-white border-y border-slate-100 py-10 overflow-hidden relative z-10">
-        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10"></div>
-        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white to-transparent z-10"></div>
-        <div className="flex w-max gap-16 items-center opacity-60 grayscale hover:grayscale-0 transition-all duration-500 animate-[scroll_40s_linear_infinite]">
-             {[1, 2].map((i) => (
-                <div key={i} className="flex gap-16">
-                  <i className="fab fa-amazon text-4xl hover:text-[#FF9900] transition-colors"></i>
-                  <i className="fab fa-google text-3xl hover:text-[#4285F4] transition-colors"></i>
-                  <i className="fab fa-spotify text-4xl hover:text-[#1DB954] transition-colors"></i>
-                  <i className="fab fa-airbnb text-4xl hover:text-[#FF5A5F] transition-colors"></i>
-                  <i className="fab fa-uber text-4xl hover:text-black transition-colors"></i>
-                  <i className="fab fa-stripe text-5xl hover:text-[#635BFF] transition-colors"></i>
-                  <i className="fab fa-microsoft text-3xl hover:text-[#F25022] transition-colors"></i>
-                </div>
-             ))}
-        </div>
-      </div>
-
       {/* STATS SECTION */}
       <section id="stats" className="py-24 bg-white z-10 relative">
         <div className="container mx-auto px-6">
@@ -556,12 +692,129 @@ export default function CallersPage() {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 text-center">
-                <div className="group"><div className="text-4xl font-bold text-indigo-600 mb-2">90%</div><p className="text-xs font-bold uppercase text-slate-400">Call Automation</p></div>
-                <div className="group"><div className="text-4xl font-bold text-green-500 mb-2">90%</div><p className="text-xs font-bold uppercase text-slate-400">Less Staffing</p></div>
-                <div className="group"><div className="text-4xl font-bold text-blue-500 mb-2">50%</div><p className="text-xs font-bold uppercase text-slate-400">Fewer Errors</p></div>
-                <div className="group"><div className="text-4xl font-bold text-orange-500 mb-2">60%</div><p className="text-xs font-bold uppercase text-slate-400">Cost Savings</p></div>
-                <div className="group"><div className="text-4xl font-bold text-purple-500 mb-2">60%</div><p className="text-xs font-bold uppercase text-slate-400">Qualified Leads</p></div>
-                <div className="group"><div className="text-4xl font-bold text-pink-500 mb-2">10X</div><p className="text-xs font-bold uppercase text-slate-400">Sales Velocity</p></div>
+                <div className="group transform hover:scale-105 transition-transform"><div className="text-4xl font-bold text-indigo-600 mb-2">90%</div><p className="text-xs font-bold uppercase text-slate-400">Call Automation</p></div>
+                <div className="group transform hover:scale-105 transition-transform"><div className="text-4xl font-bold text-green-500 mb-2">90%</div><p className="text-xs font-bold uppercase text-slate-400">Less Staffing</p></div>
+                <div className="group transform hover:scale-105 transition-transform"><div className="text-4xl font-bold text-blue-500 mb-2">50%</div><p className="text-xs font-bold uppercase text-slate-400">Fewer Errors</p></div>
+                <div className="group transform hover:scale-105 transition-transform"><div className="text-4xl font-bold text-orange-500 mb-2">60%</div><p className="text-xs font-bold uppercase text-slate-400">Cost Savings</p></div>
+                <div className="group transform hover:scale-105 transition-transform"><div className="text-4xl font-bold text-purple-500 mb-2">60%</div><p className="text-xs font-bold uppercase text-slate-400">Qualified Leads</p></div>
+                <div className="group transform hover:scale-105 transition-transform"><div className="text-4xl font-bold text-pink-500 mb-2">10X</div><p className="text-xs font-bold uppercase text-slate-400">Sales Velocity</p></div>
+            </div>
+        </div>
+      </section>
+
+      {/* USE CASES TABS */}
+      <section id="use-cases" className="py-24 bg-slate-50 z-10 relative">
+        <div className="container mx-auto px-6">
+            <div className="text-center mb-12">
+                <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">Applications</span>
+                <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mt-2 mb-4">Workflows That Save You Time</h2>
+                
+                <div className="flex justify-center gap-4 mt-8">
+                    {['inbound', 'outbound'].map((tab) => (
+                      <button 
+                        key={tab}
+                        onClick={() => setActiveUseCase(tab as TabId)}
+                        className={`px-8 py-3 rounded-full text-sm font-bold transition-all border flex items-center ${
+                          activeUseCase === tab 
+                          ? 'bg-slate-900 text-white border-slate-900 shadow-lg' 
+                          : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300'
+                        }`}
+                      >
+                         {tab === 'inbound' ? <PhoneIncoming className="w-4 h-4 inline mr-2" /> : <PhoneOutgoing className="w-4 h-4 inline mr-2" />}
+                         {tab.charAt(0).toUpperCase() + tab.slice(1)} Call Workflows
+                      </button>
+                    ))}
+                </div>
+            </div>
+
+            {/* Use Cases Content */}
+            <div className="max-w-6xl mx-auto min-h-[400px]">
+               {activeUseCase === 'inbound' && (
+                  <div className="grid md:grid-cols-3 gap-6 justify-center animate-in fade-in slide-in-from-bottom-4 duration-500">
+                      {[
+                        { title: "Customer Support", icon: <Settings className="text-blue-500" />, desc: "Handle FAQs, troubleshoot issues, and route complex queries to agents." },
+                        { title: "Appointment Scheduling", icon: <Calendar className="text-green-500" />, desc: "Book, reschedule, or cancel appointments directly via voice." },
+                        { title: "Order Status", icon: <ShoppingBag className="text-purple-500" />, desc: "Provide real-time updates on shipments and order details." },
+                        { title: "Inbound Sales", icon: <TrendingUp className="text-orange-500" />, desc: "Qualify inbound leads instantly and transfer hot prospects." },
+                        { title: "Help Desk", icon: <ShieldCheck className="text-red-500" />, desc: "L1 support automation for IT and technical issues." },
+                        { title: "Emergency Response", icon: <HeartPulse className="text-pink-500" />, desc: "Triaging urgent calls for healthcare or services." }
+                      ].map((card, i) => (
+                        <div key={i} className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl transition-all group">
+                            <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                {card.icon}
+                            </div>
+                            <h3 className="font-bold text-lg text-slate-900 mb-2">{card.title}</h3>
+                            <p className="text-sm text-slate-500">{card.desc}</p>
+                        </div>
+                      ))}
+                  </div>
+               )}
+               {activeUseCase === 'outbound' && (
+                  <div className="grid md:grid-cols-3 gap-6 justify-center animate-in fade-in slide-in-from-bottom-4 duration-500">
+                      {[
+                        { title: "Lead Qualification", icon: <CheckCircle className="text-green-500" />, desc: "Call thousands of leads to identify interest before sales reps engage." },
+                        { title: "Payment Collection", icon: <Coins className="text-yellow-500" />, desc: "Gentle reminders and payment processing over the phone." },
+                        { title: "Survey & Feedback", icon: <Smile className="text-blue-500" />, desc: "Collect NPS scores and customer feedback at scale." },
+                        { title: "Event Reminders", icon: <Calendar className="text-purple-500" />, desc: "Boost attendance with automated reminder calls." },
+                        { title: "Reactivation", icon: <Zap className="text-orange-500" />, desc: "Re-engage dormant customers with special offers." },
+                        { title: "Market Research", icon: <Search className="text-indigo-500" />, desc: "Conduct voice-based surveys for faster data collection." }
+                      ].map((card, i) => (
+                        <div key={i} className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl transition-all group">
+                            <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                                {card.icon}
+                            </div>
+                            <h3 className="font-bold text-lg text-slate-900 mb-2">{card.title}</h3>
+                            <p className="text-sm text-slate-500">{card.desc}</p>
+                        </div>
+                      ))}
+                  </div>
+               )}
+            </div>
+        </div>
+      </section>
+
+      {/* LAUNCH PROCESS SECTION */}
+      <section className="py-24 bg-white border-y border-slate-100 z-10 relative">
+        <div className="container mx-auto px-6">
+            <div className="text-center mb-16">
+                <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">How It Works</span>
+                <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">Launch Your AI Voicebot in Minutes</h2>
+                <p className="text-slate-500">From setup to first call, the process is seamless.</p>
+            </div>
+
+            <div className="grid md:grid-cols-4 gap-8 relative">
+                <div className="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-gradient-to-r from-indigo-50 via-indigo-200 to-indigo-50 -z-10"></div>
+                
+                {[
+                    { 
+                        icon: <Layout className="w-6 h-6 text-indigo-600" />, 
+                        title: "1. Design Flow", 
+                        desc: "Use our drag-and-drop builder to create conversation paths and logic." 
+                    },
+                    { 
+                        icon: <Mic className="w-6 h-6 text-pink-600" />,
+                        title: "2. Select Voice", 
+                        desc: "Choose from 50+ lifelike voices or clone your own agent's voice." 
+                    },
+                    { 
+                        icon: <PlayCircle className="w-6 h-6 text-orange-600" />, 
+                        title: "3. Test & Train", 
+                        desc: "Simulate calls instantly and fine-tune responses with custom knowledge." 
+                    },
+                    { 
+                        icon: <Rocket className="w-6 h-6 text-green-600" />, 
+                        title: "4. Go Live", 
+                        desc: "Purchase a number or port yours, and start handling calls 24/7." 
+                    }
+                ].map((step, i) => (
+                    <div key={i} className="bg-white p-6 rounded-2xl border border-slate-100 shadow-lg hover:shadow-xl transition-all relative group text-center md:text-left">
+                        <div className="w-14 h-14 bg-slate-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-slate-100 shadow-sm mx-auto md:mx-0">
+                            {step.icon}
+                        </div>
+                        <h4 className="font-bold text-lg text-slate-900 mb-2">{step.title}</h4>
+                        <p className="text-sm text-slate-500 leading-relaxed">{step.desc}</p>
+                    </div>
+                ))}
             </div>
         </div>
       </section>
@@ -668,335 +921,7 @@ export default function CallersPage() {
         </div>
       </section>
 
-      {/* USE CASES TABS */}
-      <section id="use-cases" className="py-24 bg-white z-10 relative">
-        <div className="container mx-auto px-6">
-            <div className="text-center mb-12">
-                <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">Applications</span>
-                <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mt-2 mb-4">Workflows That Save You Time</h2>
-                
-                <div className="flex overflow-x-auto pb-4 gap-2 mt-8 justify-start md:justify-center no-scrollbar">
-                    {['real_estate', 'growth', 'hr', 'finance', 'cx', 'ops', 'marketing'].map((tab) => (
-                      <button 
-                        key={tab}
-                        onClick={() => setActiveUseCase(tab as TabId)}
-                        className={`px-5 py-2.5 rounded-full text-sm font-bold whitespace-nowrap border transition-all ${
-                          activeUseCase === tab 
-                          ? 'bg-slate-900 text-white border-slate-900' 
-                          : 'bg-white text-slate-600 border-slate-200'
-                        }`}
-                      >
-                        {tab.replace('_', ' ').charAt(0).toUpperCase() + tab.replace('_', ' ').slice(1)}
-                      </button>
-                    ))}
-                </div>
-            </div>
-
-            {/* Use Cases Content */}
-            <div className="max-w-5xl mx-auto min-h-[400px]">
-               {activeUseCase === 'real_estate' && (
-                  <div className="grid md:grid-cols-2 gap-8 justify-center animate-in fade-in slide-in-from-bottom-4 duration-500">
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Real Estate" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><Home className="text-green-400" /> Sales & Leasing</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">Lead & Property Management</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Lead Qualification</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Property visit scheduling</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">New inventory announcements</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Tenant" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><User className="text-yellow-400" /> Tenancy</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">Tenant Management</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Tenant rent reminders</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Lease renewal workflow</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                  </div>
-               )}
-               {activeUseCase === 'growth' && (
-                  <div className="grid md:grid-cols-2 gap-8 justify-center animate-in fade-in slide-in-from-bottom-4 duration-500">
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1552581234-26160f608093?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Growth" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><TrendingUp className="text-red-400" /> Acquisition</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">Lead Conversion</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Lead qualification & routing</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">AI follow-ups on old leads</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Appointment/Demo scheduling</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Revenue" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><BarChart3 className="text-blue-400" /> Revenue</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">Revenue Growth</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Abandoned cart callbacks</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Upsell & cross-sell calling</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Event registration calls</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                  </div>
-               )}
-               {activeUseCase === 'hr' && (
-                  <div className="grid md:grid-cols-2 gap-8 justify-center animate-in fade-in slide-in-from-bottom-4 duration-500">
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="HR" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><UserPlus className="text-purple-400" /> Hiring</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">Recruitment</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">AI-driven interview screening</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Document collection follow-ups</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Offer acceptance confirmation</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Management" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><Users className="text-cyan-400" /> Management</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">Workforce Coordination</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Shift roster confirmation</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Training reminder calls</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Staff scheduling automation</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                  </div>
-               )}
-               {activeUseCase === 'finance' && (
-                  <div className="grid md:grid-cols-2 gap-8 justify-center animate-in fade-in slide-in-from-bottom-4 duration-500">
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1554224155-9727b5398242?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Finance" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><Receipt className="text-green-400" /> Collections</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">Accounts Receivable</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Payment reminder calls</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Outstanding balance follow-ups</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Vendor payout confirmation</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1628348070889-cb656235b4eb?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Services" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><CreditCard className="text-blue-400" /> Services</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">Account Services</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Subscription renewals</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Refund status updates</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Warranty & AMC renewals</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                  </div>
-               )}
-               {activeUseCase === 'cx' && (
-                  <div className="grid md:grid-cols-2 gap-8 justify-center animate-in fade-in slide-in-from-bottom-4 duration-500">
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Feedback" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><Smile className="text-yellow-400" /> Feedback</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">Satisfaction</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">CSAT/NPS Automated Calling</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Post-service feedback</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">In-depth surveys</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Support" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><Settings className="text-indigo-400" /> Support</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">Engagement</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Service outage notifications</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Appointment rescheduling</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">New user onboarding</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                  </div>
-               )}
-               {activeUseCase === 'ops' && (
-                  <div className="grid md:grid-cols-2 gap-8 justify-center animate-in fade-in slide-in-from-bottom-4 duration-500">
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Ops" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><ShieldCheck className="text-blue-500" /> Verification</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">Identity & Risk</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">KYC verification workflows</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Address & identity checks</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Fraud-risk confirmation</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Compliance" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><FileText className="text-slate-300" /> Governance</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">Compliance</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Contract renewal confirmation</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Policy update acknowledgements</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Audit data collection</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                  </div>
-               )}
-               {activeUseCase === 'marketing' && (
-                  <div className="grid md:grid-cols-2 gap-8 justify-center animate-in fade-in slide-in-from-bottom-4 duration-500">
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1557838923-2985c318be48?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Marketing" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><Megaphone className="text-pink-400" /> Outreach</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">Campaigns</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Campaign follow-up calling</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Cold outreach for launches</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Offer/discount broadcasts</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                      <div className="bg-white rounded-[32px] border border-slate-100 shadow-xl group overflow-hidden hover:-translate-y-1 transition-transform">
-                          <div className="h-48 overflow-hidden relative">
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
-                              <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=600&q=80" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt="Activation" />
-                              <div className="absolute bottom-4 left-6 z-20 text-white font-bold text-lg flex items-center gap-2"><Zap className="text-yellow-400" /> Activation</div>
-                          </div>
-                          <div className="p-8">
-                              <h3 className="text-2xl font-bold text-slate-900 mb-4">Events & Awareness</h3>
-                              <div className="space-y-3 mb-8">
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Event attendance confirmation</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Dormant user activation</span></div>
-                                  <div className="flex items-center gap-3"><CheckCircle className="text-green-500 w-5 h-5" /><span className="text-slate-600 text-sm">Product awareness calls</span></div>
-                              </div>
-                              <button className="w-full bg-slate-900 text-white py-3 rounded-xl font-bold hover:bg-slate-800 transition-colors">View Workflow</button>
-                          </div>
-                      </div>
-                  </div>
-               )}
-            </div>
-        </div>
-      </section>
-
-      {/* NEW: LAUNCH PROCESS SECTION */}
-      <section className="py-24 bg-white border-y border-slate-100 z-10 relative">
-        <div className="container mx-auto px-6">
-            <div className="text-center mb-16">
-                <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">How It Works</span>
-                <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">Launch Your AI Voicebot in Minutes</h2>
-                <p className="text-slate-500">From setup to first call, the process is seamless.</p>
-            </div>
-
-            <div className="grid md:grid-cols-4 gap-8 relative">
-                {/* Connecting Line (Desktop) */}
-                <div className="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-gradient-to-r from-indigo-50 via-indigo-200 to-indigo-50 -z-10"></div>
-                
-                {[
-                    { 
-                        icon: <Layout className="w-6 h-6 text-indigo-600" />, 
-                        title: "1. Design Flow", 
-                        desc: "Use our drag-and-drop builder to create conversation paths and logic." 
-                    },
-                    { 
-                        icon: <Mic className="w-6 h-6 text-pink-600" />,
-                        title: "2. Select Voice", 
-                        desc: "Choose from 50+ lifelike voices or clone your own agent's voice." 
-                    },
-                    { 
-                        icon: <PlayCircle className="w-6 h-6 text-orange-600" />, 
-                        title: "3. Test & Train", 
-                        desc: "Simulate calls instantly and fine-tune responses with custom knowledge." 
-                    },
-                    { 
-                        icon: <Rocket className="w-6 h-6 text-green-600" />, 
-                        title: "4. Go Live", 
-                        desc: "Purchase a number or port yours, and start handling calls 24/7." 
-                    }
-                ].map((step, i) => (
-                    <div key={i} className="bg-white p-6 rounded-2xl border border-slate-100 shadow-lg hover:shadow-xl transition-all relative group">
-                        <div className="w-14 h-14 bg-slate-50 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform border border-slate-100 shadow-sm">
-                            {step.icon}
-                        </div>
-                        <h4 className="font-bold text-lg text-slate-900 mb-2">{step.title}</h4>
-                        <p className="text-sm text-slate-500 leading-relaxed">{step.desc}</p>
-                    </div>
-                ))}
-            </div>
-        </div>
-      </section>
-
-      {/* NEW: WHAT HAPPENS AFTER THE CALL */}
+      {/* WHAT HAPPENS AFTER THE CALL */}
       <section id="workflow" className="py-24 bg-white border-y border-slate-100 z-10 relative">
         <div className="container mx-auto px-6 text-center">
             <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">Process</span>
@@ -1024,7 +949,7 @@ export default function CallersPage() {
       {/* DASHBOARD SECTION */}
       <section id="dashboard" className="py-24 bg-slate-50 relative overflow-hidden z-10">
         <div className="container mx-auto px-6 relative z-10">
-            <div className="text-center mb-16 hidden md:block">
+            <div className="text-center mb-16">
                 <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">The Control Room</span>
                 <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">Your AI Command Center</h2>
                 <p className="text-slate-500">Watch your agents work, listen to calls, and track ROI in real-time.</p>
@@ -1106,8 +1031,26 @@ export default function CallersPage() {
         </div>
       </section>
 
-      {/* NEW: INTEGRATIONS SECTION (Updated with Lines) */}
-         {/* NEW: INTEGRATIONS SECTION (Updated with Lines) */}
+      {/* CLIENTS MARQUEE */}
+      <div className="bg-white border-y border-slate-100 py-10 overflow-hidden relative z-10">
+        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10"></div>
+        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white to-transparent z-10"></div>
+        <div className="flex w-max gap-16 items-center opacity-60 grayscale hover:grayscale-0 transition-all duration-500 animate-[scroll_40s_linear_infinite]">
+             {[1, 2].map((i) => (
+                <div key={i} className="flex gap-16">
+                  <i className="fab fa-amazon text-4xl hover:text-[#FF9900] transition-colors"></i>
+                  <i className="fab fa-google text-3xl hover:text-[#4285F4] transition-colors"></i>
+                  <i className="fab fa-spotify text-4xl hover:text-[#1DB954] transition-colors"></i>
+                  <i className="fab fa-airbnb text-4xl hover:text-[#FF5A5F] transition-colors"></i>
+                  <i className="fab fa-uber text-4xl hover:text-black transition-colors"></i>
+                  <i className="fab fa-stripe text-5xl hover:text-[#635BFF] transition-colors"></i>
+                  <i className="fab fa-microsoft text-3xl hover:text-[#F25022] transition-colors"></i>
+                </div>
+             ))}
+        </div>
+      </div>
+
+      {/* INTEGRATIONS SECTION */}
       <section className="py-24 bg-white border-y border-slate-100 z-10 relative">
         <div className="container mx-auto px-6 text-center">
             <h2 className="text-4xl font-bold text-slate-900 mb-12">Connects With Your Favorite Tools</h2>
@@ -1124,39 +1067,6 @@ export default function CallersPage() {
                     className="absolute inset-0"
                     style={{ animation: 'spin-slow 40s linear infinite' }}
                  >
-                    {/* SVG Layer for Lines */}
-                    {integrations.map((_, index) => {
-                        const total = integrations.length;
-                        const angle = (360 / total) * index;
-                        const radius = 160; 
-                        
-                        return (
-                            <React.Fragment key={index}>
-                                {/* Static Line */}
-                                <div 
-                                    className="absolute top-1/2 left-1/2 h-[1px] bg-slate-200 origin-left -z-10"
-                                    style={{
-                                        width: `${radius}px`,
-                                        transform: `rotate(${angle}deg)`,
-                                    }}
-                                />
-                                
-                                {/* Data Particle moving inward */}
-                                <div 
-                                    className="absolute top-1/2 left-1/2 w-2 h-2 bg-indigo-500 rounded-full shadow-[0_0_8px_rgba(99,102,241,0.8)] -z-10"
-                                    style={{
-                                        animation: `flowIn 3s linear infinite`,
-                                        animationDelay: `${index * 0.2}s`,
-                                        // @ts-ignore
-                                        '--angle': `${angle}deg`,
-                                        // @ts-ignore
-                                        '--radius': `${radius}px`,
-                                    }}
-                                />
-                            </React.Fragment>
-                        );
-                    })}
-
                     {/* Icons */}
                     {integrations.map((item, index) => {
                         const total = integrations.length;
@@ -1195,12 +1105,6 @@ export default function CallersPage() {
           @keyframes spin-reverse {
             from { transform: translate(-50%, -50%) rotate(0deg); }
             to { transform: translate(-50%, -50%) rotate(-360deg); }
-          }
-          @keyframes flowIn {
-            0% { transform: rotate(var(--angle)) translateX(var(--radius)); opacity: 0; }
-            20% { opacity: 1; }
-            80% { opacity: 1; }
-            100% { transform: rotate(var(--angle)) translateX(0px); opacity: 0; } 
           }
         `}} />
       </section>
@@ -1276,5 +1180,3 @@ export default function CallersPage() {
     </main>
   );
 }
-
-
