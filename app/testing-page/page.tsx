@@ -1075,6 +1075,30 @@ export default function CallersPage() {
         </div>
       </section>
 
+      {/* NEW: WHAT HAPPENS AFTER THE CALL */}
+      <section id="workflow" className="py-24 bg-white border-y border-slate-100 z-10 relative">
+        <div className="container mx-auto px-6 text-center">
+            <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">Process</span>
+            <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-16">What Happens After the Call Ends?</h2>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 text-left">
+                {[
+                  { icon: <Database className="w-6 h-6 text-blue-600" />, title: "Automated CRM Updates", desc: "Every detail—budget, timeline, objections—is extracted and logged instantly. No manual data entry.", color: "bg-blue-50" },
+                  { icon: <Calendar className="w-6 h-6 text-green-600" />, title: "Instant Follow-ups", desc: "AI sets reminders, books callbacks, and sends WhatsApp/SMS messages based on next steps.", color: "bg-green-50" },
+                  { icon: <Zap className="w-6 h-6 text-orange-600" />, title: "Lead Scoring", desc: "Leads are scored automatically based on intent signals. Your team focuses only on hot leads.", color: "bg-orange-50" },
+                  { icon: <HeartPulse className="w-6 h-6 text-purple-600" />, title: "Sentiment Analysis", desc: "Identify frustration or delight. Understand how your customers feel without sending surveys.", color: "bg-purple-50" },
+                  { icon: <FileText className="w-6 h-6 text-pink-600" />, title: "AI Call Summary", desc: "A concise, accurate summary of the full call including key decisions and action items.", color: "bg-pink-50" },
+                  { icon: <Layout className="w-6 h-6 text-cyan-600" />, title: "Trigger Workflows", desc: "Fire webhooks to trigger downstream actions in Zapier, Slack, or your internal tools.", color: "bg-cyan-50" },
+                ].map((item, i) => (
+                  <div key={i} className="p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-lg transition-all group bg-white">
+                      <div className={`w-12 h-12 ${item.color} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>{item.icon}</div>
+                      <h4 className="text-xl font-bold text-slate-900 mb-2">{item.title}</h4>
+                      <p className="text-sm text-slate-500 leading-relaxed">{item.desc}</p>
+                  </div>
+                ))}
+            </div>
+        </div>
+      </section>
       {/* CLIENTS MARQUEE */}
       <div className="bg-white border-y border-slate-100 py-10 overflow-hidden relative z-10">
         <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10"></div>

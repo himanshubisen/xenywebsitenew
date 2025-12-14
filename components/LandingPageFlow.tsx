@@ -84,18 +84,18 @@ const LandingPageFlow = () => {
             How it works
           </div>
           {/* NOTE: Reduced text size on mobile (md:text-4xl) and removed mb-2 from base for h1 */}
-          <h1 className="text-2xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 mb-1">
+          <h1 className="text-2xl md:text-4xl  p-1 lg:text-5xl font-extrabold tracking-tight text-slate-900 mb-1">
             Launch Fast. Scale Faster.
           </h1>
           {/* NOTE: Reduced max-w-md to max-w-sm for mobile. Reduced base text size slightly */}
-          <p className="text-slate-500 text-sm md:text-base max-w-xs sm:max-w-md mx-auto leading-relaxed">
+          <p className="text-slate-500  p-2  text-sm md:text-base max-w-xs sm:max-w-md mx-auto leading-relaxed">
             From setup to first call in minutes.
           </p>
         </div>
 
         {/* Steps Grid - Auto Sizing */}
         {/* NOTE: Changed min-h-0 and max-h on mobile to allow the content to dictate its height naturally */}
-        <div className="w-full max-w-5xl flex-1 flex flex-col justify-center relative mt-4 md:mt-8">
+        <div className="w-full  max-w-5xl flex-1 flex flex-col justify-center relative mt-7 md:mt-8">
 
           {/* Connector Line (Desktop Only) */}
           <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-slate-200 -z-10 -translate-y-8 mx-12 rounded-full" />

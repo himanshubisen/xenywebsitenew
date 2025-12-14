@@ -1663,25 +1663,65 @@ export default function CallersPage() {
       </section>
 
       {/* NEW: WHAT HAPPENS AFTER THE CALL */}
-      <section id="workflow" className="py-24 bg-white border-y border-slate-100 z-10 relative">
-        <div className="container mx-auto px-6 text-center">
-            <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">Process</span>
-            <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-16">What Happens After the Call Ends?</h2>
-            
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 text-left">
+      <section id="workflow" className="py-16 sm:py-24 bg-gray-100 z-10 relative">
+        <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
+
+            {/* Heading Area - Centered */}
+            <div className="text-center mb-12 sm:mb-16">
+                <ScrollReveal direction="up" delay={100}>
+                    <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-4">
+                        <ScrollTextReveal
+                            text="What Happens After the Call Ends?"
+                            splitBy="word"
+                            className="block"
+                        />
+                    </h2>
+                </ScrollReveal>
+
+                {/* 'Process' Tag Style */}
+                <span className="inline-flex items-center px-3 py-1 bg-indigo-600 text-white font-bold tracking-wider text-sm uppercase rounded-full">
+                    Process
+                </span>
+            </div>
+
+            {/* Cards Grid: grid-cols-2 for mobile, lg:grid-cols-3 for desktop */}
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                 {[
-                  { icon: <Database className="w-6 h-6 text-blue-600" />, title: "Automated CRM Updates", desc: "Every detail—budget, timeline, objections—is extracted and logged instantly. No manual data entry.", color: "bg-blue-50" },
-                  { icon: <Calendar className="w-6 h-6 text-green-600" />, title: "Instant Follow-ups", desc: "AI sets reminders, books callbacks, and sends WhatsApp/SMS messages based on next steps.", color: "bg-green-50" },
-                  { icon: <Zap className="w-6 h-6 text-orange-600" />, title: "Lead Scoring", desc: "Leads are scored automatically based on intent signals. Your team focuses only on hot leads.", color: "bg-orange-50" },
-                  { icon: <HeartPulse className="w-6 h-6 text-purple-600" />, title: "Sentiment Analysis", desc: "Identify frustration or delight. Understand how your customers feel without sending surveys.", color: "bg-purple-50" },
-                  { icon: <FileText className="w-6 h-6 text-pink-600" />, title: "AI Call Summary", desc: "A concise, accurate summary of the full call including key decisions and action items.", color: "bg-pink-50" },
-                  { icon: <Layout className="w-6 h-6 text-cyan-600" />, title: "Trigger Workflows", desc: "Fire webhooks to trigger downstream actions in Zapier, Slack, or your internal tools.", color: "bg-cyan-50" },
+                  { icon: <Database className="w-5 h-5 text-blue-600" />, title: "Automated CRM Updates", desc: "Every detail—budget, timeline, objections—is extracted and logged instantly.", color: "bg-blue-50" },
+                  { icon: <Calendar className="w-5 h-5 text-green-600" />, title: "Instant Follow-ups", desc: "AI sets reminders, books callbacks, and sends messages based on next steps.", color: "bg-green-50" },
+                  { icon: <Zap className="w-5 h-5 text-orange-600" />, title: "Lead Scoring", desc: "Leads are scored automatically based on intent signals for focused effort.", color: "bg-orange-50" },
+                  { icon: <HeartPulse className="w-5 h-5 text-purple-600" />, title: "Sentiment Analysis", desc: "Identify frustration or delight to understand customer feelings instantly.", color: "bg-purple-50" },
+                  { icon: <FileText className="w-5 h-5 text-pink-600" />, title: "AI Call Summary", desc: "A concise, accurate summary including key decisions and action items.", color: "bg-pink-50" },
+                  { icon: <Layout className="w-5 h-5 text-cyan-600" />, title: "Trigger Workflows", desc: "Fire webhooks to trigger downstream actions in Zapier, Slack, or internal tools.", color: "bg-cyan-50" },
                 ].map((item, i) => (
-                  <div key={i} className="p-8 rounded-3xl border border-slate-100 shadow-sm hover:shadow-lg transition-all group bg-white">
-                      <div className={`w-12 h-12 ${item.color} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>{item.icon}</div>
-                      <h4 className="text-xl font-bold text-slate-900 mb-2">{item.title}</h4>
-                      <p className="text-sm text-slate-500 leading-relaxed">{item.desc}</p>
-                  </div>
+                    // Card Styling: Smaller padding, smaller text, and hover effect
+                    <div
+                        key={i}
+                        className="p-4 sm:p-6 rounded-2xl bg-white shadow-xl min-h-[220px] // Min-height added for consistent row size
+                            transition-all duration-300 transform
+                            hover:scale-[1.03] hover:shadow-2xl hover:border-indigo-300
+                            border border-transparent"
+                    >
+                        <div className="flex flex-col h-full">
+                            {/* Icon Container: Slightly smaller for mobile */}
+                            <div className={`w-10 h-10 ${item.color} rounded-lg flex items-center justify-center mb-4`}>
+                                {item.icon}
+                            </div>
+
+                            {/* Title: Smaller font size for mobile */}
+                            <h4 className="text-base sm:text-lg font-bold text-slate-900 mb-1">
+                                {item.title}
+                            </h4>
+
+                            {/* Description: Smallest font size for mobile */}
+                            <p className="text-xs sm:text-sm text-slate-500 leading-snug flex-grow">
+                                {item.desc}
+                            </p>
+
+                            {/* Placeholder Line */}
+                            <div className="mt-3 h-1 w-1/3 bg-gray-200 rounded-full"></div>
+                        </div>
+                    </div>
                 ))}
             </div>
         </div>
@@ -1700,7 +1740,15 @@ export default function CallersPage() {
         <div className="container mx-auto px-6 relative z-10">
             <div className="text-center mb-16">
                 <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">ROI Engine</span>
-                <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">See How Much You'll Save</h2>
+                <ScrollReveal direction="up" delay={100}>
+                    <h2 className="text-4xl font-bold text-slate-900 mt-2 mb-4">
+                        <ScrollTextReveal
+                            text="See How Much You'll Save"
+                            splitBy="word"
+                            className="block"
+                        />
+                    </h2>
+                </ScrollReveal>
                 <p className="text-slate-500">Stop overpaying for manual calls.</p>
             </div>
             <SavingsCalculator />

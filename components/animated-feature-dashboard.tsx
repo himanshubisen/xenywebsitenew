@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { Settings, Mic, MessageSquare, Plug, CheckCircle, BarChart2, TrendingUp, Zap, Clock, Users, DollarSign, Phone, PhoneIncoming, ArrowDown, Play, Pause, List, Smile, Frown, Headphones, RotateCw } from 'lucide-react';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
+import ScrollTextReveal from "@/components/animations/ScrollTextReveal";
+import ScrollReveal from "@/components/animations/ScrollReveal";
 
 const sampleCallData = [
     { id: 105, caller: "Alice Johnson", type: "Outbound", sentiment: "Positive", outcome: "Booked", disposition: "Scheduled Demo", summary: "Confirmed interest, demo booked for Monday.", duration: "3:45", time: "1 min ago" },
@@ -616,9 +618,15 @@ const AnimatedFeatureDashboard = () => {
                     <span className="text-indigo-600 font-bold tracking-wider text-xs md:text-sm uppercase bg-indigo-50 px-4 py-1 rounded-full border border-indigo-100">
                         The Control Room
                     </span>
-                    <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 mt-4 md:mt-6 mb-2 md:mb-4">
-                        AI Command Center
-                    </h2>
+                    <ScrollReveal direction="up" delay={100}>
+                        <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 mt-4 md:mt-6 mb-2 md:mb-4">
+                            <ScrollTextReveal
+                                text="AI Command Center"
+                                splitBy="word"
+                                className="block"
+                            />
+                        </h2>
+                    </ScrollReveal>
                     <p className="text-slate-500 max-w-2xl mx-auto text-sm md:text-lg px-4">
                         Visualize your operation. From building agents to watching them close deals.
                     </p>
