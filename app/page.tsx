@@ -39,6 +39,8 @@ import {
 
 
 } from 'lucide-react';
+
+
 import Header from "@/components/header"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import * as THREE from 'three';
@@ -59,11 +61,49 @@ import { useFrame, Canvas } from '@react-three/fiber';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import * as FlagIcons from 'country-flag-icons/react/3x2';
+import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 // AI Image Morph: A futuristic visual showing a human face transitioning into a complex digital data mesh through pixel-morphing effects.
 
 // --- Types ---
 type TabId = 'real_estate' | 'growth' | 'hr' | 'finance' | 'cx' | 'ops' | 'marketing' | 'sales';
 type ServiceId = 'edu' | 'ecommerce' | 'realestate' | 'healthcare' | 'logistics' | 'finance_serv';
+
+// --- Counter Component ---
+const Counter = ({ target }: { target: string }) => {
+  const [count, setCount] = useState(0);
+  const [ref, isIntersecting] = useIntersectionObserver({ threshold: 0.1, triggerOnce: true });
+
+  useEffect(() => {
+    if (!isIntersecting) return;
+
+    const match = target.match(/^(\d+)([%X]?)$/);
+    if (!match) return;
+
+    const targetNum = parseInt(match[1], 10);
+    const suffix = match[2] || '';
+    const duration = 2000; // 2 seconds
+    const steps = 60; // 60 fps
+    const increment = targetNum / steps;
+    let current = 0;
+
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= targetNum) {
+        setCount(targetNum);
+        clearInterval(timer);
+      } else {
+        setCount(Math.floor(current));
+      }
+    }, duration / steps);
+
+    return () => clearInterval(timer);
+  }, [isIntersecting, target]);
+
+  const match = target.match(/^(\d+)([%X]?)$/);
+  const suffix = match ? match[2] || '' : '';
+
+  return <div ref={ref}>{count}{suffix}</div>;
+};
 
 // --- Components ---
 const COUNTRIES = [
@@ -74,196 +114,429 @@ const COUNTRIES = [
  * Three.js Background Component
  * Renders the Orb and the 3D "Xeny" text
  */
-const ThreeBackground = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
+// const ThreeBackground = () => {
+//   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!containerRef.current) return;
+//   useEffect(() => {
+//     if (!containerRef.current) return;
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+//     const scene = new THREE.Scene();
+//     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+//     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+//     renderer.setSize(window.innerWidth, window.innerHeight);
+//     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     
-    while (containerRef.current.firstChild) {
-      containerRef.current.removeChild(containerRef.current.firstChild);
-    }
-    containerRef.current.appendChild(renderer.domElement);
+//     while (containerRef.current.firstChild) {
+//       containerRef.current.removeChild(containerRef.current.firstChild);
+//     }
+//     containerRef.current.appendChild(renderer.domElement);
 
-    // Neural Network Particles
-    const particleCount = 150;
-    const particles = new THREE.BufferGeometry();
-    const positions = new Float32Array(particleCount * 3);
-    const velocities: {x: number, y: number, z: number}[] = [];
+//     // Neural Network Particles
+//     const particleCount = 150;
+//     const particles = new THREE.BufferGeometry();
+//     const positions = new Float32Array(particleCount * 3);
+//     const velocities: {x: number, y: number, z: number}[] = [];
 
-    const range = 40;
-    for (let i = 0; i < particleCount; i++) {
-        positions[i * 3] = (Math.random() - 0.5) * range;
-        positions[i * 3 + 1] = (Math.random() - 0.5) * range;
-        positions[i * 3 + 2] = (Math.random() - 0.5) * range;
+//     const range = 40;
+//     for (let i = 0; i < particleCount; i++) {
+//         positions[i * 3] = (Math.random() - 0.5) * range;
+//         positions[i * 3 + 1] = (Math.random() - 0.5) * range;
+//         positions[i * 3 + 2] = (Math.random() - 0.5) * range;
         
-        velocities.push({
-            x: (Math.random() - 0.5) * 0.05,
-            y: (Math.random() - 0.5) * 0.05,
-            z: (Math.random() - 0.5) * 0.05
-        });
-    }
-    particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+//         velocities.push({
+//             x: (Math.random() - 0.5) * 0.05,
+//             y: (Math.random() - 0.5) * 0.05,
+//             z: (Math.random() - 0.5) * 0.05
+//         });
+//     }
+//     particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
-    const pMaterial = new THREE.PointsMaterial({
-        color: 0x6366f1,
-        size: 0.4,
-        transparent: true,
-        opacity: 0.8,
-        blending: THREE.AdditiveBlending
-    });
+//     const pMaterial = new THREE.PointsMaterial({
+//         color: 0x6366f1,
+//         size: 0.4,
+//         transparent: true,
+//         opacity: 0.8,
+//         blending: THREE.AdditiveBlending
+//     });
 
-    const particleSystem = new THREE.Points(particles, pMaterial);
-    scene.add(particleSystem);
+//     const particleSystem = new THREE.Points(particles, pMaterial);
+//     scene.add(particleSystem);
 
-    // Connection Lines
-    const lineMaterial = new THREE.LineBasicMaterial({
-        color: 0x818cf8,
-        transparent: true,
-        opacity: 0.15 
-    });
+//     // Connection Lines
+//     const lineMaterial = new THREE.LineBasicMaterial({
+//         color: 0x818cf8,
+//         transparent: true,
+//         opacity: 0.15 
+//     });
 
-    const lineGeometry = new THREE.BufferGeometry();
-    const lineMesh = new THREE.LineSegments(lineGeometry, lineMaterial);
-    scene.add(lineMesh);
+//     const lineGeometry = new THREE.BufferGeometry();
+//     const lineMesh = new THREE.LineSegments(lineGeometry, lineMaterial);
+//     scene.add(lineMesh);
 
-    // Main Orbiting Ring
-    const orbitGeometry = new THREE.TorusGeometry(12, 0.1, 64, 100);
-    const orbitMaterial = new THREE.MeshBasicMaterial({ color: 0x6366f1, transparent: true, opacity: 0.15 });
-    const orbitRing = new THREE.Mesh(orbitGeometry, orbitMaterial);
-    orbitRing.rotation.x = Math.PI / 2;
-    scene.add(orbitRing);
+//     // Main Orbiting Ring
+//     const orbitGeometry = new THREE.TorusGeometry(12, 0.1, 64, 100);
+//     const orbitMaterial = new THREE.MeshBasicMaterial({ color: 0x6366f1, transparent: true, opacity: 0.15 });
+//     const orbitRing = new THREE.Mesh(orbitGeometry, orbitMaterial);
+//     orbitRing.rotation.x = Math.PI / 2;
+//     scene.add(orbitRing);
 
-    // Central Icosahedron
-    const icoGeometry = new THREE.IcosahedronGeometry(3, 1);
-    const icoMaterial = new THREE.MeshBasicMaterial({ 
-      color: 0x4f46e5, 
-      wireframe: true, 
-      transparent: true, 
-      opacity: 0.1 
-    });
-    const icosahedron = new THREE.Mesh(icoGeometry, icoMaterial);
-    scene.add(icosahedron);
+//     // Central Icosahedron
+//     const icoGeometry = new THREE.IcosahedronGeometry(3, 1);
+//     const icoMaterial = new THREE.MeshBasicMaterial({ 
+//       color: 0x4f46e5, 
+//       wireframe: true, 
+//       transparent: true, 
+//       opacity: 0.1 
+//     });
+//     const icosahedron = new THREE.Mesh(icoGeometry, icoMaterial);
+//     scene.add(icosahedron);
 
-    camera.position.z = 30;
+//     camera.position.z = 30;
 
-    // Mouse Interaction
-    const mouse = new THREE.Vector2();
-    const onMouseMove = (event: MouseEvent) => {
-        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    };
-    window.addEventListener('mousemove', onMouseMove);
+//     // Mouse Interaction
+//     const mouse = new THREE.Vector2();
+//     const onMouseMove = (event: MouseEvent) => {
+//         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+//         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+//     };
+//     window.addEventListener('mousemove', onMouseMove);
 
-    // Animation Loop
-    let animationId: number;
-    const animate = () => {
-      animationId = requestAnimationFrame(animate);
+//     // Animation Loop
+//     let animationId: number;
+//     const animate = () => {
+//       animationId = requestAnimationFrame(animate);
 
-      // Update Particles
-      const positions = particleSystem.geometry.attributes.position.array as Float32Array;
-      for (let i = 0; i < particleCount; i++) {
-          positions[i * 3] += velocities[i].x;
-          positions[i * 3 + 1] += velocities[i].y;
-          positions[i * 3 + 2] += velocities[i].z;
+//       // Update Particles
+//       const positions = particleSystem.geometry.attributes.position.array as Float32Array;
+//       for (let i = 0; i < particleCount; i++) {
+//           positions[i * 3] += velocities[i].x;
+//           positions[i * 3 + 1] += velocities[i].y;
+//           positions[i * 3 + 2] += velocities[i].z;
 
-          const limit = range / 2;
-          if (positions[i*3] > limit || positions[i*3] < -limit) velocities[i].x *= -1;
-          if (positions[i*3+1] > limit || positions[i*3+1] < -limit) velocities[i].y *= -1;
-          if (positions[i*3+2] > limit || positions[i*3+2] < -limit) velocities[i].z *= -1;
-      }
-      particleSystem.geometry.attributes.position.needsUpdate = true;
+//           const limit = range / 2;
+//           if (positions[i*3] > limit || positions[i*3] < -limit) velocities[i].x *= -1;
+//           if (positions[i*3+1] > limit || positions[i*3+1] < -limit) velocities[i].y *= -1;
+//           if (positions[i*3+2] > limit || positions[i*3+2] < -limit) velocities[i].z *= -1;
+//       }
+//       particleSystem.geometry.attributes.position.needsUpdate = true;
 
-      // Update Lines
-      const linePositions: number[] = [];
-      const connectionDistance = 6;
+//       // Update Lines
+//       const linePositions: number[] = [];
+//       const connectionDistance = 6;
 
-      for (let i = 0; i < particleCount; i++) {
-          for (let j = i + 1; j < particleCount; j++) {
-              const x1 = positions[i*3];
-              const y1 = positions[i*3+1];
-              const z1 = positions[i*3+2];
+//       for (let i = 0; i < particleCount; i++) {
+//           for (let j = i + 1; j < particleCount; j++) {
+//               const x1 = positions[i*3];
+//               const y1 = positions[i*3+1];
+//               const z1 = positions[i*3+2];
 
-              const x2 = positions[j*3];
-              const y2 = positions[j*3+1];
-              const z2 = positions[j*3+2];
+//               const x2 = positions[j*3];
+//               const y2 = positions[j*3+1];
+//               const z2 = positions[j*3+2];
 
-              const dist = Math.sqrt((x1-x2)**2 + (y1-y2)**2 + (z1-z2)**2);
+//               const dist = Math.sqrt((x1-x2)**2 + (y1-y2)**2 + (z1-z2)**2);
 
-              if (dist < connectionDistance) {
-                  linePositions.push(x1, y1, z1);
-                  linePositions.push(x2, y2, z2);
-              }
-          }
-      }
-      lineMesh.geometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+//               if (dist < connectionDistance) {
+//                   linePositions.push(x1, y1, z1);
+//                   linePositions.push(x2, y2, z2);
+//               }
+//           }
+//       }
+//       lineMesh.geometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
 
-      // Rotation with mouse interaction
-      const time = Date.now() * 0.0005;
-      const scrollY = window.scrollY;
+//       // Rotation with mouse interaction
+//       const time = Date.now() * 0.0005;
+//       const scrollY = window.scrollY;
       
-      scene.rotation.y = time * 0.05 + (mouse.x * 0.1);
-      scene.rotation.x = (mouse.y * 0.1) + (scrollY * 0.0002);
+//       scene.rotation.y = time * 0.05 + (mouse.x * 0.1);
+//       scene.rotation.x = (mouse.y * 0.1) + (scrollY * 0.0002);
 
-      orbitRing.rotation.z = time * 0.1;
-      orbitRing.rotation.x = Math.PI / 2 + Math.sin(time * 0.2) * 0.1;
+//       orbitRing.rotation.z = time * 0.1;
+//       orbitRing.rotation.x = Math.PI / 2 + Math.sin(time * 0.2) * 0.1;
 
-      icosahedron.rotation.y = time * 0.15;
-      icosahedron.rotation.x = scrollY * 0.0005;
-      icosahedron.position.y = Math.sin(time) * 0.3;
+//       icosahedron.rotation.y = time * 0.15;
+//       icosahedron.rotation.x = scrollY * 0.0005;
+//       icosahedron.position.y = Math.sin(time) * 0.3;
 
-      renderer.render(scene, camera);
-    };
-    animate();
+//       renderer.render(scene, camera);
+//     };
+//     animate();
 
-    const handleResize = () => {
-      if (!containerRef.current) return;
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    };
+//     const handleResize = () => {
+//       if (!containerRef.current) return;
+//       camera.aspect = window.innerWidth / window.innerHeight;
+//       camera.updateProjectionMatrix();
+//       renderer.setSize(window.innerWidth, window.innerHeight);
+//     };
 
-    window.addEventListener('resize', handleResize);
+//     window.addEventListener('resize', handleResize);
 
-    return () => {
-      cancelAnimationFrame(animationId);
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('mousemove', onMouseMove);
-      if (containerRef.current && containerRef.current.contains(renderer.domElement)) {
-        containerRef.current.removeChild(renderer.domElement);
-      }
-      particles.dispose();
-      pMaterial.dispose();
-      lineGeometry.dispose();
-      lineMaterial.dispose();
-      orbitGeometry.dispose();
-      orbitMaterial.dispose();
-      icoGeometry.dispose();
-      icoMaterial.dispose();
-      renderer.dispose();
-    };
-  }, []);
+//     return () => {
+//       cancelAnimationFrame(animationId);
+//       window.removeEventListener('resize', handleResize);
+//       window.removeEventListener('mousemove', onMouseMove);
+//       if (containerRef.current && containerRef.current.contains(renderer.domElement)) {
+//         containerRef.current.removeChild(renderer.domElement);
+//       }
+//       particles.dispose();
+//       pMaterial.dispose();
+//       lineGeometry.dispose();
+//       lineMaterial.dispose();
+//       orbitGeometry.dispose();
+//       orbitMaterial.dispose();
+//       icoGeometry.dispose();
+//       icoMaterial.dispose();
+//       renderer.dispose();
+//     };
+//   }, []);
 
-  return (
-    <div 
-      ref={containerRef} 
-      className="fixed top-0 left-0 w-full h-full pointer-events-none"
-      style={{ 
-        zIndex: 0, 
-        background: 'linear-gradient(to bottom, #f8fafc 0%, #eef2ff 50%, #faf5ff 100%)' 
-      }}
-    />
-  );
+//   return (
+//     <div 
+//       ref={containerRef} 
+//       className="fixed top-0 left-0 w-full h-full pointer-events-none"
+//       style={{ 
+//         zIndex: 0, 
+//         background: 'linear-gradient(to bottom, #f8fafc 0%, #eef2ff 50%, #faf5ff 100%)' 
+//       }}
+//     />
+//   );
+// };
+
+const ICON_PATHS = {
+    // 1. Xeny Logo / AI Icon
+    ai: '../public/logo/xeny-logo.png', 
+    
+    // 2. Caller Icon (Replace with your actual path)
+    caller: '/icons/phone-call.png', 
+    
+    // 3. Bot Icon (Replace with your actual path)
+    bot: '/icons/bot.png',       
 };
 
+const ThreeBackground = () => {
+    const containerRef = useRef<HTMLDivElement>(null);
+    
+    // Arrays to hold the dynamically created icon meshes/sprites and their velocities
+    const iconSprites: THREE.Sprite[] = [];
+    const velocities: {x: number, y: number, z: number}[] = [];
+    
+    // We will use a smaller particle count for distinct icons
+    const ICON_COUNT = 50; 
 
+    useEffect(() => {
+        if (!containerRef.current) return;
+
+        // --- 1. SETUP: Scene, Camera, Renderer ---
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ 
+            alpha: true, 
+            antialias: true 
+        });
+        
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.2;
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        
+        while (containerRef.current.firstChild) {
+          containerRef.current.removeChild(containerRef.current.firstChild);
+        }
+        containerRef.current.appendChild(renderer.domElement);
+
+        // --- 2. LIGHTING (Kept for subtle scene shading) ---
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); 
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xa5b4fc, 3);
+        directionalLight.position.set(5, 10, 7.5);
+        scene.add(directionalLight);
+
+        const pointLight = new THREE.PointLight(0xf0abfc, 5, 50);
+        pointLight.position.set(-10, -5, 10);
+        scene.add(pointLight);
+
+        // --- 3. OBJECTS AND EFFECTS ---
+
+        // A. Icon Sprites (Nodes)
+        const textureLoader = new THREE.TextureLoader();
+        const iconTextures = {
+            ai: textureLoader.load(ICON_PATHS.ai),
+            caller: textureLoader.load(ICON_PATHS.caller),
+            bot: textureLoader.load(ICON_PATHS.bot),
+        };
+        const iconKeys = Object.keys(iconTextures) as ('ai' | 'caller' | 'bot')[];
+
+        const range = 40;
+        
+        for (let i = 0; i < ICON_COUNT; i++) {
+            // Select icon type cyclically
+            const iconType = iconKeys[i % iconKeys.length];
+            const texture = iconTextures[iconType];
+
+            // Create a SpriteMaterial and Sprite (2D image facing camera)
+            const spriteMaterial = new THREE.SpriteMaterial({ 
+                map: texture,
+                color: 0xffffff, // White color preserves texture colors (important for logos/icons)
+                transparent: true,
+                opacity: 0.9,
+                blending: THREE.AdditiveBlending 
+            });
+            const sprite = new THREE.Sprite(spriteMaterial);
+            
+            // Set initial position
+            sprite.position.set(
+                (Math.random() - 0.5) * range,
+                (Math.random() - 0.5) * range,
+                (Math.random() - 0.5) * range
+            );
+            
+            // Set size - Adjust this value if the icons look too big/small
+            sprite.scale.set(3, 3, 3); 
+            
+            iconSprites.push(sprite);
+            scene.add(sprite);
+            
+            // Set velocity for animation
+            velocities.push({
+                x: (Math.random() - 0.5) * 0.03,
+                y: (Math.random() - 0.5) * 0.03,
+                z: (Math.random() - 0.5) * 0.03
+            });
+        }
+        
+        // B. Connection Lines (Edges) - KEPT
+        const lineMaterial = new THREE.LineBasicMaterial({
+            color: 0xc4b5fd,
+            transparent: true,
+            opacity: 0.1 
+        });
+
+        const lineGeometry = new THREE.BufferGeometry();
+        const lineMesh = new THREE.LineSegments(lineGeometry, lineMaterial);
+        scene.add(lineMesh);
+
+        // C & D. Central Icosahedron and Orbiting Ring are removed.
+
+        camera.position.z = 30;
+
+        // Mouse Interaction
+        const mouse = new THREE.Vector2();
+        const onMouseMove = (event: MouseEvent) => {
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        };
+        window.addEventListener('mousemove', onMouseMove);
+
+        // Animation Loop
+        let animationId: number;
+        const animate = () => {
+          animationId = requestAnimationFrame(animate);
+
+          // Update Icon Sprites
+          const currentPositions: number[] = [];
+          for (let i = 0; i < ICON_COUNT; i++) {
+              const sprite = iconSprites[i];
+              
+              // Update position
+              sprite.position.x += velocities[i].x;
+              sprite.position.y += velocities[i].y;
+              sprite.position.z += velocities[i].z;
+
+              // Check boundaries and reverse direction
+              const limit = range / 2;
+              if (sprite.position.x > limit || sprite.position.x < -limit) velocities[i].x *= -1;
+              if (sprite.position.y > limit || sprite.position.y < -limit) velocities[i].y *= -1;
+              if (sprite.position.z > limit || sprite.position.z < -limit) velocities[i].z *= -1;
+              
+              // Collect positions for line drawing
+              currentPositions.push(sprite.position.x, sprite.position.y, sprite.position.z);
+          }
+
+          // Update Lines
+          const linePositions: number[] = [];
+          const connectionDistance = 8; 
+
+          for (let i = 0; i < ICON_COUNT; i++) {
+              for (let j = i + 1; j < ICON_COUNT; j++) {
+                  const x1 = currentPositions[i*3];
+                  const y1 = currentPositions[i*3+1];
+                  const z1 = currentPositions[i*3+2];
+                  const x2 = currentPositions[j*3];
+                  const y2 = currentPositions[j*3+1];
+                  const z2 = currentPositions[j*3+2];
+                  
+                  const distSq = (x1-x2)**2 + (y1-y2)**2 + (z1-z2)**2; 
+
+                  if (distSq < connectionDistance ** 2) {
+                      linePositions.push(x1, y1, z1);
+                      linePositions.push(x2, y2, z2);
+                  }
+              }
+          }
+          lineMesh.geometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+
+          // Rotation with mouse interaction
+          const time = Date.now() * 0.0005;
+          const scrollY = window.scrollY;
+          
+          scene.rotation.y = time * 0.02 + (mouse.x * 0.05); 
+          scene.rotation.x = (mouse.y * 0.05) + (scrollY * 0.0001); 
+
+          // Subtle camera movement
+          camera.position.x = Math.sin(time * 0.05) * 1.0;
+          camera.position.y = Math.cos(time * 0.05) * 0.5;
+
+          renderer.render(scene, camera);
+        };
+        animate();
+
+        // Resize handlers
+        const handleResize = () => {
+          if (!containerRef.current) return;
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+          cancelAnimationFrame(animationId);
+          window.removeEventListener('resize', handleResize);
+          window.removeEventListener('mousemove', onMouseMove);
+          if (containerRef.current && containerRef.current.contains(renderer.domElement)) {
+            containerRef.current.removeChild(renderer.domElement);
+          }
+          // Disposal of resources
+          lineGeometry.dispose();
+          lineMaterial.dispose();
+          
+          // Dispose of Sprites and their materials/textures
+          iconSprites.forEach(sprite => {
+            sprite.material.map?.dispose();
+            sprite.material.dispose();
+            scene.remove(sprite);
+          });
+
+          renderer.dispose();
+        };
+    }, []); 
+
+    return (
+        <div 
+          ref={containerRef} 
+          className="fixed top-0 left-0 w-full h-full pointer-events-none"
+          style={{ 
+            zIndex: 0, 
+            // Glassy Grading CSS Background for white theme
+            background: 'linear-gradient(135deg, #f0f4f8 0%, #e0e7ff 40%, #f3e8ff 70%, #ffffff 100%)' 
+          }}
+        />
+    );
+};
 
 /**
  * Typewriter Effect for Hero Section
@@ -649,7 +922,7 @@ export default function CallersPage() {
   const [success, setSuccess] = useState('');
   const [isPickerOpen, setIsPickerOpen] = useState(false);
 
-  const currentFlag = COUNTRIES.find(c => c.code === selectedCountry)?.flag || 'fi-in';
+  const currentFlag = COUNTRIES.find(c => c.code === selectedCountry)?.emoji || '🇮🇳';
 
   // Handle form submission
   const handleSubmit = async () => {
@@ -741,7 +1014,7 @@ export default function CallersPage() {
 
   return (
 <main className="font-sans text-slate-900 bg-slate-50 selection:bg-indigo-100 selection:text-indigo-900 overflow-x-hidden">
-      {/* <ThreeBackground /> */}
+      <ThreeBackground />
       <HeroCanvas />
       <Header />
 
@@ -902,22 +1175,22 @@ export default function CallersPage() {
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 text-center">
             <StaggerReveal staggerDelay={100} direction="up">
-              <div className="group"><div className="text-4xl font-bold text-indigo-600 mb-2">90%</div><p className="text-xs font-bold uppercase text-slate-400">Call Automation</p></div>
+              <div className="group"><div className="text-4xl font-bold text-indigo-600 mb-2"><Counter target="90%" /></div><p className="text-xs font-bold uppercase text-slate-400">Call Automation</p></div>
             </StaggerReveal>
             <StaggerReveal staggerDelay={100} direction="up">
-              <div className="group"><div className="text-4xl font-bold text-green-500 mb-2">90%</div><p className="text-xs font-bold uppercase text-slate-400">Less Staffing</p></div>
+              <div className="group"><div className="text-4xl font-bold text-green-500 mb-2"><Counter target="90%" /></div><p className="text-xs font-bold uppercase text-slate-400">Less Staffing</p></div>
             </StaggerReveal>
             <StaggerReveal staggerDelay={100} direction="up">
-              <div className="group"><div className="text-4xl font-bold text-blue-500 mb-2">50%</div><p className="text-xs font-bold uppercase text-slate-400">Fewer Errors</p></div>
+              <div className="group"><div className="text-4xl font-bold text-blue-500 mb-2"><Counter target="50%" /></div><p className="text-xs font-bold uppercase text-slate-400">Fewer Errors</p></div>
             </StaggerReveal>
             <StaggerReveal staggerDelay={100} direction="up">
-              <div className="group"><div className="text-4xl font-bold text-orange-500 mb-2">60%</div><p className="text-xs font-bold uppercase text-slate-400">Cost Savings</p></div>
+              <div className="group"><div className="text-4xl font-bold text-orange-500 mb-2"><Counter target="60%" /></div><p className="text-xs font-bold uppercase text-slate-400">Cost Savings</p></div>
             </StaggerReveal>
             <StaggerReveal staggerDelay={100} direction="up">
-              <div className="group"><div className="text-4xl font-bold text-purple-500 mb-2">60%</div><p className="text-xs font-bold uppercase text-slate-400">Qualified Leads</p></div>
+              <div className="group"><div className="text-4xl font-bold text-purple-500 mb-2"><Counter target="60%" /></div><p className="text-xs font-bold uppercase text-slate-400">Qualified Leads</p></div>
             </StaggerReveal>
             <StaggerReveal staggerDelay={100} direction="up">
-              <div className="group"><div className="text-4xl font-bold text-pink-500 mb-2">10X</div><p className="text-xs font-bold uppercase text-slate-400">Sales Velocity</p></div>
+              <div className="group"><div className="text-4xl font-bold text-pink-500 mb-2"><Counter target="10X" /></div><p className="text-xs font-bold uppercase text-slate-400">Sales Velocity</p></div>
             </StaggerReveal>
           </div>
         </div>
