@@ -57,6 +57,7 @@ import { useFrame, Canvas } from '@react-three/fiber';
 
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import * as FlagIcons from 'country-flag-icons/react/3x2';
 // AI Image Morph: A futuristic visual showing a human face transitioning into a complex digital data mesh through pixel-morphing effects.
 
 // --- Types ---
@@ -65,8 +66,8 @@ type ServiceId = 'edu' | 'ecommerce' | 'realestate' | 'healthcare' | 'logistics'
 
 // --- Components ---
 const COUNTRIES = [
-  { code: '+91', flag: 'fi-in' },
-  { code: '+971', flag: 'fi-ae' },
+  { code: '+91', countryCode: 'IN', emoji: '🇮🇳' },
+  { code: '+971', countryCode: 'AE', emoji: '🇦🇪' },
 ];
 /**
  * Three.js Background Component
@@ -774,7 +775,7 @@ export default function CallersPage() {
 
 
           {/* Simulated Input */}
-     <div className="w-full max-w-md bg-white p-2 sm:p-3 rounded-[24px] shadow-lg border border-slate-200 transform hover:scale-[1.02] transition-transform duration-300">
+     <div className="w-full max-w-md bg-white p-2 sm:p-3 rounded-[24px] shadow-lg border border-slate-200 transform hover:scale-[1.02] transition-transform duration-300 z-10 ">
   <div className="flex flex-col gap-2">
     
     {/* Input and Picker Container */}
@@ -786,8 +787,8 @@ export default function CallersPage() {
           className="flex items-center gap-2 border-r border-slate-300 pr-2 sm:pr-3 mr-2 sm:mr-3 cursor-pointer hover:bg-slate-100 p-1 rounded-md transition-colors" 
           onClick={() => setIsPickerOpen(!isPickerOpen)} // Replace with your actual toggle function
         >
-          {/* Flag Display - Example for +91 (Requires flag-icons library) */}
-          <span className={`fi ${currentFlag} rounded-sm text-lg shadow-sm`}></span>
+          {/* Flag Display */}
+          {selectedCountry === '+91' ? <FlagIcons.IN style={{width: '20px', height: '15px'}} /> : <FlagIcons.AE style={{width: '20px', height: '15px'}} />}
           
           {/* Country Code */}
           <span className="text-slate-800 font-bold text-sm">{selectedCountry}</span>
@@ -812,7 +813,20 @@ export default function CallersPage() {
       </div>
 
       {/* Country Code Picker Dropdown (Conditional rendering based on isPickerOpen state) */}
-      {/* ... (Your dropdown JSX content goes here) ... */}
+      {isPickerOpen && (
+        <div className="absolute top-full w-30 left-0 right-0 bg-white border border-slate-200 rounded-xl shadow-lg mt-1 z-20">
+          {COUNTRIES.map((country) => (
+            <div
+              key={country.code}
+              className="flex items-center gap-2 px-4 py-2 hover:bg-slate-50 cursor-pointer"
+              onClick={() => handleCountrySelect(country.code)}
+            >
+              {country.countryCode === 'IN' ? <FlagIcons.IN style={{width: '20px', height: '15px'}} /> : <FlagIcons.AE style={{width: '20px', height: '15px'}} />}
+              <span className="text-slate-800 font-bold text-sm">{country.code}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
     
     {/* Submit Button */}
@@ -1765,17 +1779,14 @@ export default function CallersPage() {
       {/* Phone Number Input */}
       <div className="flex items-center border border-slate-200 rounded-2xl px-3 sm:px-4 py-2 sm:py-3 mb-4 bg-slate-50 shadow-inner">
         {/* Country Code Dropdown */}
-        <div className="flex items-center gap-2 border-r border-slate-300 pr-2 sm:pr-3 mr-2 sm:mr-3 cursor-pointer">
-          {/* Placeholder for a country flag */}
-          <span className="text-lg" role="img" aria-label="Country Flag">
-            🇮🇳
-          </span>
-          <span className="text-slate-800 font-bold text-sm">+91</span>
+        <div className="flex items-center gap-2 border-r border-slate-300 pr-2 sm:pr-3 mr-2 sm:mr-3 cursor-pointer" onClick={() => setSelectedCountry(selectedCountry === '+91' ? '+971' : '+91')}>
+          {selectedCountry === '+91' ? <FlagIcons.IN style={{width: '20px', height: '15px'}} /> : <FlagIcons.AE style={{width: '20px', height: '15px'}} />}
+          <span className="text-slate-800 font-bold text-sm">{selectedCountry}</span>
           <i className="fas fa-chevron-down text-[10px] text-slate-400"></i>
         </div>
         <input
           type="tel"
-          placeholder="Enter your number for Xeny Call" 
+          placeholder="Enter your number for Xeny Call"
           className="bg-transparent w-full outline-none text-slate-900 font-bold placeholder-slate-400 text-base sm:text-lg"
         />
       </div>
