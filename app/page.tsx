@@ -1690,56 +1690,103 @@ export default function CallersPage() {
         </div>
       </section>
              {/* FINAL CTA */ }
-  <section className="py-24 bg-slate-50 border-t border-slate-200 z-10 relative ">
-    <div className="container mx-auto px-6 flex justify-center bg-noise relative">
-      <div className="bg-white p-6 sm:p-8 rounded-[40px] shadow-lg border border-slate-100 max-w-lg w-full">
-        <div className="text-center mb-6">
-          <h3 className="text-2xl font-bold text-slate-900">C'mon, Make That Call!</h3>
-          <p className="text-slate-500 text-sm">Try Callers – Meet Paul / Cassie</p>
-        </div>
-
-        <div className="flex gap-4 mb-6">
-          <div className="flex-1 relative rounded-3xl overflow-hidden aspect-[3/4] cursor-pointer group">
-            <img
-              src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80"
-              alt="Cassie"
-              className="w-full h-full object-cover grayscale opacity-60 group-hover:opacity-80 transition-all duration-300"
-            />
-            <div className="absolute bottom-3 left-3 text-white font-bold drop-shadow-md">Cassie</div>
-          </div>
-          <div className="flex-1 relative rounded-3xl overflow-hidden aspect-[3/4] cursor-pointer ring-4 ring-indigo-600 shadow-lg transform scale-105">
-            <div className="absolute top-3 left-3 bg-indigo-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md z-10">
-              <i className="fas fa-check"></i>
-            </div>
-            <img
-              src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80"
-              alt="Paul"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-            <div className="absolute bottom-3 left-3 text-white">
-              <div className="font-bold text-lg">Paul</div>
-              <div className="text-[10px] opacity-90">(Male AI Agent)</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex items-center border border-slate-200 rounded-2xl px-3 sm:px-4 py-2 sm:py-3 mb-4 bg-slate-50 shadow-inner">
-          <div className="flex items-center gap-2 border-r border-slate-300 pr-2 sm:pr-3 mr-2 sm:mr-3 cursor-pointer">
-            <span className="fi fi-in rounded-sm text-xl shadow-sm"></span>
-            <span className="text-slate-800 font-bold text-sm">+91</span>
-            <i className="fas fa-chevron-down text-[10px] text-slate-400"></i>
-          </div>
-          <input type="tel" placeholder="081234 56789" className="bg-transparent w-full outline-none text-slate-900 font-bold placeholder-slate-400 text-base sm:text-lg" />
-        </div>
-
-        <button className="w-full bg-cyan-600 hover:bg-indigo-700 text-white font-bold py-3 sm:py-4 rounded-2xl shadow-lg shadow-indigo-200 transition-all flex items-center justify-center gap-2 text-base sm:text-lg">
-          <FontAwesomeIcon icon={faPhoneVolume} /> Receive AI Call
-        </button>
+{/* FINAL CTA */}
+{/* FINAL CTA */}
+<section className="py-24 bg-slate-50 border-t border-slate-200 z-10 relative ">
+  <div className="container mx-auto px-6 flex justify-center bg-noise relative">
+    <div className="bg-white p-6 sm:p-8 rounded-[40px] shadow-lg border border-slate-100 max-w-lg w-full">
+      <div className="text-center mb-6">
+        <h3 className="text-2xl font-bold text-slate-900">C'mon, Make That Call!</h3>
+        <p className="text-slate-500 text-sm">Try Callers – Meet Paul / Cassie</p>
       </div>
-    </div>
-  </section>
 
+      {/* Agent Selection */}
+      <div className="flex gap-4 mb-6">
+        <div className="flex-1 relative rounded-3xl overflow-hidden aspect-[3/4] cursor-pointer group">
+          <img
+            src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80"
+            alt="Cassie"
+            className="w-full h-full object-cover grayscale opacity-60 group-hover:opacity-80 transition-all duration-300"
+          />
+          <div className="absolute bottom-3 left-3 text-white font-bold drop-shadow-md">Cassie</div>
+        </div>
+        <div className="flex-1 relative rounded-3xl overflow-hidden aspect-[3/4] cursor-pointer ring-4 ring-indigo-600 shadow-lg transform scale-105">
+          <div className="absolute top-3 left-3 bg-indigo-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md z-10">
+            <i className="fas fa-check"></i>
+          </div>
+          <img
+            src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80"
+            alt="Paul"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+          <div className="absolute bottom-3 left-3 text-white">
+            <div className="font-bold text-lg">Paul</div>
+            <div className="text-[10px] opacity-90">(Male AI Agent)</div>
+          </div>
+        </div>
+      </div>
+
+      {/* --- WOW Use Case Selection (Updated UI) --- */}
+      <div className="mb-6">
+        {/* Label */}
+        <label className="block text-sm font-semibold text-slate-700 mb-2">
+          Select Use Case
+        </label>
+        
+        {/* Options Container (Horizontal Scroll/Wrap) */}
+        <div className="flex flex-wrap gap-2 overflow-x-auto pb-2 scrollbar-hide">
+          {['Sales', 'Appointment Booking', 'Recovery', 'Support', 'General'].map((useCase, index) => (
+            <div key={useCase}>
+              <input
+                type="radio"
+                id={`use-case-${index}`}
+                name="use-case"
+                value={useCase}
+                className="hidden peer"
+                defaultChecked={useCase === 'Sales'} // Default selection
+              />
+              <label
+                htmlFor={`use-case-${index}`}
+                className="flex items-center text-sm font-medium px-4 py-2 rounded-full cursor-pointer transition-all duration-200 
+                           border border-slate-300 bg-white text-slate-700 whitespace-nowrap 
+                           hover:bg-indigo-50 hover:border-indigo-400
+                           peer-checked:bg-indigo-600 peer-checked:text-white peer-checked:border-indigo-600 
+                           peer-checked:shadow-md"
+              >
+                {useCase}
+              </label>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* ------------------------------------------- */}
+
+      {/* Phone Number Input */}
+      <div className="flex items-center border border-slate-200 rounded-2xl px-3 sm:px-4 py-2 sm:py-3 mb-4 bg-slate-50 shadow-inner">
+        {/* Country Code Dropdown */}
+        <div className="flex items-center gap-2 border-r border-slate-300 pr-2 sm:pr-3 mr-2 sm:mr-3 cursor-pointer">
+          {/* Placeholder for a country flag */}
+          <span className="text-lg" role="img" aria-label="Country Flag">
+            🇮🇳
+          </span>
+          <span className="text-slate-800 font-bold text-sm">+91</span>
+          <i className="fas fa-chevron-down text-[10px] text-slate-400"></i>
+        </div>
+        <input
+          type="tel"
+          placeholder="Enter your number for Xeny Call" 
+          className="bg-transparent w-full outline-none text-slate-900 font-bold placeholder-slate-400 text-base sm:text-lg"
+        />
+      </div>
+
+      {/* CTA Button */}
+      <button className="w-full bg-cyan-600 hover:bg-indigo-700 text-white font-bold py-3 sm:py-4 rounded-2xl shadow-lg shadow-indigo-200 transition-all flex items-center justify-center gap-2 text-base sm:text-lg">
+        <i className="fas fa-phone-volume"></i> Receive AI Call
+      </button>
+    </div>
+  </div>
+</section>
 
        <Footer />
 </main >
