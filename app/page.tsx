@@ -939,65 +939,129 @@ export default function XenyPage() {
   const currentFlag = COUNTRIES.find(c => c.code === selectedCountry)?.emoji || '🇮🇳';
 
   // Handle form submission
+  // const handleSubmit = async () => {
+  //   if (!phoneNumber) {
+  //     setError('Please enter a phone number')
+  //     return
+  //   }
+
+  //   const expectedLength = selectedCountry === '+91' ? 10 : selectedCountry === '+971' ? 9 : 10; // India: 10 digits, UAE: 9 digits, USA: 10 digits
+  //   if (!phoneNumber.match(new RegExp(`^[0-9]{${expectedLength}}$`))) {
+  //     setError(`Please enter a valid ${expectedLength}-digit phone number`)
+  //     return
+  //   }
+
+  //   setIsLoading(true)
+  //   setError('')
+  //   setSuccess('')
+
+  //   try {
+  //     // Determine campaign ID based on selected country
+  //     const campaignId = selectedCountry === '+91'
+  //       ? process.env.NEXT_CAMPAIGN_ID_IND || "69391e24f8a4456f85e108b8"
+  //       : selectedCountry === '+971'
+  //       ? process.env.NEXT_CAMPAIGN_ID_UAE || "693a53a6bda2a468cca3b453"
+  //       : process.env.NEXT_CAMPAIGN_ID_USA || "placeholder_usa_campaign_id"
+
+  //     // Construct the full phone number with country code
+  //     const fullPhoneNumber = `${selectedCountry}${phoneNumber}`
+
+  //     // Make API call using environment variable
+  //     const baseUrl = process.env.NEXT_PUBLIC_XENY_CRM_BASE_URL || 'https://app.xeny.ai/apis/api'
+  //     const response = await fetch(`${baseUrl}/public/test-outbound-call/${campaignId}`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         agentNumber: fullPhoneNumber
+  //       })
+  //     })
+
+  //     if (!response.ok) {
+  //       const errorData = await response.json().catch(() => ({}));
+  //       throw new Error(errorData.message || `Failed to initiate call (${response.status})`)
+  //     }
+
+  //     const data = await response.json()
+  //     setSuccess('AI call initiated successfully! You will receive a call shortly.')
+  //     console.log('Call initiated:', data)
+
+  //   } catch (err) {
+  //     if (err instanceof TypeError && err.message.includes('fetch')) {
+  //       setError('Network error: Please check your internet connection')
+  //     } else {
+  //       setError(err instanceof Error ? err.message : 'Failed to initiate call')
+  //     }
+  //     console.error('Call initiation error:', err)
+  //   } finally {
+  //     setIsLoading(false)
+  //   }
+  // }
+
   const handleSubmit = async () => {
-    if (!phoneNumber) {
-      setError('Please enter a phone number')
-      return
-    }
+  if (!phoneNumber) {
+    setError('Please enter a phone number')
+    return
+  }
 
-    const expectedLength = selectedCountry === '+91' ? 10 : selectedCountry === '+971' ? 9 : 10; // India: 10 digits, UAE: 9 digits, USA: 10 digits
-    if (!phoneNumber.match(new RegExp(`^[0-9]{${expectedLength}}$`))) {
-      setError(`Please enter a valid ${expectedLength}-digit phone number`)
-      return
-    }
+  const expectedLength =
+    selectedCountry === '+91' ? 10 :
+    selectedCountry === '+971' ? 9 :
+    10 // USA
 
-    setIsLoading(true)
-    setError('')
-    setSuccess('')
+  if (!new RegExp(`^[0-9]{${expectedLength}}$`).test(phoneNumber)) {
+    setError(`Please enter a valid ${expectedLength}-digit phone number`)
+    return
+  }
 
-    try {
-      // Determine campaign ID based on selected country
-      const campaignId = selectedCountry === '+91'
-        ? process.env.NEXT_CAMPAIGN_ID_IND || "69391e24f8a4456f85e108b8"
-        : selectedCountry === '+971'
-        ? process.env.NEXT_CAMPAIGN_ID_UAE || "693a53a6bda2a468cca3b453"
-        : process.env.NEXT_CAMPAIGN_ID_USA || "placeholder_usa_campaign_id"
+  setIsLoading(true)
+  setError('')
+  setSuccess('')
 
-      // Construct the full phone number with country code
-      const fullPhoneNumber = `${selectedCountry}${phoneNumber}`
+  try {
+    // Full phone number with country code
+    const fullPhoneNumber = `${selectedCountry}${phoneNumber}`
 
-      // Make API call using environment variable
-      const baseUrl = process.env.NEXT_PUBLIC_XENY_CRM_BASE_URL || 'https://app.xeny.ai/apis/api'
-      const response = await fetch(`${baseUrl}/public/test-outbound-call/${campaignId}`, {
+    const response = await fetch(
+      'https://api.elevenlabs.io/v1/convai/sip-trunk/outbound-call',
+      {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'xi-api-key': process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY || 'sk_7b385992b5a935134eef4ee2d9ad8fd781f3873ca3556fca',
         },
         body: JSON.stringify({
-          agentNumber: fullPhoneNumber
-        })
-      })
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `Failed to initiate call (${response.status})`)
+          agent_id: 'agent_7601kcgaht9yeccvqa7jrbtfqrbk',
+          agent_phone_number_id: 'phnum_2901kcgea5jefv9bac4wvpgz6d5m',
+          to_number: fullPhoneNumber, // 👈 phoneNumber sent here
+        }),
       }
+    )
 
-      const data = await response.json()
-      setSuccess('AI call initiated successfully! You will receive a call shortly.')
-      console.log('Call initiated:', data)
-
-    } catch (err) {
-      if (err instanceof TypeError && err.message.includes('fetch')) {
-        setError('Network error: Please check your internet connection')
-      } else {
-        setError(err instanceof Error ? err.message : 'Failed to initiate call')
-      }
-      console.error('Call initiation error:', err)
-    } finally {
-      setIsLoading(false)
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}))
+      throw new Error(errorData.error || 'Failed to initiate AI call')
     }
+
+    const data = await response.json()
+    console.log('ElevenLabs call initiated:', data)
+
+    setSuccess('AI call initiated successfully!')
+    setPhoneNumber('')
+
+  } catch (err) {
+    if (err instanceof TypeError) {
+      setError('Network error: Please check your internet connection')
+    } else {
+      setError(err.message || 'Failed to initiate call')
+    }
+    console.error('Call initiation error:', err)
+  } finally {
+    setIsLoading(false)
   }
+}
+
 
   // Handle country selection
   const handleCountrySelect = (newCode: string) => {
@@ -1056,7 +1120,7 @@ export default function XenyPage() {
               Your 24/7 AI Voice Employee For
               <br />
               <HeroTypewriter />
-              <span className="animate-pulse text-indigo-600"></span>
+              <span className="animate-pulse text-indigo-600 ">|</span>
             </h1>
           </ScrollReveal>
 
