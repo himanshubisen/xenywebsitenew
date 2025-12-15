@@ -465,10 +465,10 @@ export default function App() {
       </div>
 
       {/* 3. Main Content Area */}
-      <div className="flex-grow flex flex-col items-center justify-center relative z-30 pb-6 px-4 min-h-0">
+      <div className="flex-grow flex flex-col items-center justify-center relative z-30 pb-6 px-4 py-2 min-h-0  w-full">
           
           {/* MOBILE: Swipe Stack (Hidden on MD+ screens) */}
-          <div className="md:hidden w-full max-w-md h-[75vh] relative">
+          <div className="md:hidden w-full max-w-md h-[78vh] relative">
             <AnimatePresence mode='popLayout'>
                 <SwipeCard 
                     key={`${activeIndustryId}-${nextCardIndex}-back`}

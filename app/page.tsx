@@ -1060,7 +1060,7 @@ export default function CallersPage() {
 
 
           {/* Simulated Input */}
-     <div className="w-full max-w-md bg-white p-2 sm:p-3 rounded-[24px] shadow-lg border border-slate-200 transform hover:scale-[1.02] transition-transform duration-300 z-10 ">
+     <div className="w-full max-w-md bg-white p-2 sm:p-3 rounded-[24px] shadow-lg border border-slate-200 transform hover:scale-[1.02] transition-transform duration-300 z-10 relative">
   <div className="flex flex-col gap-2">
     
     {/* Input and Picker Container */}
@@ -1174,8 +1174,55 @@ export default function CallersPage() {
         </div>
       </div>
       {/* STATS SECTION */}
-      <section id="stats" className="py-24 bg-white z-10 relative">
-        <div className="container mx-auto px-6">
+      <section id="stats" className="py-24 bg-white z-10 relative overflow-hidden">
+        {/* Floating Icons Background */}
+        <div className="absolute inset-0 pointer-events-none z-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/15 via-green-50/10 to-purple-50/15"></div>
+          {[
+            { left: 15, top: 20, delay: 0.5, duration: 4 },
+            { left: 75, top: 30, delay: 1.2, duration: 3.5 },
+            { left: 45, top: 70, delay: 0.8, duration: 4.2 },
+            { left: 85, top: 50, delay: 1.5, duration: 3.8 },
+            { left: 25, top: 40, delay: 0.3, duration: 4.5 },
+          ].map((pos, i) => (
+            <div
+              key={i}
+              className="absolute animate-pulse opacity-12"
+              style={{
+                left: `${pos.left}%`,
+                top: `${pos.top}%`,
+                animationDelay: `${pos.delay}s`,
+                animationDuration: `${pos.duration}s`,
+              }}
+            >
+              <div className="w-5 h-5 bg-gradient-to-br from-indigo-400/25 to-green-400/25 rounded-full blur-sm flex items-center justify-center backdrop-blur-sm border border-white/20">
+                <div className="w-2.5 h-2.5 bg-gradient-to-br from-purple-400/35 to-indigo-400/35 rounded-full"></div>
+              </div>
+            </div>
+          ))}
+          {/* Floating Theme Icons */}
+          {[
+            { icon: <TrendingUp className="w-3 h-3 text-indigo-500/40" />, left: 10, top: 60, delay: 0 },
+            { icon: <CheckCircle className="w-3 h-3 text-green-500/40" />, left: 90, top: 25, delay: 1 },
+            { icon: <BarChart3 className="w-3 h-3 text-purple-500/40" />, left: 50, top: 80, delay: 2 },
+          ].map((item, i) => (
+            <div
+              key={`stats-${i}`}
+              className="absolute opacity-15 animate-bounce"
+              style={{
+                left: `${item.left}%`,
+                top: `${item.top}%`,
+                animationDelay: `${item.delay * 0.4}s`,
+                animationDuration: `${1.5 + (i % 2) * 0.5}s`,
+              }}
+            >
+              <div className="w-6 h-6 bg-white/25 backdrop-blur-sm rounded-full shadow-sm flex items-center justify-center border border-white/15">
+                {item.icon}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="container mx-auto px-6 relative z-10">
           <div className="text-center mb-16">
             <span className="text-indigo-600 font-bold tracking-wider text-sm uppercase">Proven Results</span>
             <ScrollReveal direction="up" delay={100}>
@@ -1217,7 +1264,7 @@ export default function CallersPage() {
       <IndustrialUseCases />
 
       {/* INDUSTRIES SECTION */}
-      <section id="industries" className="py-10 bg-slate-50 border-y border-slate-100 relative z-10">
+      <section id="industries" className="py-10 bg-slate-50  relative z-10">
 
         {/* 4. WHAT POWERS EVERY CALL (Features) */}
          {/* <section id="features" className="py-24 ">
@@ -1275,8 +1322,55 @@ export default function CallersPage() {
       </section>
 
       {/* NEW: WHAT HAPPENS AFTER THE CALL */}
-      <section id="workflow" className="py-16 sm:py-24 bg-gray-100 z-10 relative">
-        <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
+      <section id="workflow" className="py-16 sm:py-24 bg-gray-100 z-10 relative overflow-hidden">
+        {/* Floating Icons Background */}
+        <div className="absolute inset-0 pointer-events-none z-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-gray-100/30 via-blue-50/20 to-green-50/20"></div>
+          {[
+            { left: 15, top: 25, delay: 0.5, duration: 4 },
+            { left: 75, top: 35, delay: 1.2, duration: 3.5 },
+            { left: 45, top: 65, delay: 0.8, duration: 4.2 },
+            { left: 25, top: 45, delay: 1.5, duration: 3.8 },
+            { left: 85, top: 55, delay: 0.3, duration: 4.5 },
+          ].map((pos, i) => (
+            <div
+              key={i}
+              className="absolute animate-pulse opacity-12"
+              style={{
+                left: `${pos.left}%`,
+                top: `${pos.top}%`,
+                animationDelay: `${pos.delay}s`,
+                animationDuration: `${pos.duration}s`,
+              }}
+            >
+              <div className="w-5 h-5 bg-gradient-to-br from-blue-400/25 to-green-400/25 rounded-full blur-sm flex items-center justify-center backdrop-blur-sm border border-white/20">
+                <div className="w-2.5 h-2.5 bg-gradient-to-br from-purple-400/35 to-blue-400/35 rounded-full"></div>
+              </div>
+            </div>
+          ))}
+          {/* Floating Theme Icons */}
+          {[
+            { icon: <Database className="w-3 h-3 text-blue-500/40" />, left: 10, top: 30, delay: 0 },
+            { icon: <Calendar className="w-3 h-3 text-green-500/40" />, left: 80, top: 70, delay: 1 },
+            { icon: <Zap className="w-3 h-3 text-purple-500/40" />, left: 50, top: 20, delay: 2 },
+          ].map((item, i) => (
+            <div
+              key={`workflow-${i}`}
+              className="absolute opacity-15 animate-bounce"
+              style={{
+                left: `${item.left}%`,
+                top: `${item.top}%`,
+                animationDelay: `${item.delay * 0.5}s`,
+                animationDuration: `${1.8 + (i % 2) * 0.5}s`,
+              }}
+            >
+              <div className="w-6 h-6 bg-white/25 backdrop-blur-sm rounded-full shadow-sm flex items-center justify-center border border-white/15">
+                {item.icon}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="container mx-auto px-4 sm:px-6 max-w-7xl relative z-10">
 
             {/* Heading Area - Centered */}
             <div className="text-center mb-12 sm:mb-16">

@@ -77,13 +77,61 @@ const LandingPageFlow = () => {
   ];
 
   return (
-    // NOTE: Removed h-screen to allow content to naturally flow on small screens. 
+    // NOTE: Removed h-screen to allow content to naturally flow on small screens.
     // Added px-4 for minimal horizontal padding on the whole component.
-    <div className="w-full font-sans text-slate-900 overflow-x-hidden flex flex-col selection:bg-blue-100 px-4 pb-12">
+    <div className="w-full font-sans text-slate-900 overflow-x-hidden flex flex-col selection:bg-blue-100 px-2  pb-4 relative overflow-hidden">
+      {/* Floating Icons Background */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50/20 via-indigo-50/15 to-purple-50/20"></div>
+        {[
+          { left: 10, top: 30, delay: 0.5, duration: 4 },
+          { left: 80, top: 20, delay: 1.2, duration: 3.5 },
+          { left: 60, top: 70, delay: 0.8, duration: 4.2 },
+          { left: 30, top: 50, delay: 1.5, duration: 3.8 },
+          { left: 90, top: 40, delay: 0.3, duration: 4.5 },
+          { left: 20, top: 80, delay: 1.8, duration: 3.2 },
+        ].map((pos, i) => (
+          <div
+            key={i}
+            className="absolute animate-pulse opacity-15"
+            style={{
+              left: `${pos.left}%`,
+              top: `${pos.top}%`,
+              animationDelay: `${pos.delay}s`,
+              animationDuration: `${pos.duration}s`,
+            }}
+          >
+            <div className="w-6 h-6 bg-gradient-to-br from-blue-400/30 to-indigo-400/30 rounded-full blur-sm flex items-center justify-center backdrop-blur-sm border border-white/20">
+              <div className="w-3 h-3 bg-gradient-to-br from-purple-400/40 to-blue-400/40 rounded-full"></div>
+            </div>
+          </div>
+        ))}
+        {/* Floating Theme Icons */}
+        {[
+          { icon: <Workflow className="w-4 h-4 text-blue-500/50" />, left: 15, top: 25, delay: 0 },
+          { icon: <Mic className="w-4 h-4 text-indigo-500/50" />, left: 70, top: 60, delay: 1 },
+          { icon: <Zap className="w-4 h-4 text-purple-500/50" />, left: 45, top: 35, delay: 2 },
+        ].map((item, i) => (
+          <div
+            key={`flow-${i}`}
+            className="absolute opacity-20 animate-bounce"
+            style={{
+              left: `${item.left}%`,
+              top: `${item.top}%`,
+              animationDelay: `${item.delay * 0.5}s`,
+              animationDuration: `${2 + (i % 2) * 0.5}s`,
+            }}
+          >
+            <div className="w-8 h-8 bg-white/30 backdrop-blur-sm rounded-full shadow-md flex items-center justify-center border border-white/20">
+              {item.icon}
+            </div>
+          </div>
+        ))}
+      </div>
 
       {/* 2. Main Content (Flex Grow to fill space) */}
       {/* NOTE: Reduced vertical padding by changing justify-center to pt-12 (or similar) on small screens */}
-      <main className="flex-1 flex flex-col items-center w-full max-w-7xl mx-auto pt-10 md:pt-20">
+      <main className="flex-1 flex flex-col items-center w-full max-w-7xl mx-auto  md:pt-10">
         
         {/* Header Section */}
         {/* NOTE: Reduced bottom margin on h1 and top/bottom padding on the entire div. */}

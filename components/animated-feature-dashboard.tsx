@@ -597,6 +597,54 @@ const AnimatedFeatureDashboard = () => {
 
     return (
         <section ref={ref} className="py-6 md:py-14 bg-slate-50 relative overflow-hidden font-sans">
+             {/* Floating Icons Background */}
+             <div className="absolute inset-0 pointer-events-none z-0">
+               <div className="absolute inset-0 bg-gradient-to-br from-slate-50/30 via-indigo-50/20 to-purple-50/20"></div>
+               {[
+                 { left: 10, top: 20, delay: 0.5, duration: 4 },
+                 { left: 80, top: 30, delay: 1.2, duration: 3.5 },
+                 { left: 50, top: 70, delay: 0.8, duration: 4.2 },
+                 { left: 25, top: 50, delay: 1.5, duration: 3.8 },
+                 { left: 75, top: 15, delay: 0.3, duration: 4.5 },
+                 { left: 35, top: 85, delay: 1.8, duration: 3.2 },
+               ].map((pos, i) => (
+                 <div
+                   key={i}
+                   className="absolute animate-pulse opacity-10"
+                   style={{
+                     left: `${pos.left}%`,
+                     top: `${pos.top}%`,
+                     animationDelay: `${pos.delay}s`,
+                     animationDuration: `${pos.duration}s`,
+                   }}
+                 >
+                   <div className="w-5 h-5 bg-gradient-to-br from-indigo-400/20 to-slate-400/20 rounded-full blur-sm flex items-center justify-center backdrop-blur-sm border border-white/10">
+                     <div className="w-2.5 h-2.5 bg-gradient-to-br from-purple-400/30 to-indigo-400/30 rounded-full"></div>
+                   </div>
+                 </div>
+               ))}
+               {/* Floating Theme Icons */}
+               {[
+                 { icon: <Settings className="w-3 h-3 text-indigo-500/30" />, left: 15, top: 40, delay: 0 },
+                 { icon: <BarChart2 className="w-3 h-3 text-slate-500/30" />, left: 85, top: 60, delay: 1 },
+                 { icon: <Phone className="w-3 h-3 text-purple-500/30" />, left: 45, top: 25, delay: 2 },
+               ].map((item, i) => (
+                 <div
+                   key={`dashboard-${i}`}
+                   className="absolute opacity-15 animate-bounce"
+                   style={{
+                     left: `${item.left}%`,
+                     top: `${item.top}%`,
+                     animationDelay: `${item.delay * 0.6}s`,
+                     animationDuration: `${1.8 + (i % 2) * 0.5}s`,
+                   }}
+                 >
+                   <div className="w-6 h-6 bg-white/20 backdrop-blur-sm rounded-full shadow-sm flex items-center justify-center border border-white/10">
+                     {item.icon}
+                   </div>
+                 </div>
+               ))}
+             </div>
              <style jsx>{`
                 @keyframes growUp { from { height: 0; } }
                 @keyframes loadingBar { 0% { transform: scaleX(0); } 100% { transform: scaleX(1); } }
