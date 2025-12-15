@@ -23,6 +23,8 @@ import {
   CheckCircle2,
   TrendingUp
 } from 'lucide-react';
+import Header from "@/components/header"
+import Footer from "@/components/footer"
 
 /**
  * --- DATA GENERATION ---
@@ -290,14 +292,16 @@ export default function VoiceBotExplorer() {
   };
 
   return (
-    <div className={`h-[100dvh] w-full bg-gray-50 text-gray-900 font-sans flex flex-col overflow-hidden relative selection:bg-gray-200`}>
+    <>
+      <Header onDemoClick={() => {}} />
+      <div className={`min-h-screen w-full bg-gray-50 text-gray-900 font-sans flex flex-col overflow-hidden relative selection:bg-gray-200`}>
 
-      {/* Background Ambience */}
-      <div className={`absolute inset-0 bg-gradient-to-b from-white via-white to-${activeIndustry.color.split(' ')[1].replace('to-', '')}/10 transition-colors duration-1000 z-0`}></div>
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 pointer-events-none z-0 mix-blend-multiply"></div>
+        {/* Background Ambience */}
+        <div className={`absolute inset-0 bg-gradient-to-b from-white via-white to-${activeIndustry?.color.split(' ')[1].replace('to-', '')}/10 transition-colors duration-1000 z-0`}></div>
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 pointer-events-none z-0 mix-blend-multiply"></div>
 
-      {/* --- TOP: TABS --- */}
-      <div className={`relative z-50 w-full bg-white/80 backdrop-blur-md pt-safe-top`}>
+        {/* --- TOP: TABS --- */}
+        <div className={`relative  w-full bg-white/80 backdrop-blur-md pt-36`}>
         <div className={`w-full px-4 py-3 border-b border-gray-100`}>
             {/* Scrollable Tabs */}
             <div className={`flex gap-3 overflow-x-auto no-scrollbar mask-linear-fade py-1`}>
@@ -314,7 +318,7 @@ export default function VoiceBotExplorer() {
       </div>
 
       {/* --- MAIN CONTENT AREA --- */}
-      <div className={`relative z-10 flex-1 w-full flex flex-col p-4 md:p-8 overflow-hidden`}>
+      <div className={`relative z-10 flex-1 w-full flex flex-col pt-20 p-4 md:p-8 overflow-hidden`}>
 
         {/* MOBILE VIEW (< 768px): Swipe Stack fills screen */}
         <div className={`md:hidden relative w-full h-full flex flex-col`}>
@@ -369,5 +373,6 @@ export default function VoiceBotExplorer() {
         }
       `}</style>
     </div>
-  );
+    <Footer />
+  </>);
 }
