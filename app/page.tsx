@@ -1362,8 +1362,41 @@ export default function CallersPage() {
         </div>
       </section>
 
-              <section className="py-24 bg-white border-y border-slate-100 z-10 relative">
-        <div className="container mx-auto px-6 text-center">
+              <section className="py-24 bg-white border-y border-slate-100 z-10 relative overflow-hidden">
+        {/* Floating Icons Background */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/30 via-purple-50/20 to-pink-50/30"></div>
+          {[...Array(12)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute animate-pulse opacity-20"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 3}s`,
+                animationDuration: `${3 + Math.random() * 2}s`,
+              }}
+            >
+              <div className="w-8 h-8 bg-gradient-to-br from-indigo-400/40 to-purple-400/40 rounded-full blur-sm flex items-center justify-center backdrop-blur-sm border border-white/20">
+                <div className="w-4 h-4 bg-gradient-to-br from-pink-400/50 to-indigo-400/50 rounded-full"></div>
+              </div>
+            </div>
+          ))}
+          {[...Array(8)].map((_, i) => (
+            <div
+              key={`line-${i}`}
+              className="absolute opacity-10"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                transform: `rotate(${Math.random() * 360}deg)`,
+              }}
+            >
+              <div className="w-16 h-px bg-gradient-to-r from-transparent via-indigo-300/50 to-transparent"></div>
+            </div>
+          ))}
+        </div>
+        <div className="container mx-auto px-6 text-center relative z-10">
             <ScrollReveal direction="up" delay={100}>
               <h2 className="text-4xl font-bold text-slate-900 mb-12">
                 <ScrollTextReveal

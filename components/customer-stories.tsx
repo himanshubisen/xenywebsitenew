@@ -431,14 +431,14 @@ export default function App() {
   };
 
   return (
-    <div className="relative w-full h-[100dvh] overflow-hidden flex flex-col font-sans select-none bg-slate-50 z-10">
+    <div className="relative w-full  py-2  px-2 h-[100dvh] overflow-hidden flex flex-col font-sans select-none bg-slate-50 z-10">
       
       {/* 1. Light Dynamic Background */}
       <DynamicBackground activeIndustry={activeIndustry} />
 
       {/* Heading */}
       <div className="flex-none pt-8 pb-4 z-40 relative text-center">
-          <h1 className="text-4xl font-extrabold text-slate-900 mb-6">## 🚀 Industrial Use Cases</h1>
+          <h1 className="text-4xl  text-slate-900 mb-6">Industrial Use Cases</h1>
       </div>
 
       {/* 2. Top Navigation (Tabs) */}
