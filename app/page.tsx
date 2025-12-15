@@ -694,7 +694,7 @@ const UrbanPiperSection = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const quote = "Integrating Callers AI was a paradigm shift. We automated 12,000+ support calls in the first 48 hours. The context retention is flawless.";
+  const quote = "Integrating Xeny AI was a paradigm shift. We automated 12,000+ support calls in the first 48 hours. The context retention is flawless.";
   const words = quote.split(' ');
 
   return (
@@ -923,7 +923,7 @@ const SavingsCalculator = () => {
 
 // --- Main Page Component ---
 
-export default function CallersPage() {
+export default function XenyPage() {
   const [activeServiceTab, setActiveServiceTab] = useState<ServiceId>('edu');
   const [activeUseCaseTab, setActiveUseCaseTab] = useState<TabId>('sales');
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
@@ -1173,14 +1173,13 @@ export default function CallersPage() {
 
       <UrbanPiperSection />
 
-      {/* CLIENTS MARQUEE */}
     
      {/* CLIENTS MARQUEE */}
       <div className="bg-white border-y border-slate-100 py-10 overflow-hidden relative z-10">
         <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10"></div>
         <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white to-transparent z-10"></div>
         <div className="flex w-max gap-16 items-center animate-[scroll_40s_linear_infinite]">
-{[1, 2, 3, 4, 5].map((i) => (
+{[1, 2].map((i) => (
   <div
     key={i}
     className="flex gap-16 items-center text-slate-600"
@@ -1953,7 +1952,7 @@ export default function CallersPage() {
         <ScrollReveal direction="up" delay={100}>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">
             <ScrollTextReveal
-              text="Still not sure if Callers is right for you?"
+              text="Still not sure if Xeny is right for you?"
               splitBy="word"
               className="block"
             />
@@ -1962,7 +1961,7 @@ export default function CallersPage() {
         
         <ScrollReveal direction="up" delay={200}>
           <p className="text-xl text-slate-700 max-w-md">
-            Let ChatGPT, Claude, or Perplexity do the thinking for you. Click a button and see what your favorite AI says about Callers.
+            Let ChatGPT, Claude, or Perplexity do the thinking for you. Click a button and see what your favorite AI says about Xeny.
           </p>
         </ScrollReveal>
       </div>
@@ -2068,7 +2067,7 @@ export default function CallersPage() {
     <div className="bg-white p-6 sm:p-8 rounded-[40px] shadow-lg border border-slate-100 max-w-lg w-full">
       <div className="text-center mb-6">
         <h3 className="text-2xl font-bold text-slate-900">C'mon, Make That Call!</h3>
-        <p className="text-slate-500 text-sm">Try Callers – Meet Paul / Cassie</p>
+        <p className="text-slate-500 text-sm">Try Xeny – Meet Paul / Cassie</p>
       </div>
 
       {/* Agent Selection */}
