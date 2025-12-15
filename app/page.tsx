@@ -928,7 +928,7 @@ export default function XenyPage() {
   const [activeServiceTab, setActiveServiceTab] = useState<ServiceId>('edu');
   const [activeUseCaseTab, setActiveUseCaseTab] = useState<TabId>('sales');
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
-  const [selectedCountry, setSelectedCountry] = useState('+971');
+  const [selectedCountry, setSelectedCountry] = useState(COUNTRIES[0]);
   const [selectedUseCase, setSelectedUseCase] = useState('Sales');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -937,7 +937,7 @@ export default function XenyPage() {
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [selectedAgent, setSelectedAgent] = useState<'male' | 'female'>('male');
 
-  const currentFlag = COUNTRIES.find(c => c.code === selectedCountry)?.emoji || '🇮🇳';
+  const currentFlag = selectedCountry?.emoji || '🇮🇳';
 
   // Handle form submission
   // const handleSubmit = async () => {
@@ -1007,8 +1007,8 @@ export default function XenyPage() {
   }
 
   const expectedLength =
-    selectedCountry === '+91' ? 10 :
-    selectedCountry === '+971' ? 9 :
+    selectedCountry.code === '+91' ? 10 :
+    selectedCountry.code === '+971' ? 9 :
     10 // USA
 
   if (!new RegExp(`^[0-9]{${expectedLength}}$`).test(phoneNumber)) {
@@ -1069,7 +1069,7 @@ const handleSubmitforXenyandZain = async () => {
     return;
   }
 
-  const expectedLength = selectedCountry === '+91' ? 10 : selectedCountry === '+971' ? 9 : 10;
+  const expectedLength = selectedCountry.code === '+91' ? 10 : selectedCountry.code === '+971' ? 9 : 10;
 
   if (!new RegExp(`^[0-9]{${expectedLength}}$`).test(phoneNumber)) {
     setError(`Please enter a valid ${expectedLength}-digit phone number`);
@@ -1134,10 +1134,10 @@ const handleSubmitforXenyandZain = async () => {
 };
 
   // Handle country selection
-  const handleCountrySelect = (newCode: string) => {
-    setSelectedCountry(newCode);
-    setIsPickerOpen(false);
-  };
+   const handleCountrySelect = (country) => {
+     setSelectedCountry(country);
+     setIsPickerOpen(false);
+   };
 
   // Handle phone number change
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -1222,20 +1222,20 @@ const handleSubmitforXenyandZain = async () => {
       <div className="flex items-center bg-slate-50 rounded-xl px-3 sm:px-4 py-2 sm:py-3 border border-slate-100 focus-within:border-indigo-500/50 focus-within:ring-2 focus-within:ring-indigo-500/20 transition-all">
         
         {/* Country Code Selector - CLICKABLE (Assuming you implement the toggle logic) */}
-        <div 
-          className="flex items-center gap-2 border-r border-slate-300 pr-2 sm:pr-3 mr-2 sm:mr-3 cursor-pointer hover:bg-slate-100 p-1 rounded-md transition-colors" 
+        <div
+          className="flex items-center gap-2 border-r border-slate-300 pr-2 sm:pr-3 mr-2 sm:mr-3 cursor-pointer hover:bg-slate-100 p-1 rounded-md transition-colors"
           onClick={() => setIsPickerOpen(!isPickerOpen)} // Replace with your actual toggle function
         >
           {/* Flag Display */}
-          {selectedCountry === '+91' ? <FlagIcons.IN style={{width: '20px', height: '15px'}} /> : selectedCountry === '+971' ? <FlagIcons.AE style={{width: '20px', height: '15px'}} /> : <FlagIcons.US style={{width: '20px', height: '15px'}} />}
-          
+          {selectedCountry.countryCode === 'IN' ? <FlagIcons.IN style={{width: '20px', height: '15px'}} /> : selectedCountry.countryCode === 'AE' ? <FlagIcons.AE style={{width: '20px', height: '15px'}} /> : <FlagIcons.US style={{width: '20px', height: '15px'}} />}
+
           {/* Country Code */}
-          <span className="text-slate-800 font-bold text-sm">{selectedCountry}</span>
-          
+          <span className="text-slate-800 font-bold text-sm">{selectedCountry.code}</span>
+
           {/* Dropdown Indicator */}
-          <FontAwesomeIcon 
+          <FontAwesomeIcon
             icon={isPickerOpen ? faChevronUp : faChevronDown} // Replace with your state variable
-            className="text-[10px] text-slate-400 transition-transform" 
+            className="text-[10px] text-slate-400 transition-transform"
           />
         </div>
         
@@ -1254,11 +1254,11 @@ const handleSubmitforXenyandZain = async () => {
       {/* Country Code Picker Dropdown (Conditional rendering based on isPickerOpen state) */}
       {isPickerOpen && (
         <div className="absolute top-full w-30 left-0 right-0 bg-white border border-slate-200 rounded-xl shadow-lg mt-1 z-20">
-          {COUNTRIES.map((country) => (
+          {COUNTRIES.map((country, index) => (
             <div
-              key={country.code}
+              key={index}
               className="flex items-center gap-2 px-4 py-2 hover:bg-slate-50 cursor-pointer"
-              onClick={() => handleCountrySelect(country.code)}
+              onClick={() => handleCountrySelect(country)}
             >
               {country.countryCode === 'IN' ? <FlagIcons.IN style={{width: '20px', height: '15px'}} /> : country.countryCode === 'AE' ? <FlagIcons.AE style={{width: '20px', height: '15px'}} /> : <FlagIcons.US style={{width: '20px', height: '15px'}} />}
               <span className="text-slate-800 font-bold text-sm">{country.code}</span>
@@ -2179,7 +2179,7 @@ const handleSubmitforXenyandZain = async () => {
               <img
                 src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80"
                 alt="Xeny"
-                className={`w-full h-full object-cover ${selectedAgent === 'female' ? '' : 'grayscale'} opacity-60 group-hover:opacity-80 transition-all duration-300`}
+                className={`w-full h-full object-cover ${selectedAgent === 'female' ? '' : 'grayscale opacity-60'} group-hover:opacity-80 transition-all duration-300`}
               />
               <div className="absolute bottom-6 w-full left-3 text-gray-800 font-bold drop-shadow-md text-lg">Xeny</div>
               
@@ -2199,7 +2199,7 @@ const handleSubmitforXenyandZain = async () => {
               <img
                 src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80"
                 alt="Zain"
-                className={`w-full h-full object-cover ${selectedAgent === 'male' ? '' : 'grayscale'}`}
+                className={`w-full h-full object-cover ${selectedAgent === 'male' ? '' : 'grayscale opacity-60'}`}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
               <div className="absolute bottom-3 left-3 text-white">
@@ -2229,17 +2229,12 @@ const handleSubmitforXenyandZain = async () => {
           <div className="relative flex items-center border border-slate-200 rounded-2xl px-3 sm:px-4 py-2 sm:py-3 mb-4 bg-slate-50 shadow-inner">
             {/* Country Code Dropdown/Toggle */}
             <div className="flex items-center gap-2 border-r border-slate-300 pr-2 sm:pr-3 mr-2 sm:mr-3 cursor-pointer" onClick={() => {
-              const currentIndex = COUNTRIES.findIndex(c => c.code === selectedCountry);
+              const currentIndex = COUNTRIES.findIndex(c => c === selectedCountry);
               const nextIndex = (currentIndex + 1) % COUNTRIES.length;
-              setSelectedCountry(COUNTRIES[nextIndex].code);
+              setSelectedCountry(COUNTRIES[nextIndex]);
             }}>
-              {(() => {
-                const country = COUNTRIES.find(c => c.code === selectedCountry);
-                if (country?.countryCode === 'IN') return <FlagIcons.IN style={{width: '20px', height: '15px'}} />;
-                if (country?.countryCode === 'AE') return <FlagIcons.AE style={{width: '20px', height: '15px'}} />;
-                return <FlagIcons.US style={{width: '20px', height: '15px'}} />;
-              })()}
-              <span className="text-slate-800 font-bold text-sm">{selectedCountry}</span>
+              {selectedCountry.countryCode === 'IN' ? <FlagIcons.IN style={{width: '20px', height: '15px'}} /> : selectedCountry.countryCode === 'AE' ? <FlagIcons.AE style={{width: '20px', height: '15px'}} /> : <FlagIcons.US style={{width: '20px', height: '15px'}} />}
+              <span className="text-slate-800 font-bold text-sm">{selectedCountry.code}</span>
               <i className="fas fa-chevron-down text-[10px] text-slate-400"></i>
             </div>
             
