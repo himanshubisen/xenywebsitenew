@@ -380,7 +380,7 @@ const SwipeCard = React.forwardRef(({ data, industry, index, isFront, onSwipe, d
       onDragEnd={handleDragEnd}
       initial={isFront ? { scale: 0.96, y: 20, opacity: 0 } : {}}
       animate={{ scale: isFront ? 1 : 0.96, y: isFront ? 0 : 20, opacity: 1 }}
-      exit={{ x: direction === 'left' ? -800 : direction === 'right' ? 800 : (x.get() < 0 ? -800 : 800), opacity: 0, rotate: direction === 'left' ? -15 : direction === 'right' ? 15 : (x.get() < 0 ? -15 : 15), transition: { duration: 0.4 } }}
+      exit={{ x: direction === 'left' ? -800 : direction === 'right' ? 800 : (x.get() < 0 ? -800 : 800), opacity: 0, rotate: direction === 'left' ? -15 : direction === 'right' ? 15 : (x.get() < 0 ? -15 : 15), transition: { type: "spring", stiffness: 200, damping: 30, duration: 0.6 } }}
       transition={{ type: "spring", stiffness: 350, damping: 25 }}
       className="absolute  w-full h-[55vh] max-h-[700px] bg-white rounded-[32px] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)] flex flex-col overflow-hidden origin-bottom cursor-grab active:cursor-grabbing border border-slate-100 bg-red-600"
     >
