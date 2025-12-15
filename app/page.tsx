@@ -1396,7 +1396,7 @@ export default function CallersPage() {
               <div className="w-16 h-px bg-gradient-to-r from-transparent via-indigo-300/50 to-transparent"></div>
             </div>
           ))}
-          {/* Floating Theme Icons */}
+          {/* Floating Theme Icons - Center */}
           {[
             { icon: <Bot className="w-6 h-6 text-indigo-500/60" />, delay: 0 },
             { icon: <Phone className="w-6 h-6 text-purple-500/60" />, delay: 1 },
@@ -1406,7 +1406,7 @@ export default function CallersPage() {
             { icon: <Headphones className="w-6 h-6 text-pink-600/60" />, delay: 5 },
           ].map((item, i) => (
             <div
-              key={`theme-${i}`}
+              key={`theme-center-${i}`}
               className="absolute opacity-30 animate-bounce"
               style={{
                 left: `${20 + Math.random() * 60}%`,
@@ -1416,6 +1416,50 @@ export default function CallersPage() {
               }}
             >
               <div className="w-12 h-12 bg-white/40 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center border border-white/30">
+                {item.icon}
+              </div>
+            </div>
+          ))}
+          {/* Floating Theme Icons - Left Side */}
+          {[
+            { icon: <Bot className="w-5 h-5 text-indigo-400/50" />, delay: 0 },
+            { icon: <Phone className="w-5 h-5 text-purple-400/50" />, delay: 1 },
+            { icon: <Sparkles className="w-5 h-5 text-pink-400/50" />, delay: 2 },
+            { icon: <Mic className="w-5 h-5 text-indigo-500/50" />, delay: 3 },
+          ].map((item, i) => (
+            <div
+              key={`theme-left-${i}`}
+              className="absolute opacity-25 animate-pulse"
+              style={{
+                left: `${Math.random() * 15}%`,
+                top: `${10 + Math.random() * 80}%`,
+                animationDelay: `${item.delay * 0.7}s`,
+                animationDuration: `${3 + Math.random() * 2}s`,
+              }}
+            >
+              <div className="w-10 h-10 bg-white/30 backdrop-blur-sm rounded-full shadow-md flex items-center justify-center border border-white/20">
+                {item.icon}
+              </div>
+            </div>
+          ))}
+          {/* Floating Theme Icons - Right Side */}
+          {[
+            { icon: <Bot className="w-5 h-5 text-purple-400/50" />, delay: 0 },
+            { icon: <Headphones className="w-5 h-5 text-pink-400/50" />, delay: 1 },
+            { icon: <Sparkles className="w-5 h-5 text-indigo-500/50" />, delay: 2 },
+            { icon: <Phone className="w-5 h-5 text-purple-500/50" />, delay: 3 },
+          ].map((item, i) => (
+            <div
+              key={`theme-right-${i}`}
+              className="absolute opacity-25 animate-pulse"
+              style={{
+                left: `${85 + Math.random() * 15}%`,
+                top: `${10 + Math.random() * 80}%`,
+                animationDelay: `${item.delay * 0.7}s`,
+                animationDuration: `${3 + Math.random() * 2}s`,
+              }}
+            >
+              <div className="w-10 h-10 bg-white/30 backdrop-blur-sm rounded-full shadow-md flex items-center justify-center border border-white/20">
                 {item.icon}
               </div>
             </div>
