@@ -79,7 +79,7 @@ const LandingPageFlow = () => {
   return (
     // NOTE: Removed h-screen to allow content to naturally flow on small screens.
     // Added px-4 for minimal horizontal padding on the whole component.
-    <div className="w-full font-sans text-slate-900 overflow-x-hidden flex flex-col selection:bg-blue-100 px-2  mb-22 mt-10  py-10 pb-4 relative overflow-hidden">
+    <div className="w-full font-sans text-slate-900 overflow-x-hidden flex flex-col selection:bg-blue-100 px-2  mb-12  py-10 pb-4 relative overflow-hidden">
       {/* Floating Icons Background */}
       <div className="absolute inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50/20 via-indigo-50/15 to-purple-50/20"></div>

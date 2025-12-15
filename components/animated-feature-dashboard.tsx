@@ -443,86 +443,7 @@ const AnimatedFeatureDashboard = () => {
 
 
                         {/* Two-Column Layout for Chart and Log */}
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
-                             {/* ROI Chart */}
-                            <div className="bg-white p-4 md:p-6 rounded-2xl border border-slate-200 shadow-sm h-64 flex items-end justify-between px-4 md:px-8 pb-4 relative overflow-hidden">
-                                <div className="absolute top-4 left-4 md:top-6 md:left-6 font-bold text-sm md:text-base text-slate-800">ROI Tracker</div>
-                                 {[40, 65, 45, 80, 55, 90, 70].map((h, i) => (
-                                     <div key={i} className="w-6 md:w-8 bg-indigo-100 rounded-t-lg relative group transition-all hover:bg-indigo-200 cursor-pointer mx-1">
-                                         <div 
-                                            className="absolute bottom-0 w-full bg-indigo-600 rounded-t-lg transition-all duration-1000 ease-out" 
-                                            style={{ height: `${h}%`, animation: `growUp 1s ease-out ${i * 0.1}s backwards` }}
-                                         ></div>
-                                     </div>
-                                 ))}
-                            </div>
-                            
-                            {/* Live Call Log */}
-                            <div className="bg-white p-4 md:p-6 rounded-2xl border border-slate-200 shadow-sm h-auto lg:h-64 flex flex-col">
-                                <h4 className="flex items-center font-bold text-sm md:text-base text-slate-800 mb-4">
-                                    <List size={18} className="mr-2 text-indigo-500"/>
-                                    Recent Call Activity
-                                </h4>
-                                <div className="space-y-3 overflow-y-auto no-scrollbar flex-1">
-                                 {callData.slice(0, 3).map((call, index) => (
-  <div
-    key={call.id}
-    className={`flex items-start justify-between p-3 border rounded-xl transition-all duration-500 ${
-      index === 0
-        ? 'bg-indigo-50 border-indigo-200 shadow-md'
-        : 'bg-white border-slate-100'
-    }`}
-  >
-    <div className="flex-1 min-w-0 mr-3">
-      <div className="flex items-center mb-1">
-        <span
-          className={`text-[10px] font-bold px-2 py-0.5 rounded-full mr-2 ${getTypeColor(call.type)}`}
-        >
-          {call.type}
-        </span>
-        <p
-          className={`font-semibold text-sm truncate ${
-            index === 0 ? 'text-indigo-800' : 'text-slate-800'
-          }`}
-        >
-          {call.caller}
-        </p>
-      </div>
-
-      <p className="text-xs text-slate-500 truncate">{call.summary}</p>
-
-      <div className="flex items-center mt-1 gap-2">
-        <span
-          className={`text-[10px] font-medium px-2 py-0.5 rounded-full flex items-center ${getOutcomeColor(
-            call.outcome
-          )}`}
-        >
-          {call.outcome}
-        </span>
-
-        <span className="text-[10px] font-medium text-slate-500 flex items-center">
-          {getSentimentIcon(call.sentiment)}
-          <span className="ml-1">{call.sentiment}</span>
-        </span>
-      </div>
-    </div>
-
-    <div className="flex flex-col items-end flex-shrink-0">
-      <span className="text-xs font-bold text-slate-700">{call.duration}</span>
-      <span className="text-[10px] text-slate-400 mt-1">{call.time}</span>
-      <button
-        title="View Transcript/Recording"
-        className="mt-2 text-indigo-500 hover:text-indigo-700"
-      >
-        <Headphones size={14} />
-      </button>
-    </div>
-  </div>
-))}
-
-                                </div>
-                            </div>
-                        </div>
+                   
 
                         {/* Full Call Details Section - Added for requested detail */}
                         <div className="mt-8">
@@ -661,11 +582,11 @@ const AnimatedFeatureDashboard = () => {
                 }
             `}</style>
 
-            <div className="container mx-auto px-4 md:px-6 relative z-10">
-                <div className="text-center mb-2 md:mb-12">
+            <div className="container  mx-auto px-4 py-5  md:px-6 relative z-10">
+                <div className="text-center mb-1 md:mb-6">
                 
                     <ScrollReveal direction="up" delay={100}>
-                        <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 mt-4 md:mt-6 mb-2 md:mb-4">
+                        <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mt-2 md:mt-2 mb-1 md:mb-2">
                             <ScrollTextReveal
                                 text="AI Command Center"
                                 splitBy="word"
@@ -678,7 +599,7 @@ const AnimatedFeatureDashboard = () => {
                 
                 {/* Main Dashboard UI Card */}
                 {/* Added w-full to prevent layout shrinking issues */}
-                <div className="w-full max-w-7xl mx-auto bg-white rounded-3xl shadow-2xl shadow-slate-200 border border-slate-100 overflow-hidden flex flex-col md:flex-row h-auto md:min-h-[600px] relative">
+                <div className="w-full  max-w-6xl mx-auto bg-white rounded-3xl shadow-2xl shadow-slate-200 border border-slate-100 overflow-hidden flex flex-col md:flex-row h-auto md:min-h-[600px] relative">
                     
                     {/* Left Sidebar (Desktop) */}
                     <div className="w-full md:w-64 bg-slate-50 border-r border-slate-200 p-4 md:p-6 flex-shrink-0">

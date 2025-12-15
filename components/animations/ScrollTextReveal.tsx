@@ -83,8 +83,8 @@ export default function ScrollTextReveal({
               <span
                 className={`inline-block transition-all duration-700 ease-out ${
                   isRevealed
-                    ? 'translate-y-0 opacity-100'
-                    : 'translate-y-full opacity-0'
+                    ? 'opacity-100'
+                    : 'opacity-15'
                 }`}
               >
                 {item}

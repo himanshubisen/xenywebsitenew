@@ -440,18 +440,18 @@ export default function App() {
       <DynamicBackground activeIndustry={activeIndustry} />
 
       {/* Heading */}
-      <div className="flex-none pt-8 pb-0 md:pb-4  z-40 relative text-center">
+      <div className="flex-none pt-4 pb-1 md:pb-2  z-40 relative text-center">
           <ScrollReveal direction="up" delay={100}>
             <h1 className="text-5xl  text-bold
-             text-slate-900 mb-6">
+             text-slate-900 mb-2">
               <ScrollTextReveal text="Industrial Use Cases" splitBy="word" />
             </h1>
           </ScrollReveal>
       </div>
 
       {/* 2. Top Navigation (Tabs) */}
-      <div className="flex-none pb-4 z-40 relative">
-          <div className="flex gap-3 overflow-x-auto px-6 pb-2 no-scrollbar snap-x scroll-pl-6 justify-start md:justify-center" style={{ scrollBehavior: 'smooth' }}>
+      <div className="flex-none pb-2 z-40 relative">
+          <div className="flex gap-3 overflow-x-auto px-6 pb-1 no-scrollbar snap-x scroll-pl-6 justify-start md:justify-center" style={{ scrollBehavior: 'smooth' }}>
             {INDUSTRIES.map((ind) => (
                 <TabButton 
                     key={ind.id} 

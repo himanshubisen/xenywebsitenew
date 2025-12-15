@@ -110,9 +110,11 @@ const Counter = ({ target }: { target: string }) => {
 
 // --- Components ---
 const COUNTRIES = [
+    { code: '+971', countryCode: 'AE', emoji: '🇦🇪' },
+    { code: '+91', countryCode: 'US', emoji: '🇺🇸' },
+        { code: '+971', countryCode: 'US', emoji: '🇺🇸' },
   { code: '+91', countryCode: 'IN', emoji: '🇮🇳' },
-  { code: '+971', countryCode: 'AE', emoji: '🇦🇪' },
-  { code: '+1', countryCode: 'US', emoji: '🇺🇸' },
+
 ];
 /**
  * Three.js Background Component
@@ -925,7 +927,7 @@ export default function CallersPage() {
   const [activeServiceTab, setActiveServiceTab] = useState<ServiceId>('edu');
   const [activeUseCaseTab, setActiveUseCaseTab] = useState<TabId>('sales');
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
-  const [selectedCountry, setSelectedCountry] = useState('+91');
+  const [selectedCountry, setSelectedCountry] = useState('+971');
   const [selectedUseCase, setSelectedUseCase] = useState('Sales');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isLoading, setIsLoading] = useState(false);
