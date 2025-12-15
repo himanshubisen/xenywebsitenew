@@ -1062,6 +1062,75 @@ export default function XenyPage() {
   }
 }
 
+const handleSubmitforXenyandZain = async () => {
+  if (!phoneNumber) {
+    setError('Please enter a phone number');
+    return;
+  }
+
+  const expectedLength = selectedCountry === '+91' ? 10 : selectedCountry === '+971' ? 9 : 10;
+
+  if (!new RegExp(`^[0-9]{${expectedLength}}$`).test(phoneNumber)) {
+    setError(`Please enter a valid ${expectedLength}-digit phone number`);
+    return;
+  }
+
+  setIsLoading(true);
+  setError('');
+  setSuccess('');
+
+  try {
+    // Full phone number with country code
+    const fullPhoneNumber = `${selectedCountry}${phoneNumber}`;
+
+    // Choose agent_id based on selected gender
+    const agentId =
+      selectedAgent === 'female'
+        ? 'agent_7901kch4fvf2ebpr3yd0tape0314' // Xeny-India-Sales-Female
+        : 'agent_5801kch3fzpgfa08qnkrh2pg3dds'; // Xeny-India-Sales-Male (Zain)
+
+    // Map use case to lowercase or keep as-is — adjust if ElevenLabs expects specific format
+    const callType = selectedUseCase.toLowerCase(); // e.g., "sales", "support", etc.
+
+    const response = await fetch(
+      'https://api.elevenlabs.io/v1/convai/sip-trunk/outbound-call',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'xi-api-key': process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY || 'sk_7b385992b5a935134eef4ee2d9ad8fd781f3873ca3556fca',
+        },
+        body: JSON.stringify({
+          agent_id: agentId,
+          agent_phone_number_id: 'phnum_2901kcgea5jefv9bac4wvpgz6d5m',
+          to_number: fullPhoneNumber,
+          'type-call': callType, // Custom field as per your curl example
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error?.message || errorData.error || 'Failed to initiate AI call');
+    }
+
+    const data = await response.json();
+    console.log('ElevenLabs call initiated:', data);
+
+    setSuccess('AI call initiated successfully! You’ll receive a call shortly.');
+    setPhoneNumber(''); // Clear input after success
+
+  } catch (err: any) {
+    console.error('Call initiation error:', err);
+    if (err instanceof TypeError) {
+      setError('Network error: Please check your internet connection');
+    } else {
+      setError(err.message || 'Failed to initiate call. Please try again.');
+    }
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   // Handle country selection
   const handleCountrySelect = (newCode: string) => {
@@ -1200,7 +1269,7 @@ export default function XenyPage() {
     
     {/* Submit Button */}
     <button
-      className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 sm:py-4 rounded-xl shadow-lg shadow-indigo-200 transition-all flex items-center justify-center gap-3 text-base sm:text-lg disabled:opacity-70 disabled:cursor-not-allowed"
+      className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 sm:py-4 rounded-full shadow-lg shadow-indigo-200 transition-all flex items-center justify-center gap-3 text-base sm:text-lg disabled:opacity-70 disabled:cursor-not-allowed"
       onClick={handleSubmit}
       disabled={isLoading}
     >
@@ -2039,148 +2108,180 @@ export default function XenyPage() {
 
 {/* FINAL CTA */}
 <section className="py-24 bg-slate-50 border-t border-slate-200 z-10 relative overflow-hidden">
-  {/* Floating Icons Background */}
-  <div className="absolute inset-0 pointer-events-none">
-    <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/20 via-purple-50/15 to-pink-50/20"></div>
-    {[...Array(15)].map((_, i) => (
-      <div
-        key={i}
-        className="absolute animate-pulse opacity-15"
-        style={{
-          left: `${Math.random() * 100}%`,
-          top: `${Math.random() * 100}%`,
-          animationDelay: `${Math.random() * 3}s`,
-          animationDuration: `${3 + Math.random() * 2}s`,
-        }}
-      >
-        <div className="w-6 h-6 bg-gradient-to-br from-indigo-400/30 to-purple-400/30 rounded-full blur-sm flex items-center justify-center backdrop-blur-sm border border-white/20">
-          <div className="w-3 h-3 bg-gradient-to-br from-pink-400/40 to-indigo-400/40 rounded-full"></div>
-        </div>
-      </div>
-    ))}
-    {/* Floating Theme Icons */}
-    {[
-      { icon: <Bot className="w-4 h-4 text-indigo-500/50" />, delay: 0 },
-      { icon: <Phone className="w-4 h-4 text-purple-500/50" />, delay: 1 },
-      { icon: <Sparkles className="w-4 h-4 text-pink-500/50" />, delay: 2 },
-      { icon: <Mic className="w-4 h-4 text-indigo-600/50" />, delay: 3 },
-      { icon: <Headphones className="w-4 h-4 text-purple-600/50" />, delay: 4 },
-      { icon: <Zap className="w-4 h-4 text-pink-600/50" />, delay: 5 },
-      { icon: <MessageSquare className="w-4 h-4 text-indigo-400/50" />, delay: 6 },
-      { icon: <User className="w-4 h-4 text-purple-400/50" />, delay: 7 },
-    ].map((item, i) => (
-      <div
-        key={`cta-${i}`}
-        className="absolute opacity-20 animate-bounce"
-        style={{
-          left: `${5 + Math.random() * 90}%`,
-          top: `${5 + Math.random() * 90}%`,
-          animationDelay: `${item.delay * 0.3}s`,
-          animationDuration: `${2 + Math.random() * 1}s`,
-        }}
-      >
-        <div className="w-8 h-8 bg-white/30 backdrop-blur-sm rounded-full shadow-md flex items-center justify-center border border-white/20">
-          {item.icon}
-        </div>
-      </div>
-    ))}
-  </div>
-  <div className="container mx-auto px-6 flex justify-center bg-noise relative z-10">
-    <div className="bg-white p-6 sm:p-8 rounded-[40px] shadow-lg border border-slate-100 max-w-lg w-full">
-      <div className="text-center mb-6">
-        <h3 className="text-2xl font-bold text-slate-900">C'mon, Make That Call!</h3>
-        <p className="text-slate-500 text-sm">Try Xeny – Meet Xeny / Zain</p>
-      </div>
-
-      {/* Agent Selection */}
-      <div className="flex gap-4 mb-6">
-        <div
-          className={`flex-1 relative rounded-3xl overflow-hidden aspect-[3/4] cursor-pointer group transition-all duration-300 ${
-            selectedAgent === 'female' ? 'ring-4 ring-indigo-600 shadow-lg transform scale-105' : 'ring-2 ring-slate-200'
-          }`}
-          onClick={() => setSelectedAgent('female')}
-        >
-          {selectedAgent === 'female' && (
-            <div className="absolute top-3 left-3 bg-indigo-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md z-10">
-              <i className="fas fa-check"></i>
+      {/* Floating Icons Background (Unchanged) */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/20 via-purple-50/15 to-pink-50/20"></div>
+        {[...Array(15)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute animate-pulse opacity-15"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${3 + Math.random() * 2}s`,
+            }}
+          >
+            <div className="w-6 h-6 bg-gradient-to-br from-indigo-400/30 to-purple-400/30 rounded-full blur-sm flex items-center justify-center backdrop-blur-sm border border-white/20">
+              <div className="w-3 h-3 bg-gradient-to-br from-pink-400/40 to-indigo-400/40 rounded-full"></div>
             </div>
-          )}
-          <img
-            src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80"
-            alt="Cassie"
-            className="w-full h-full object-cover grayscale opacity-60 group-hover:opacity-80 transition-all duration-300"
-          />
-          <div className="absolute bottom-6    w-full left-3 text-gray-800 font-bold drop-shadow-md">Xeny</div>
-          
-          <div className="absolute bottom-3 left-3 text-gray-600 text-xs opacity-80">(Female AI Agent)</div>
-        </div>
-        <div
-          className={`flex-1 relative rounded-3xl overflow-hidden aspect-[3/4] cursor-pointer group transition-all duration-300 ${
-            selectedAgent === 'male' ? 'ring-4 ring-indigo-600 shadow-lg transform scale-105' : 'ring-2 ring-slate-200'
-          }`}
-          onClick={() => setSelectedAgent('male')}
-        >
-          {selectedAgent === 'male' && (
-            <div className="absolute top-3 left-3 bg-indigo-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md z-10">
-              <i className="fas fa-check"></i>
-            </div>
-          )}
-          <img
-            src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80"
-            alt="Paul"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-          <div className="absolute bottom-3 left-3 text-white">
-            <div className="font-bold text-lg">Zain</div>
-            <div className="text-[10px] opacity-90">(Male AI Agent)</div>
           </div>
+        ))}
+        {/* Floating Theme Icons */}
+        {[
+          { icon: <Bot className="w-4 h-4 text-indigo-500/50" />, delay: 0 },
+          { icon: <Phone className="w-4 h-4 text-purple-500/50" />, delay: 1 },
+          { icon: <Sparkles className="w-4 h-4 text-pink-500/50" />, delay: 2 },
+          { icon: <Mic className="w-4 h-4 text-indigo-600/50" />, delay: 3 },
+          { icon: <Headphones className="w-4 h-4 text-purple-600/50" />, delay: 4 },
+          { icon: <Zap className="w-4 h-4 text-pink-600/50" />, delay: 5 },
+          { icon: <MessageSquare className="w-4 h-4 text-indigo-400/50" />, delay: 6 },
+          { icon: <User className="w-4 h-4 text-purple-400/50" />, delay: 7 },
+        ].map((item, i) => (
+          <div
+            key={`cta-${i}`}
+            className="absolute opacity-20 animate-bounce"
+            style={{
+              left: `${5 + Math.random() * 90}%`,
+              top: `${5 + Math.random() * 90}%`,
+              animationDelay: `${item.delay * 0.3}s`,
+              animationDuration: `${2 + Math.random() * 1}s`,
+            }}
+          >
+            <div className="w-8 h-8 bg-white/30 backdrop-blur-sm rounded-full shadow-md flex items-center justify-center border border-white/20">
+              {item.icon}
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      <div className="container mx-auto px-6 flex justify-center bg-noise relative z-10">
+        <div className="bg-white p-6 sm:p-8 rounded-[40px] shadow-lg border border-slate-100 max-w-lg w-full">
+          <div className="text-center mb-6">
+            <h3 className="text-2xl font-bold text-slate-900">C'mon, Make That Call!</h3>
+            <p className="text-slate-500 text-sm">Try Xeny – Meet Xeny / Zain</p>
+          </div>
+
+          {/* Agent Selection */}
+          <div className="flex gap-4 mb-6">
+            <div
+              className={`flex-1 relative rounded-3xl overflow-hidden aspect-[3/4] cursor-pointer group transition-all duration-300 ${
+                selectedAgent === 'female' ? 'ring-4 ring-indigo-600 shadow-lg transform scale-105' : 'ring-2 ring-slate-200'
+              }`}
+              onClick={() => setSelectedAgent('female')}
+            >
+              {selectedAgent === 'female' && (
+                <div className="absolute top-3 left-3 bg-indigo-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md z-10">
+                  <i className="fas fa-check"></i>
+                </div>
+              )}
+              <img
+                src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80"
+                alt="Xeny"
+                className="w-full h-full object-cover grayscale opacity-60 group-hover:opacity-80 transition-all duration-300"
+              />
+              <div className="absolute bottom-6 w-full left-3 text-gray-800 font-bold drop-shadow-md text-lg">Xeny</div>
+              
+              <div className="absolute bottom-3 left-3 text-gray-600 text-xs opacity-80">(Female AI Agent)</div>
+            </div>
+            <div
+              className={`flex-1 relative rounded-3xl overflow-hidden aspect-[3/4] cursor-pointer group transition-all duration-300 ${
+                selectedAgent === 'male' ? 'ring-4 ring-indigo-600 shadow-lg transform scale-105' : 'ring-2 ring-slate-200'
+              }`}
+              onClick={() => setSelectedAgent('male')}
+            >
+              {selectedAgent === 'male' && (
+                <div className="absolute top-3 left-3 bg-indigo-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-md z-10">
+                  <i className="fas fa-check"></i>
+                </div>
+              )}
+              <img
+                src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80"
+                alt="Zain"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+              <div className="absolute bottom-3 left-3 text-white">
+                <div className="font-bold text-lg">Zain</div>
+                <div className="text-[10px] opacity-90">(Male AI Agent)</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Use Case Selection */}
+          <div className="mb-6">
+            <label className="block text-sm font-semibold text-slate-700 mb-2">
+              Select Use Case
+            </label>
+            <select
+              value={selectedUseCase}
+              onChange={(e) => setSelectedUseCase(e.target.value)}
+              className="w-full px-4 py-3 bg-white border border-slate-300 rounded-2xl text-slate-900 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all shadow-sm"
+            >
+              {['Sales', 'Appointment Booking', 'Recovery', 'Support', 'General'].map((useCase) => (
+                <option key={useCase} value={useCase}> {useCase}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Phone Number Input */}
+          <div className="flex items-center border border-slate-200 rounded-2xl px-3 sm:px-4 py-2 sm:py-3 mb-4 bg-slate-50 shadow-inner">
+            {/* Country Code Dropdown/Toggle */}
+            <div className="flex items-center gap-2 border-r border-slate-300 pr-2 sm:pr-3 mr-2 sm:mr-3 cursor-pointer" onClick={() => setSelectedCountry(selectedCountry === '+91' ? '+971' : '+91')}>
+              {selectedCountry === '+91' ? <FlagIcons.IN style={{width: '20px', height: '15px'}} /> : <FlagIcons.AE style={{width: '20px', height: '15px'}} />}
+              <span className="text-slate-800 font-bold text-sm">{selectedCountry}</span>
+              <i className="fas fa-chevron-down text-[10px] text-slate-400"></i>
+            </div>
+            
+            <input
+              type="tel"
+              placeholder="Enter your number (e.g., 9876543210)"
+              value={phoneNumber}
+              onChange={(e) => {
+                setPhoneNumber(e.target.value.replace(/[^0-9]/g, '')); // Only allow digits
+                setError(''); // Clear error on input change
+                setSuccess('');
+              }}
+              className="bg-transparent w-full outline-none text-slate-900 font-bold placeholder-slate-400 text-base sm:text-lg"
+              disabled={isLoading}
+            />
+          </div>
+
+          {/* Error/Success Messages */}
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl mb-4 text-sm font-medium">
+              <i className="fas fa-times-circle mr-2"></i>{error}
+            </div>
+          )}
+          {success && (
+            <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl mb-4 text-sm font-medium">
+              <i className="fas fa-check-circle mr-2"></i>{success}
+            </div>
+          )}
+
+          {/* CTA Button - Integrated with Logic */}
+          <button 
+            onClick={handleSubmitforXenyandZain}
+            disabled={isLoading}
+            className={`w-full font-bold py-3 sm:py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 text-base sm:text-lg 
+              ${isLoading 
+                ? 'bg-indigo-400 cursor-not-allowed' 
+                : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-300/50'
+              }`}
+          >
+            {isLoading ? (
+              <>
+                <i className="fas fa-circle-notch fa-spin"></i> Calling...
+              </>
+            ) : (
+              <>
+                <i className="fas fa-phone-volume"></i> Receive AI Call
+              </>
+            )}
+          </button>
         </div>
       </div>
-
-      {/* --- WOW Use Case Selection (Updated UI) --- */}
-      <div className="mb-6">
-        {/* Label */}
-        <label className="block text-sm font-semibold text-slate-700 mb-2">
-          Select Use Case
-        </label>
-
-        {/* Select Dropdown */}
-        <select
-          value={selectedUseCase}
-          onChange={(e) => setSelectedUseCase(e.target.value)}
-          className="w-full px-4 py-3 bg-white border border-slate-300 rounded-2xl text-slate-900 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all shadow-sm"
-        >
-          {['Sales', 'Appointment Booking', 'Recovery', 'Support', 'General'].map((useCase) => (
-            <option key={useCase} value={useCase}> {useCase}</option>
-          ))}
-        </select>
-      </div>
-      {/* ------------------------------------------- */}
-
-      {/* Phone Number Input */}
-      <div className="flex items-center border border-slate-200 rounded-2xl px-3 sm:px-4 py-2 sm:py-3 mb-4 bg-slate-50 shadow-inner">
-        {/* Country Code Dropdown */}
-        <div className="flex items-center gap-2 border-r border-slate-300 pr-2 sm:pr-3 mr-2 sm:mr-3 cursor-pointer" onClick={() => setSelectedCountry(selectedCountry === '+91' ? '+971' : '+91')}>
-          {selectedCountry === '+91' ? <FlagIcons.IN style={{width: '20px', height: '15px'}} /> : <FlagIcons.AE style={{width: '20px', height: '15px'}} />}
-          <span className="text-slate-800 font-bold text-sm">{selectedCountry}</span>
-          <i className="fas fa-chevron-down text-[10px] text-slate-400"></i>
-        </div>
-        {/* <span className="text-slate-600 font-medium text-sm mr-2">{selectedUseCase}:</span> */}
-        <input
-          type="tel"
-          placeholder="Enter your number"
-          className="bg-transparent w-full outline-none text-slate-900 font-bold placeholder-slate-400 text-base sm:text-lg"
-        />
-      </div>
-
-      {/* CTA Button */}
-      <button className="w-full bg-cyan-600 hover:bg-indigo-700 text-white font-bold py-3 sm:py-4 rounded-2xl shadow-lg shadow-indigo-200 transition-all flex items-center justify-center gap-2 text-base sm:text-lg">
-        <i className="fas fa-phone-volume"></i> Receive AI Call
-      </button>
-    </div>
-  </div>
-</section>
+    </section>
 
        <Footer />
 </main >
