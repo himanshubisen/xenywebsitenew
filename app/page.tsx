@@ -1179,18 +1179,68 @@ export default function CallersPage() {
       <div className="bg-white border-y border-slate-100 py-10 overflow-hidden relative z-10">
         <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10"></div>
         <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white to-transparent z-10"></div>
-        <div className="flex w-max gap-16 items-center opacity-60 grayscale hover:grayscale-0 transition-all duration-500 animate-[scroll_40s_linear_infinite]">
-             {[1, 2].map((i) => (
-                <div key={i} className="flex gap-16">
-                  <i className="fab fa-amazon text-4xl hover:text-[#FF9900] transition-colors"></i>
-                  <i className="fab fa-google text-3xl hover:text-[#4285F4] transition-colors"></i>
-                  <i className="fab fa-spotify text-4xl hover:text-[#1DB954] transition-colors"></i>
-                  <i className="fab fa-airbnb text-4xl hover:text-[#FF5A5F] transition-colors"></i>
-                  <i className="fab fa-uber text-4xl hover:text-black transition-colors"></i>
-                  <i className="fab fa-stripe text-5xl hover:text-[#635BFF] transition-colors"></i>
-                  <i className="fab fa-microsoft text-3xl hover:text-[#F25022] transition-colors"></i>
-                </div>
-             ))}
+        <div className="flex w-max gap-16 items-center animate-[scroll_40s_linear_infinite]">
+{[1, 2, 3, 4, 5].map((i) => (
+  <div
+    key={i}
+    className="flex gap-16 items-center text-slate-600"
+  >
+    {/* Font Awesome supported brands */}
+    <i className="fab fa-google text-3xl text-black hover:text-[#4285F4] transition-colors"></i>
+    <i className="fab fa-microsoft text-3xl text-black hover:text-[#F25022] transition-colors"></i>
+    <i className="fab fa-stripe text-5xl text-black hover:text-[#635BFF] transition-colors"></i>
+
+    {/* Text-based brands */}
+    <span className="text-lg font-semibold hover:text-black transition-colors">
+      ElevenLabs
+    </span>
+
+    <span className="text-lg font-semibold hover:text-black transition-colors">
+      Claude
+    </span>
+
+    <span className="text-lg font-semibold hover:text-black transition-colors">
+      Deepgram
+    </span>
+
+    <img
+      src="/client-logo/cartesia-logo.svg"
+      alt="Cartesia"
+      className="h-8 object-contain grayscale hover:grayscale-0 transition"
+    />
+
+    <span className="text-lg font-semibold hover:text-black transition-colors">
+      Sarvam
+    </span>
+
+    <img
+      src="/client-logo/Xeny-log"
+      alt="Xeny"
+      className="h-8 object-contain grayscale hover:grayscale-0 transition"
+    />
+
+    {/* Image logos */}
+    <img
+      src="/client-logo/triotech-logo.png"
+      alt="Triotech"
+      className="h-8 object-contain grayscale hover:grayscale-0 transition"
+    />
+
+    <img
+      src="/client-logo/ringing"
+      alt="Ringingo"
+      className="h-8 object-contain grayscale hover:grayscale-0 transition"
+    />
+
+    <img
+      src="/client-logo/technotask-logo.png"
+      alt="Technotask"
+      className="h-8 object-contain grayscale hover:grayscale-0 transition"
+    />
+  </div>
+))}
+
+
         </div>
       </div>
       {/* STATS SECTION */}
