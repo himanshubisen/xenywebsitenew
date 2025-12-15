@@ -2138,7 +2138,7 @@ export default function CallersPage() {
           <span className="text-slate-800 font-bold text-sm">{selectedCountry}</span>
           <i className="fas fa-chevron-down text-[10px] text-slate-400"></i>
         </div>
-        <span className="text-slate-600 font-medium text-sm mr-2">{selectedUseCase}:</span>
+        {/* <span className="text-slate-600 font-medium text-sm mr-2">{selectedUseCase}:</span> */}
         <input
           type="tel"
           placeholder="Enter your number"
