@@ -311,7 +311,7 @@ const TabButton = ({ industry, isActive, onClick }) => (
 const CardVisuals = ({ data, industry, isDesktop = false }) => (
   <>
     {/* Visual Header - Adaptive Height */}
-    <div className={`${isDesktop ? 'h-[50%]' : 'h-[58%]'} ${data.bg} relative flex items-center justify-center overflow-hidden transition-all duration-500`}>
+    <div className={`${isDesktop ? 'h-[50%]' : 'h-[40%]'} ${data.bg} relative flex items-center justify-center overflow-hidden transition-all duration-500`}>
         <div className={`absolute top-[-50%] left-[-50%] w-[200%] h-[200%] bg-gradient-to-br ${industry.color} opacity-10 blur-[80px]`} />
         
         <div className="relative z-10 p-6 xl:p-8 bg-white rounded-full shadow-2xl shadow-slate-200/50 text-slate-800 transform hover:scale-105 transition-transform duration-500">
@@ -324,7 +324,7 @@ const CardVisuals = ({ data, industry, isDesktop = false }) => (
     </div>
 
     {/* Content Body */}
-    <div className="flex-1 p-6 xl:p-8 flex flex-col justify-between bg-white relative">
+    <div className="flex-1 p-6 xl:p-8 flex flex-col justify-between bg-white relative ">
         <div className="absolute top-0 left-0 w-full -mt-8 h-8 bg-white rounded-t-[32px]"></div>
 
         <div className="relative z-10 flex flex-col gap-2">
@@ -382,7 +382,7 @@ const SwipeCard = React.forwardRef(({ data, industry, index, isFront, onSwipe },
       animate={{ scale: isFront ? 1 : 0.96, y: isFront ? 0 : 20, opacity: 1 }}
       exit={{ x: x.get() < 0 ? -800 : 800, opacity: 0, rotate: x.get() < 0 ? -15 : 15, transition: { duration: 0.4 } }}
       transition={{ type: "spring", stiffness: 350, damping: 25 }}
-      className="absolute w-full h-[75vh] max-h-[700px] bg-white rounded-[32px] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)] flex flex-col overflow-hidden origin-bottom cursor-grab active:cursor-grabbing border border-slate-100"
+      className="absolute  w-full h-[55vh] max-h-[700px] bg-white rounded-[32px] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)] flex flex-col overflow-hidden origin-bottom cursor-grab active:cursor-grabbing border border-slate-100 bg-red-600"
     >
       {isFront && (
         <>
@@ -468,8 +468,8 @@ export default function App() {
       <div className="flex-grow flex flex-col items-center justify-center relative z-30 pb-6 px-4 py-2 min-h-0  w-full">
           
           {/* MOBILE: Swipe Stack (Hidden on MD+ screens) */}
-          <div className="md:hidden w-full max-w-md h-[78vh] relative">
-            <AnimatePresence mode='popLayout'>
+          <div className="md:hidden w-full max-w-md h-[60vh]  relative">
+            <AnimatePresence mode='popLayout' >
                 <SwipeCard 
                     key={`${activeIndustryId}-${nextCardIndex}-back`}
                     data={cards[nextCardIndex]}
