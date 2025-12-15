@@ -456,8 +456,8 @@ export default function App() {
           </ScrollReveal>
       </div>
 
-      {/* 2. Top Navigation (Tabs) */}
-      <div className="flex-none pb-2 z-40 relative">
+  {/* 2. Top Navigation (Tabs) */}      <div className="flex-none pb-2 z-40 relative">
+
           <div className="flex gap-3 overflow-x-auto px-6 pb-1 no-scrollbar snap-x scroll-pl-6 justify-start md:justify-center" style={{ scrollBehavior: 'smooth' }}>
             {INDUSTRIES.map((ind) => (
                 <TabButton 
@@ -472,8 +472,24 @@ export default function App() {
       </div>
 
       {/* 3. Main Content Area */}
-      <div className="flex-grow flex flex-col items-center justify-center relative z-30 pb-2 md:pb-6 px-4 py-2 min-h-0  w-full">
+      <div className="flex-grow flex flex-col items-center justify-center relative z-30  px-4 py-1 pt-7 min-h-0  w-full b">
           
+                {/* Mobile Navigation */}
+      <div className="md:hidden absolute top-1 w-full flex justify-center items-center gap-4 z-100 bg-red-600/0 px-4 py-2 mt-3">
+        <button
+          onClick={() => handleSwipe('left', 0)}
+          className="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full shadow-lg flex items-center justify-center text-slate-600 hover:bg-white hover:scale-110 transition-all z-100 relative"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] pointer-events-none opacity-60">Swipe or Tap</span>
+        <button
+          onClick={() => handleSwipe('right', 0)}
+          className="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full shadow-lg flex items-center justify-center text-slate-600 hover:bg-white hover:scale-110 transition-all z-100 relative"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </button>
+      </div>
           {/* MOBILE: Swipe Stack (Hidden on MD+ screens) */}
           <div className="md:hidden w-full max-w-md h-[60vh]  relative">
             <AnimatePresence mode='wait' >
@@ -513,22 +529,7 @@ export default function App() {
 
       </div>
       
-      {/* Mobile Navigation */}
-      <div className="md:hidden absolute bottom-1 w-full flex justify-center items-center gap-4 z-100 bg-red-600/0 px-4 py-2 mt-8">
-        <button
-          onClick={() => handleSwipe('left', 0)}
-          className="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full shadow-lg flex items-center justify-center text-slate-600 hover:bg-white hover:scale-110 transition-all z-100 relative"
-        >
-          <ChevronLeft className="w-5 h-5" />
-        </button>
-        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] pointer-events-none opacity-60">Swipe or Tap</span>
-        <button
-          onClick={() => handleSwipe('right', 0)}
-          className="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full shadow-lg flex items-center justify-center text-slate-600 hover:bg-white hover:scale-110 transition-all z-100 relative"
-        >
-          <ChevronRight className="w-5 h-5" />
-        </button>
-      </div>
+
 
     </div>
   );

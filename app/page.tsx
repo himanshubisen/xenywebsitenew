@@ -1995,8 +1995,8 @@ export default function XenyPage() {
         {/* Ask ChatGPT Button - Blue */}
         <ScrollReveal direction="up" delay={300}>
           <a
-            href="#"
-            className="w-full md:w-96 bg-[#4129F9] hover:bg-[#3520D0] text-white py-4 px-8 rounded-xl font-semibold text-lg shadow-xl flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-100"
+            href="https://chatgpt.com/?prompt=tell+me+why+XenyAI+the+voice+and+chat+ai+communication+platform+is+a+great+choice+for+me"
+            className="w-full md:w-96 bg-[#4129F9] hover:bg-[#3520D0] text-white py-4 px-8 rounded-full font-semibold text-lg shadow-xl flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-100"
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 01-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 013.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 013.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 01-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 01-2.292-2.292L14.25 6l1.035-.259a3.375 3.375 0 012.292-2.292L18 2.25l.259 1.035a3.375 3.375 0 012.292 2.292L21.75 6l-1.035.259a3.375 3.375 0 01-2.292 2.292z" />
@@ -2008,8 +2008,8 @@ export default function XenyPage() {
         {/* Ask Claude Button - Black */}
         <ScrollReveal direction="up" delay={400}>
           <a
-            href="#"
-            className="w-full md:w-96 bg-slate-900 hover:bg-slate-700 text-white py-4 px-8 rounded-xl font-semibold text-lg shadow-xl flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-100"
+            href="https://claude.ai/new?q=tell+me+why+XenyAI+the+voice+and+chat+ai+communication+platform+is+a+great+choice+for+me"
+            className="w-full md:w-96 bg-orange-500 hover:bg-slate-700 text-white py-4 px-8 rounded-full font-semibold text-lg shadow-xl flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-100"
           >
             {/* Using a generic bot icon for Claude and Perplexity since the image shows similar icons */}
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
@@ -2022,8 +2022,8 @@ export default function XenyPage() {
         {/* Ask Perplexity Button - Black */}
         <ScrollReveal direction="up" delay={500}>
           <a
-            href="#"
-            className="w-full md:w-96 bg-slate-900 hover:bg-slate-700 text-white py-4 px-8 rounded-xl font-semibold text-lg shadow-xl flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-100"
+            href="https://www.perplexity.ai/search/tell-me-why-www-xeny-ai-the-ojFEFwQzTHWxCAKWibNoMA"
+            className="w-full md:w-96 bg-cyan-600 hover:bg-cyan-700 text-white py-4 px-8 rounded-full font-semibold text-lg shadow-xl flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-100"
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 01-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 013.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 013.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 01-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 01-2.292-2.292L14.25 6l1.035-.259a3.375 3.375 0 012.292-2.292L18 2.25l.259 1.035a3.375 3.375 0 012.292 2.292L21.75 6l-1.035.259a3.375 3.375 0 01-2.292 2.292z" />
@@ -2036,8 +2036,7 @@ export default function XenyPage() {
     </div>
   </div>
 </section>
-             {/* FINAL CTA */ }
-{/* FINAL CTA */}
+
 {/* FINAL CTA */}
 <section className="py-24 bg-slate-50 border-t border-slate-200 z-10 relative overflow-hidden">
   {/* Floating Icons Background */}
@@ -2090,7 +2089,7 @@ export default function XenyPage() {
     <div className="bg-white p-6 sm:p-8 rounded-[40px] shadow-lg border border-slate-100 max-w-lg w-full">
       <div className="text-center mb-6">
         <h3 className="text-2xl font-bold text-slate-900">C'mon, Make That Call!</h3>
-        <p className="text-slate-500 text-sm">Try Xeny – Meet Paul / Cassie</p>
+        <p className="text-slate-500 text-sm">Try Xeny – Meet Xeny / Zain</p>
       </div>
 
       {/* Agent Selection */}
@@ -2111,7 +2110,7 @@ export default function XenyPage() {
             alt="Cassie"
             className="w-full h-full object-cover grayscale opacity-60 group-hover:opacity-80 transition-all duration-300"
           />
-          <div className="absolute bottom-6    w-full left-3 text-gray-800 font-bold drop-shadow-md">Cassie</div>
+          <div className="absolute bottom-6    w-full left-3 text-gray-800 font-bold drop-shadow-md">Xeny</div>
           
           <div className="absolute bottom-3 left-3 text-gray-600 text-xs opacity-80">(Female AI Agent)</div>
         </div>
@@ -2133,7 +2132,7 @@ export default function XenyPage() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
           <div className="absolute bottom-3 left-3 text-white">
-            <div className="font-bold text-lg">Paul</div>
+            <div className="font-bold text-lg">Zain</div>
             <div className="text-[10px] opacity-90">(Male AI Agent)</div>
           </div>
         </div>
