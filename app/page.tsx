@@ -1056,7 +1056,7 @@ export default function XenyPage() {
               Your 24/7 AI Voice Employee For
               <br />
               <HeroTypewriter />
-              <span className="animate-pulse text-indigo-600">|</span>
+              <span className="animate-pulse text-indigo-600"></span>
             </h1>
           </ScrollReveal>
 
