@@ -112,6 +112,7 @@ const Counter = ({ target }: { target: string }) => {
 const COUNTRIES = [
   { code: '+91', countryCode: 'IN', emoji: '🇮🇳' },
   { code: '+971', countryCode: 'AE', emoji: '🇦🇪' },
+  { code: '+1', countryCode: 'US', emoji: '🇺🇸' },
 ];
 /**
  * Three.js Background Component
@@ -695,8 +696,8 @@ const UrbanPiperSection = () => {
   const words = quote.split(' ');
 
   return (
-    <section ref={sectionRef} className="relative min-h-[80vh] flex items-center justify-center bg-slate-900 overflow-hidden py-20 z-10">
-      <HeroCanvas/>
+    <section ref={sectionRef} className=" min-h-[80vh] flex items-center justify-center bg-slate-900 overflow-hidden py-20 relative opacity-85">
+      {/* <HeroCanvas/> */}
        <div ref={bgRef} className="absolute inset-0 z-0 pointer-events-none opacity-50" />
 
        <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-20 pointer-events-none">
@@ -942,7 +943,7 @@ export default function CallersPage() {
       return
     }
 
-    const expectedLength = selectedCountry === '+91' ? 10 : 9; // India: 10 digits, UAE: 9 digits
+    const expectedLength = selectedCountry === '+91' ? 10 : selectedCountry === '+971' ? 9 : 10; // India: 10 digits, UAE: 9 digits, USA: 10 digits
     if (!phoneNumber.match(new RegExp(`^[0-9]{${expectedLength}}$`))) {
       setError(`Please enter a valid ${expectedLength}-digit phone number`)
       return
@@ -956,7 +957,9 @@ export default function CallersPage() {
       // Determine campaign ID based on selected country
       const campaignId = selectedCountry === '+91'
         ? process.env.NEXT_CAMPAIGN_ID_IND || "69391e24f8a4456f85e108b8"
-        : process.env.NEXT_CAMPAIGN_ID_UAE || "693a53a6bda2a468cca3b453"
+        : selectedCountry === '+971'
+        ? process.env.NEXT_CAMPAIGN_ID_UAE || "693a53a6bda2a468cca3b453"
+        : process.env.NEXT_CAMPAIGN_ID_USA || "placeholder_usa_campaign_id"
 
       // Construct the full phone number with country code
       const fullPhoneNumber = `${selectedCountry}${phoneNumber}`
@@ -1061,8 +1064,22 @@ export default function CallersPage() {
 
 
           {/* Simulated Input */}
-     <div className="w-full max-w-md bg-white p-2 sm:p-3 rounded-[24px] shadow-lg border border-slate-200 transform hover:scale-[1.02] transition-transform duration-300 z-10 relative">
-  <div className="flex flex-col gap-2">
+<div className="
+  w-full max-w-md 
+  bg-white 
+  p-2 sm:p-3 
+  rounded-[24px] 
+
+  border border-slate-200 
+  hover:scale-[1.02] 
+  duration-300 
+  z-50 
+  
+  opacity-100
+  backdrop-blur-0
+">
+
+  <div className="flex flex-col gap-2 bg-white">
     
     {/* Input and Picker Container */}
     <div className="relative">
@@ -1074,7 +1091,7 @@ export default function CallersPage() {
           onClick={() => setIsPickerOpen(!isPickerOpen)} // Replace with your actual toggle function
         >
           {/* Flag Display */}
-          {selectedCountry === '+91' ? <FlagIcons.IN style={{width: '20px', height: '15px'}} /> : <FlagIcons.AE style={{width: '20px', height: '15px'}} />}
+          {selectedCountry === '+91' ? <FlagIcons.IN style={{width: '20px', height: '15px'}} /> : selectedCountry === '+971' ? <FlagIcons.AE style={{width: '20px', height: '15px'}} /> : <FlagIcons.US style={{width: '20px', height: '15px'}} />}
           
           {/* Country Code */}
           <span className="text-slate-800 font-bold text-sm">{selectedCountry}</span>
@@ -1090,7 +1107,7 @@ export default function CallersPage() {
         <input
           type="tel"
           // UPDATED, SHORTER PLACEHOLDER
-          placeholder="Enter your number for Xeny Call" 
+          placeholder="Enter your number" 
           className="bg-transparent w-full outline-none text-slate-900 font-bold placeholder-slate-400 text-base sm:text-lg h-full"
           value={phoneNumber}
           onChange={handlePhoneChange}
@@ -1107,7 +1124,7 @@ export default function CallersPage() {
               className="flex items-center gap-2 px-4 py-2 hover:bg-slate-50 cursor-pointer"
               onClick={() => handleCountrySelect(country.code)}
             >
-              {country.countryCode === 'IN' ? <FlagIcons.IN style={{width: '20px', height: '15px'}} /> : <FlagIcons.AE style={{width: '20px', height: '15px'}} />}
+              {country.countryCode === 'IN' ? <FlagIcons.IN style={{width: '20px', height: '15px'}} /> : country.countryCode === 'AE' ? <FlagIcons.AE style={{width: '20px', height: '15px'}} /> : <FlagIcons.US style={{width: '20px', height: '15px'}} />}
               <span className="text-slate-800 font-bold text-sm">{country.code}</span>
             </div>
           ))}
