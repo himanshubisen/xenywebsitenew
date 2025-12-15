@@ -79,7 +79,7 @@ const LandingPageFlow = () => {
   return (
     // NOTE: Removed h-screen to allow content to naturally flow on small screens.
     // Added px-4 for minimal horizontal padding on the whole component.
-    <div className="w-full font-sans text-slate-900 overflow-x-hidden flex flex-col selection:bg-blue-100 px-2  pb-4 relative overflow-hidden">
+    <div className="w-full font-sans text-slate-900 overflow-x-hidden flex flex-col selection:bg-blue-100 px-2  mb-22 mt-10  py-10 pb-4 relative overflow-hidden">
       {/* Floating Icons Background */}
       <div className="absolute inset-0 pointer-events-none z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50/20 via-indigo-50/15 to-purple-50/20"></div>
@@ -131,7 +131,7 @@ const LandingPageFlow = () => {
 
       {/* 2. Main Content (Flex Grow to fill space) */}
       {/* NOTE: Reduced vertical padding by changing justify-center to pt-12 (or similar) on small screens */}
-      <main className="flex-1 flex flex-col items-center w-full max-w-7xl mx-auto  md:pt-10">
+      <main className="flex-1 flex flex-col items-center w-full max-w-7xl mx-auto  py-4  md:pt-10">
         
         {/* Header Section */}
         {/* NOTE: Reduced bottom margin on h1 and top/bottom padding on the entire div. */}
@@ -152,7 +152,7 @@ const LandingPageFlow = () => {
             </StaggerReveal>
           </ScrollReveal>
           {/* NOTE: Reduced max-w-md to max-w-sm for mobile. Reduced base text size slightly */}
-          <p className="text-slate-500  p-2  text-sm md:text-base max-w-xs sm:max-w-md mx-auto leading-relaxed">
+          <p className="text-slate-500  p-2 py-8  text-sm md:text-base max-w-xs sm:max-w-md mx-auto leading-relaxed">
             From setup to first call in minutes.
           </p>
         </div>

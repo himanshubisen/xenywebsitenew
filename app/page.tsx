@@ -1317,7 +1317,8 @@ export default function CallersPage() {
 
 
       {/* NEW: LAUNCH PROCESS SECTION */}
-      <section className="py-3  bg-slate-50 z-10 relative">
+   <section className="py-3 bg-slate-50 border border-slate-200 z-10 relative">
+
     <HowItsWork/>
       </section>
 
