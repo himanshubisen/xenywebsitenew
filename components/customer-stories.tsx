@@ -311,7 +311,7 @@ const TabButton = ({ industry, isActive, onClick }) => (
 const CardVisuals = ({ data, industry, isDesktop = false }) => (
   <>
     {/* Visual Header - Adaptive Height */}
-    <div className={`${isDesktop ? 'h-[50%]' : 'h-[40%]'} ${data.bg} relative flex items-center justify-center overflow-hidden transition-all duration-500`}>
+    <div className={`${isDesktop ? 'h-[70%]' : 'h-[40%]'} ${data.bg} relative flex items-center justify-center overflow-hidden transition-all duration-500`}>
         <div className={`absolute top-[-50%] left-[-50%] w-[200%] h-[200%] bg-gradient-to-br ${industry.color} opacity-10 blur-[80px]`} />
         
         <div className="relative z-10 p-6 xl:p-8 bg-white rounded-full shadow-2xl shadow-slate-200/50 text-slate-800 transform hover:scale-105 transition-transform duration-500">
@@ -449,7 +449,7 @@ export default function App() {
       {/* Heading */}
       <div className="flex-none pt-4 pb-1 md:pb-2  z-40 relative text-center">
           <ScrollReveal direction="up" delay={100}>
-            <h1 className="text-5xl  text-bold
+            <h1 className="md:text-5xl  text-3xl  text-bold
              text-slate-900 mb-2">
               <ScrollTextReveal text="Industrial Use Cases" splitBy="word" />
             </h1>
