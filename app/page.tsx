@@ -37,6 +37,7 @@ import {
   Mic,
   PlayCircle,
   Rocket,
+  Sparkles,
 
 
 } from 'lucide-react';
@@ -1393,6 +1394,30 @@ export default function CallersPage() {
               }}
             >
               <div className="w-16 h-px bg-gradient-to-r from-transparent via-indigo-300/50 to-transparent"></div>
+            </div>
+          ))}
+          {/* Floating Theme Icons */}
+          {[
+            { icon: <Bot className="w-6 h-6 text-indigo-500/60" />, delay: 0 },
+            { icon: <Phone className="w-6 h-6 text-purple-500/60" />, delay: 1 },
+            { icon: <Bot className="w-6 h-6 text-pink-500/60" />, delay: 2 },
+            { icon: <Mic className="w-6 h-6 text-indigo-600/60" />, delay: 3 },
+            { icon: <Sparkles className="w-6 h-6 text-purple-600/60" />, delay: 4 },
+            { icon: <Headphones className="w-6 h-6 text-pink-600/60" />, delay: 5 },
+          ].map((item, i) => (
+            <div
+              key={`theme-${i}`}
+              className="absolute opacity-30 animate-bounce"
+              style={{
+                left: `${20 + Math.random() * 60}%`,
+                top: `${20 + Math.random() * 60}%`,
+                animationDelay: `${item.delay * 0.5}s`,
+                animationDuration: `${2 + Math.random() * 1}s`,
+              }}
+            >
+              <div className="w-12 h-12 bg-white/40 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center border border-white/30">
+                {item.icon}
+              </div>
             </div>
           ))}
         </div>
