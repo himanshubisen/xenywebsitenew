@@ -935,6 +935,7 @@ export default function XenyPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isPickerOpen, setIsPickerOpen] = useState(false);
+  const [isCtaPickerOpen, setIsCtaPickerOpen] = useState(false);
   const [selectedAgent, setSelectedAgent] = useState<'male' | 'female'>('male');
 
   const currentFlag = selectedCountry?.emoji || '🇮🇳';
@@ -1137,6 +1138,7 @@ const handleSubmitforXenyandZain = async () => {
    const handleCountrySelect = (country) => {
      setSelectedCountry(country);
      setIsPickerOpen(false);
+     setIsCtaPickerOpen(false);
    };
 
   // Handle phone number change
@@ -2228,14 +2230,10 @@ const handleSubmitforXenyandZain = async () => {
           {/* Phone Number Input */}
           <div className="relative flex items-center border border-slate-200 rounded-2xl px-3 sm:px-4 py-2 sm:py-3 mb-4 bg-slate-50 shadow-inner">
             {/* Country Code Dropdown/Toggle */}
-            <div className="flex items-center gap-2 border-r border-slate-300 pr-2 sm:pr-3 mr-2 sm:mr-3 cursor-pointer" onClick={() => {
-              const currentIndex = COUNTRIES.findIndex(c => c === selectedCountry);
-              const nextIndex = (currentIndex + 1) % COUNTRIES.length;
-              setSelectedCountry(COUNTRIES[nextIndex]);
-            }}>
+            <div className="flex items-center gap-2 border-r border-slate-300 pr-2 sm:pr-3 mr-2 sm:mr-3 cursor-pointer" onClick={() => setIsCtaPickerOpen(!isCtaPickerOpen)}>
               {selectedCountry.countryCode === 'IN' ? <FlagIcons.IN style={{width: '20px', height: '15px'}} /> : selectedCountry.countryCode === 'AE' ? <FlagIcons.AE style={{width: '20px', height: '15px'}} /> : <FlagIcons.US style={{width: '20px', height: '15px'}} />}
               <span className="text-slate-800 font-bold text-sm">{selectedCountry.code}</span>
-              <i className="fas fa-chevron-down text-[10px] text-slate-400"></i>
+              <i className={`fas fa-chevron-down text-[10px] text-slate-400 transition-transform ${isCtaPickerOpen ? 'rotate-180' : ''}`}></i>
             </div>
             
             <input
@@ -2250,6 +2248,22 @@ const handleSubmitforXenyandZain = async () => {
               className="bg-transparent w-full outline-none text-slate-900 font-bold placeholder-slate-400 text-base sm:text-lg"
               disabled={isLoading}
             />
+
+            {/* Country Code Picker Dropdown */}
+            {isCtaPickerOpen && (
+              <div className="absolute top-full left-0 right-0 bg-white border border-slate-200 rounded-xl shadow-lg mt-1 z-20">
+                {COUNTRIES.map((country, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center gap-2 px-4 py-2 hover:bg-slate-50 cursor-pointer"
+                    onClick={() => handleCountrySelect(country)}
+                  >
+                    {country.countryCode === 'IN' ? <FlagIcons.IN style={{width: '20px', height: '15px'}} /> : country.countryCode === 'AE' ? <FlagIcons.AE style={{width: '20px', height: '15px'}} /> : <FlagIcons.US style={{width: '20px', height: '15px'}} />}
+                    <span className="text-slate-800 font-bold text-sm">{country.code}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Error/Success Messages */}
