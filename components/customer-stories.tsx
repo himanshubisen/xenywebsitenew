@@ -357,7 +357,7 @@ const CardVisuals = ({ data, industry, isDesktop = false }) => (
   </>
 );
 
-const SwipeCard = React.forwardRef(({ data, industry, index, isFront, onSwipe }, ref) => {
+const SwipeCard = React.forwardRef(({ data, industry, index, isFront, onSwipe, direction }, ref) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const rotate = useTransform(x, [-100, 100], [-8, 8]);
@@ -380,7 +380,7 @@ const SwipeCard = React.forwardRef(({ data, industry, index, isFront, onSwipe },
       onDragEnd={handleDragEnd}
       initial={isFront ? { scale: 0.96, y: 20, opacity: 0 } : {}}
       animate={{ scale: isFront ? 1 : 0.96, y: isFront ? 0 : 20, opacity: 1 }}
-      exit={{ x: x.get() < 0 ? -800 : 800, opacity: 0, rotate: x.get() < 0 ? -15 : 15, transition: { duration: 0.4 } }}
+      exit={{ x: direction === 'left' ? -800 : direction === 'right' ? 800 : (x.get() < 0 ? -800 : 800), opacity: 0, rotate: direction === 'left' ? -15 : direction === 'right' ? 15 : (x.get() < 0 ? -15 : 15), transition: { duration: 0.4 } }}
       transition={{ type: "spring", stiffness: 350, damping: 25 }}
       className="absolute  w-full h-[55vh] max-h-[700px] bg-white rounded-[32px] shadow-[0_30px_60px_-15px_rgba(0,0,0,0.15)] flex flex-col overflow-hidden origin-bottom cursor-grab active:cursor-grabbing border border-slate-100 bg-red-600"
     >
@@ -417,7 +417,8 @@ const DesktopCard = ({ data, industry }) => (
 export default function App() {
   const [activeIndustryId, setActiveIndustryId] = useState(INDUSTRIES[0].id);
   const [currentIndex, setCurrentIndex] = useState(0);
-  
+  const [swipeDirection, setSwipeDirection] = useState<'left' | 'right' | null>(null);
+
   const activeIndustry = INDUSTRIES.find(i => i.id === activeIndustryId) || INDUSTRIES[0];
   const cards = activeIndustry.cards;
 
@@ -427,15 +428,14 @@ export default function App() {
   const handleTabClick = (id) => {
     setActiveIndustryId(id);
     setCurrentIndex(0);
+    setSwipeDirection(null);
   };
 
   const handleSwipe = (direction, delay = 200) => {
+    setSwipeDirection(direction);
     setTimeout(() => {
-      if (direction === 'left') {
-        setCurrentIndex(prev => prev - 1 < 0 ? cards.length - 1 : prev - 1);
-      } else {
-        setCurrentIndex(prev => prev + 1);
-      }
+      setCurrentIndex(prev => direction === 'left' ? (prev - 1 < 0 ? cards.length - 1 : prev - 1) : prev + 1);
+      setSwipeDirection(null);
     }, delay);
   };
 
@@ -475,22 +475,24 @@ export default function App() {
           
           {/* MOBILE: Swipe Stack (Hidden on MD+ screens) */}
           <div className="md:hidden w-full max-w-md h-[60vh]  relative">
-            <AnimatePresence mode='popLayout' >
-                <SwipeCard 
+            <AnimatePresence mode='wait' >
+                <SwipeCard
                     key={`${activeIndustryId}-${nextCardIndex}-back`}
                     data={cards[nextCardIndex]}
                     industry={activeIndustry}
                     index={1}
                     isFront={false}
                     onSwipe={() => {}}
+                    direction={null}
                 />
-                <SwipeCard 
+                <SwipeCard
                     key={`${activeIndustryId}-${topCardIndex}-front`}
                     data={cards[topCardIndex]}
                     industry={activeIndustry}
                     index={0}
                     isFront={true}
                     onSwipe={handleSwipe}
+                    direction={swipeDirection}
                 />
             </AnimatePresence>
           </div>
@@ -511,17 +513,17 @@ export default function App() {
       </div>
       
       {/* Mobile Navigation */}
-      <div className="md:hidden absolute bottom-6 w-full flex justify-center items-center gap-4 z-20">
+      <div className="md:hidden absolute bottom-6 w-full flex justify-center items-center gap-4 z-100 bg-red-600/0 px-4 py-2 mt-4">
         <button
           onClick={() => handleSwipe('left', 0)}
-          className="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full shadow-lg flex items-center justify-center text-slate-600 hover:bg-white hover:scale-110 transition-all"
+          className="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full shadow-lg flex items-center justify-center text-slate-600 hover:bg-white hover:scale-110 transition-all z-100 relative"
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] pointer-events-none opacity-60">Swipe or Tap</span>
         <button
           onClick={() => handleSwipe('right', 0)}
-          className="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full shadow-lg flex items-center justify-center text-slate-600 hover:bg-white hover:scale-110 transition-all"
+          className="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full shadow-lg flex items-center justify-center text-slate-600 hover:bg-white hover:scale-110 transition-all z-100 relative"
         >
           <ChevronRight className="w-5 h-5" />
         </button>
