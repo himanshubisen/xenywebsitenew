@@ -514,7 +514,7 @@ export default function App() {
       </div>
       
       {/* Mobile Navigation */}
-      <div className="md:hidden absolute bottom-6 w-full flex justify-center items-center gap-4 z-100 bg-red-600/0 px-4 py-2 mt-4">
+      <div className="md:hidden absolute bottom-1 w-full flex justify-center items-center gap-4 z-100 bg-red-600/0 px-4 py-2 mt-8">
         <button
           onClick={() => handleSwipe('left', 0)}
           className="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full shadow-lg flex items-center justify-center text-slate-600 hover:bg-white hover:scale-110 transition-all z-100 relative"
