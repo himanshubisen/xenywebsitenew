@@ -2054,7 +2054,7 @@ export default function CallersPage() {
           className="w-full px-4 py-3 bg-white border border-slate-300 rounded-2xl text-slate-900 font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all shadow-sm"
         >
           {['Sales', 'Appointment Booking', 'Recovery', 'Support', 'General'].map((useCase) => (
-            <option key={useCase} value={useCase}>• {useCase}</option>
+            <option key={useCase} value={useCase}> {useCase}</option>
           ))}
         </select>
       </div>
