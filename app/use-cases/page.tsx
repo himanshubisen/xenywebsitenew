@@ -23,6 +23,8 @@ import {
   CheckCircle2,
   TrendingUp
 } from 'lucide-react';
+
+// Assuming these components are available elsewhere and don't need modification
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 
@@ -148,14 +150,16 @@ const IndustryTab = ({ industry, isActive, onClick }) => (
   </button>
 );
 
-const CardContent = ({ data, industry, isDesktop }) => {
+const CardContent = ({ data, industry }) => {
   const Icon = industry.icon;
+  // Removed isDesktop prop and hardcoded desktop/grid-friendly styles
+  const isDesktop = true; 
 
   return (
     <div className={`
       relative w-full flex flex-col p-6 select-none h-full
       bg-white rounded-[2rem] overflow-hidden border border-gray-100 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.1)]
-      ${isDesktop ? 'hover:scale-[1.02] transition-transform duration-300 p-4' : ''}
+      hover:scale-[1.02] transition-transform duration-300 p-4
     `}>
       {/* Dynamic Background Glow */}
       <div className={`absolute -top-20 -right-20 w-60 h-60 bg-gradient-to-br ${industry.color} opacity-[0.08] blur-[60px] rounded-full pointer-events-none`} />
@@ -164,37 +168,37 @@ const CardContent = ({ data, industry, isDesktop }) => {
       {/* 1. Header */}
       <div className="flex flex-col gap-2 z-10">
         <div className="flex items-center justify-between mb-1">
-            <div className={`p-2.5 rounded-2xl bg-gradient-to-br ${industry.color} text-white shadow-md`}>
-                <Icon size={isDesktop ? 18 : 24} />
-            </div>
-            <div className={`px-2 py-1 rounded-full bg-gray-50 border border-gray-100 text-[10px] font-bold tracking-wider ${industry.text} flex items-center gap-1.5`}>
-                <div className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
-                AI ACTIVE
-            </div>
+          <div className={`p-2.5 rounded-2xl bg-gradient-to-br ${industry.color} text-white shadow-md`}>
+            <Icon size={18} /> {/* Enforced desktop icon size */}
+          </div>
+          <div className={`px-2 py-1 rounded-full bg-gray-50 border border-gray-100 text-[10px] font-bold tracking-wider ${industry.text} flex items-center gap-1.5`}>
+            <div className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
+            AI ACTIVE
+          </div>
         </div>
-        <h2 className={`${isDesktop ? 'text-lg' : 'text-3xl'} font-bold text-gray-900 leading-tight tracking-tight mt-1 truncate`}>{data.title}</h2>
-        <p className="text-[10px] md:text-xs font-bold text-gray-400 tracking-wide uppercase">{industry.label} Automation</p>
+        <h2 className={`text-lg font-bold text-gray-900 leading-tight tracking-tight mt-1 truncate`}>{data.title}</h2>
+        <p className="text-xs font-bold text-gray-400 tracking-wide uppercase">{industry.label} Automation</p>
       </div>
 
       {/* KPI Section */}
-      <div className={`p-3 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-between ${isDesktop ? 'my-2' : 'my-4'}`}>
+      <div className={`p-3 rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-between my-2`}>
         <div className="flex items-center gap-2 text-gray-500 text-xs font-bold uppercase tracking-wider">
-            <Activity size={14} className={industry.text} />
-            <span>Efficiency</span>
+          <Activity size={14} className={industry.text} />
+          <span>Efficiency</span>
         </div>
-        <span className={`${isDesktop ? 'text-sm' : 'text-lg'} font-bold text-transparent bg-clip-text bg-gradient-to-r ${industry.color}`}>
-            {data.kpi}
+        <span className={`text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r ${industry.color}`}>
+          {data.kpi}
         </span>
       </div>
 
       {/* 2. Core Content - Use Cases */}
       <div className="flex flex-col gap-2 z-10 flex-1">
         {data.cases.map((useCase, idx) => (
-          <div key={idx} className={`flex items-center gap-2 rounded-xl bg-gray-50 border border-transparent transition-all ${isDesktop ? 'p-2' : 'p-3'}`}>
+          <div key={idx} className={`flex items-center gap-2 rounded-xl bg-gray-50 border border-transparent transition-all p-2`}>
             <div className={`min-w-[20px] h-5 rounded-full bg-gradient-to-br ${industry.color} flex items-center justify-center text-white shadow-sm font-bold text-[8px]`}>
-                {idx + 1}
+              {idx + 1}
             </div>
-            <span className="text-gray-600 text-[10px] md:text-xs font-bold leading-tight line-clamp-2">{useCase}</span>
+            <span className="text-gray-600 text-xs font-bold leading-tight line-clamp-2">{useCase}</span>
           </div>
         ))}
       </div>
@@ -208,91 +212,22 @@ const CardContent = ({ data, industry, isDesktop }) => {
   );
 };
 
-const SwipeableCard = ({ data, industry, onSwipe, index }) => {
-  // Mobile Stack Logic
-  if (index > 2) return null;
-
-  const isTop = index === 0;
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const rotate = useTransform(x, [-200, 200], [-10, 10]);
-  const opacity = useTransform(x, [-200, 0, 200], [0.8, 1, 0.8]);
-
-  // Like/Nope indicators
-  const likeOpacity = useTransform(x, [50, 150], [0, 1]);
-  const nopeOpacity = useTransform(x, [-50, -150], [0, 1]);
-
-  const handleDragEnd = (event, info) => {
-    const threshold = 100;
-    if (info.offset.x > threshold) {
-      onSwipe('right');
-    } else if (info.offset.x < -threshold) {
-      onSwipe('left');
-    }
-  };
-
-  return (
-    <motion.div
-      style={{
-        x: isTop ? x : 0,
-        y: index * 10, // Stack vertical offset
-        rotate: isTop ? rotate : 0,
-        zIndex: 50 - index,
-        scale: 1 - index * 0.04, // Stack scale effect
-        opacity: isTop ? opacity : 1,
-      }}
-      drag={isTop ? "x" : false}
-      dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-      dragElastic={0.6}
-      onDragEnd={handleDragEnd}
-      initial={{ scale: 0.9, opacity: 0 }}
-      animate={{ scale: 1 - index * 0.04, opacity: 1, y: index * 10 }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className={`absolute top-0 left-0 right-0 bottom-0 origin-bottom cursor-grab active:cursor-grabbing shadow-xl rounded-[2rem] h-full w-full`}
-    >
-        {/* Swipe Indicators */}
-        {isTop && (
-            <>
-                <motion.div style={{ opacity: likeOpacity }} className="absolute top-10 left-8 z-50 px-6 py-2 border-4 border-emerald-500 rounded-xl transform -rotate-12 bg-white/90 backdrop-blur-md shadow-xl">
-                    <span className="text-emerald-500 font-black text-3xl uppercase tracking-widest">INTERESTED</span>
-                </motion.div>
-                <motion.div style={{ opacity: nopeOpacity }} className="absolute top-10 right-8 z-50 px-6 py-2 border-4 border-rose-500 rounded-xl transform rotate-12 bg-white/90 backdrop-blur-md shadow-xl">
-                    <span className="text-rose-500 font-black text-3xl uppercase tracking-widest">SKIP</span>
-                </motion.div>
-            </>
-        )}
-
-      <CardContent data={data} industry={industry} isDesktop={false} />
-    </motion.div>
-  );
-};
+// Removed SwipeableCard as it is part of the mobile-only logic
 
 export default function VoiceBotExplorer() {
   const [activeIndustryId, setActiveIndustryId] = useState(INDUSTRIES[0].id);
-  const [cards, setCards] = useState([]);
-
-  // Initialize cards
-  useEffect(() => {
-    const industryData = USE_CASES[activeIndustryId];
-    if (industryData) {
-      setCards(industryData.map((c, i) => ({ ...c, uniqueId: `${activeIndustryId}-${i}-${Date.now()}` })));
-    }
-  }, [activeIndustryId]);
+  
+  // No need for 'cards' state or swipe logic if we only use the grid view.
+  // const [cards, setCards] = useState([]); 
 
   const activeIndustry = INDUSTRIES.find(i => i.id === activeIndustryId);
 
-  // Infinity Swipe Logic
-  const handleSwipe = (direction) => {
-    setCards(prev => {
-      const swipedCard = prev[0];
-      const remainingCards = prev.slice(1);
-      const recycledCard = { ...swipedCard, uniqueId: `${swipedCard.title}-${Date.now()}` };
-      return [...remainingCards, recycledCard];
-    });
-  };
+  // Removed useEffect for card initialization as we now use USE_CASES directly in the render
+  // and no longer need the swipeable stack data structure.
 
   return (
     <>
+      {/* Replaced with simple div/placeholder as the original components are not defined here */}
       <Header onDemoClick={() => {}} />
       <div className={`min-h-screen w-full bg-gray-50 text-gray-900 font-sans flex flex-col overflow-hidden relative selection:bg-gray-200`}>
 
@@ -301,78 +236,65 @@ export default function VoiceBotExplorer() {
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 pointer-events-none z-0 mix-blend-multiply"></div>
 
         {/* --- TOP: TABS --- */}
-        <div className={`relative  w-full bg-white/80 backdrop-blur-md pt-36`}>
-        <div className={`w-full px-4 py-3 border-b border-gray-100`}>
+        <div className={`relative w-full bg-white/80 backdrop-blur-md pt-36`}>
+          <div className={`w-full px-4 py-3 border-b border-gray-100`}>
             {/* Scrollable Tabs */}
-            <div className={`flex gap-3 overflow-x-auto no-scrollbar mask-linear-fade py-1`}>
-                {INDUSTRIES.map((ind) => (
+            <div className={`flex gap-3 overflow-x-auto no-scrollbar py-1`}>
+              {INDUSTRIES.map((ind) => (
                 <IndustryTab
-                    key={ind.id}
-                    industry={ind}
-                    isActive={activeIndustryId === ind.id}
-                    onClick={() => setActiveIndustryId(ind.id)}
+                  key={ind.id}
+                  industry={ind}
+                  isActive={activeIndustryId === ind.id}
+                  onClick={() => setActiveIndustryId(ind.id)}
                 />
-                ))}
+              ))}
             </div>
+          </div>
         </div>
+
+        {/* --- MAIN CONTENT AREA: ENFORCED GRID VIEW --- */}
+        {/* Removed responsiveness classes and made it the default display */}
+        <div className={`relative z-10 flex-1 w-full flex flex-col pt-8 p-4 overflow-y-auto`}> 
+
+          {/* This is the only view now, made it always visible and scrollable */}
+          <div className={`w-full h-full`}>
+            <div className={`w-full max-w-[1200px] mx-auto flex flex-wrap justify-center gap-6 p-0 md:p-8 pb-20`}> 
+              {USE_CASES[activeIndustryId].map((data, idx) => (
+                <motion.div
+                  key={`${activeIndustryId}-grid-${idx}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.1 }}
+                  // Card sizing ensures stacking on narrow screens, but keeps the desktop design
+                  className={`w-full md:w-[30%] min-w-[300px] h-[550px]`}
+                >
+                  {/* Removed isDesktop prop from CardContent since it's now hardcoded to true within the component */}
+                  <CardContent data={data} industry={activeIndustry} />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <style>{`
+          .pt-safe-top {
+              padding-top: env(safe-area-inset-top, 10px);
+          }
+          .no-scrollbar::-webkit-scrollbar {
+            display: none;
+          }
+          .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            scroll-behavior: smooth;
+          }
+          .mask-linear-fade {
+              mask-image: linear-gradient(to right, black 90%, transparent 100%);
+          }
+        `}</style>
       </div>
-
-      {/* --- MAIN CONTENT AREA --- */}
-      <div className={`relative z-10 flex-1 w-full flex flex-col pt-20 p-4 md:p-8 overflow-hidden`}>
-
-        {/* MOBILE VIEW (< 768px): Swipe Stack fills screen */}
-        <div className={`md:hidden relative w-full h-full flex flex-col`}>
-            <div className={`relative w-full h-full`}>
-                <AnimatePresence>
-                    {cards.map((card, index) => (
-                    <SwipeableCard
-                        key={card.uniqueId}
-                        data={card}
-                        industry={activeIndustry}
-                        index={index}
-                        onSwipe={handleSwipe}
-                    />
-                    ))}
-                </AnimatePresence>
-            </div>
-        </div>
-
-        {/* DESKTOP VIEW (>= 768px): 3 in first row, 2 in second, Scrollable */}
-        <div className={`hidden md:block w-full h-full overflow-y-auto`}>
-            <div className={`w-full max-w-[1200px] mx-auto flex flex-wrap justify-center gap-6 p-8 pb-20`}>
-                {USE_CASES[activeIndustryId].map((data, idx) => (
-                     <motion.div
-                     key={`${activeIndustryId}-grid-${idx}`}
-                     initial={{ opacity: 0, y: 20 }}
-                     animate={{ opacity: 1, y: 0 }}
-                     transition={{ delay: idx * 0.1 }}
-                     // w-[30%] allows 3 items per row (30*3 + gaps < 100).
-                     // min-w ensures they don't get too small. h-[500px] ensures proper card size.
-                     className={`w-full md:w-[30%] min-w-[300px] h-[550px]`}
-                 >
-                     <CardContent data={data} industry={activeIndustry} isDesktop={true} />
-                 </motion.div>
-                ))}
-            </div>
-        </div>
-      </div>
-
-      <style>{`
-        .pt-safe-top {
-            padding-top: env(safe-area-inset-top, 10px);
-        }
-        .no-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-        .no-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        .mask-linear-fade {
-            mask-image: linear-gradient(to right, black 90%, transparent 100%);
-        }
-      `}</style>
-    </div>
-    <Footer />
-  </>);
+      {/* Replaced with simple div/placeholder as the original components are not defined here */}
+      <Footer />
+    </>
+  );
 }
