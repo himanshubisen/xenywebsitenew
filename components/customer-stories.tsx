@@ -429,8 +429,14 @@ export default function App() {
     setCurrentIndex(0);
   };
 
-  const handleSwipe = (direction) => {
-    setTimeout(() => { setCurrentIndex(prev => prev + 1); }, 200);
+  const handleSwipe = (direction, delay = 200) => {
+    setTimeout(() => {
+      if (direction === 'left') {
+        setCurrentIndex(prev => prev - 1 < 0 ? cards.length - 1 : prev - 1);
+      } else {
+        setCurrentIndex(prev => prev + 1);
+      }
+    }, delay);
   };
 
   return (
@@ -504,13 +510,21 @@ export default function App() {
 
       </div>
       
-      {/* Mobile Hint */}
-      <div className="md:hidden absolute bottom-6 w-full text-center z-20 pointer-events-none opacity-40">
-        <div className="flex items-center justify-center gap-2">
-          <ChevronLeft className="w-8 h-8 text-slate-400" />
-          <span className="text-[15px] font-bold text-slate-500 uppercase tracking-[0.2em]">Swipe for New Call</span>
-          <ChevronRight className="w-8 h-8 text-slate-400" />
-        </div>
+      {/* Mobile Navigation */}
+      <div className="md:hidden absolute bottom-6 w-full flex justify-center items-center gap-4 z-20">
+        <button
+          onClick={() => handleSwipe('left', 0)}
+          className="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full shadow-lg flex items-center justify-center text-slate-600 hover:bg-white hover:scale-110 transition-all"
+        >
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] pointer-events-none opacity-60">Swipe or Tap</span>
+        <button
+          onClick={() => handleSwipe('right', 0)}
+          className="w-10 h-10 bg-white/80 backdrop-blur-md rounded-full shadow-lg flex items-center justify-center text-slate-600 hover:bg-white hover:scale-110 transition-all"
+        >
+          <ChevronRight className="w-5 h-5" />
+        </button>
       </div>
 
     </div>
