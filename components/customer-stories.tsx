@@ -441,7 +441,7 @@ export default function App() {
   };
 
   return (
-    <div className="relative w-full py-2 px-2 min-h-screen overflow-hidden flex flex-col font-sans select-none bg-slate-50 z-10">
+    <div className="relative w-full py-2 px-2 min-h-screen overflow-hidden flex flex-col font-sans select-none bg-slate-50 z-10 pt-6  ">
       
       {/* 1. Light Dynamic Background */}
       <DynamicBackground activeIndustry={activeIndustry} />

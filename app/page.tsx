@@ -310,14 +310,9 @@ const COUNTRIES = [
 // };
 
 const ICON_PATHS = {
-    // 1. Xeny Logo / AI Icon
-    ai: '../public/logo/xeny-logo.png', 
-    
-    // 2. Caller Icon (Replace with your actual path)
-    caller: '/icons/phone-call.png', 
-    
-    // 3. Bot Icon (Replace with your actual path)
-    bot: '/icons/bot.png',       
+    ai: '/xeny-logo.png',
+    caller: '/placeholder.svg',
+    bot: '/placeholder.svg',
 };
 
 const ThreeBackground = () => {
@@ -2077,7 +2072,7 @@ const handleSubmitforXenyandZain = async () => {
         {/* Ask Claude Button - Black */}
         <ScrollReveal direction="up" delay={400}>
           <a
-            href="https://claude.ai/new?q=tell+me+why+XenyAI+the+voice+and+chat+ai+communication+platform+is+a+great+choice+for+me"
+            href="https://claude.ai/new?q=tell+me+why+Xeny.AI+the+voice+and+chat+ai+communication+platform+is+a+great+choice+for+me"
             className="w-full md:w-96 bg-orange-500 hover:bg-slate-700 text-white py-4 px-8 rounded-full font-semibold text-lg shadow-xl flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-100"
           >
             {/* Using a generic bot icon for Claude and Perplexity since the image shows similar icons */}
@@ -2091,7 +2086,7 @@ const handleSubmitforXenyandZain = async () => {
         {/* Ask Perplexity Button - Black */}
         <ScrollReveal direction="up" delay={500}>
           <a
-            href="https://www.perplexity.ai/search/tell-me-why-www-xeny-ai-the-ojFEFwQzTHWxCAKWibNoMA"
+            href="https://www.perplexity.ai/search/new?q=tell+me+why+www.xeny.ai+the+voice+and+chat+ai+communication+platform+is+a+great+choice+for+me"
             className="w-full md:w-96 bg-cyan-600 hover:bg-cyan-700 text-white py-4 px-8 rounded-full font-semibold text-lg shadow-xl flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-100"
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
@@ -2227,8 +2222,17 @@ const handleSubmitforXenyandZain = async () => {
           {/* Phone Number Input */}
           <div className="flex items-center border border-slate-200 rounded-2xl px-3 sm:px-4 py-2 sm:py-3 mb-4 bg-slate-50 shadow-inner">
             {/* Country Code Dropdown/Toggle */}
-            <div className="flex items-center gap-2 border-r border-slate-300 pr-2 sm:pr-3 mr-2 sm:mr-3 cursor-pointer" onClick={() => setSelectedCountry(selectedCountry === '+91' ? '+971' : '+91')}>
-              {selectedCountry === '+91' ? <FlagIcons.IN style={{width: '20px', height: '15px'}} /> : <FlagIcons.AE style={{width: '20px', height: '15px'}} />}
+            <div className="flex items-center gap-2 border-r border-slate-300 pr-2 sm:pr-3 mr-2 sm:mr-3 cursor-pointer" onClick={() => {
+              const currentIndex = COUNTRIES.findIndex(c => c.code === selectedCountry);
+              const nextIndex = (currentIndex + 1) % COUNTRIES.length;
+              setSelectedCountry(COUNTRIES[nextIndex].code);
+            }}>
+              {(() => {
+                const country = COUNTRIES.find(c => c.code === selectedCountry);
+                if (country?.countryCode === 'IN') return <FlagIcons.IN style={{width: '20px', height: '15px'}} />;
+                if (country?.countryCode === 'AE') return <FlagIcons.AE style={{width: '20px', height: '15px'}} />;
+                return <FlagIcons.US style={{width: '20px', height: '15px'}} />;
+              })()}
               <span className="text-slate-800 font-bold text-sm">{selectedCountry}</span>
               <i className="fas fa-chevron-down text-[10px] text-slate-400"></i>
             </div>
