@@ -386,7 +386,7 @@ const AnimatedFeatureDashboard = () => {
             case 'analytics':
                 return (
                     <div key="analytics-view" className="animate-slideInRight pb-4">
-                        <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-6">Performance & Call Log</h3>
+                        <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-2">Performance & Call Log</h3>
                         
                         {/* Summary Metrics */}
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -447,7 +447,7 @@ const AnimatedFeatureDashboard = () => {
 
                         {/* Full Call Details Section - Added for requested detail */}
                         <div className="mt-8">
-                            <h3 className="flex items-center font-bold text-lg text-slate-900 mb-4">
+                            <h3 className="flex items-center font-bold text-lg text-slate-900 mb-2">
                                 <RotateCw size={20} className="mr-2 text-indigo-500"/>
                                 Detailed Call Disposition & Transcripts
                             </h3>
