@@ -905,9 +905,15 @@ const SavingsCalculator = () => {
                     <div className="text-5xl font-bold text-green-400 tracking-tight">
                         {config.symbol}{savings > 0 ? savings.toLocaleString() : 0}
                     </div>
-                    <button className="mt-6 bg-white text-slate-900 px-8 py-3 rounded-full font-bold text-sm hover:bg-slate-200 transition-colors w-full">
-                        Start Saving Now
-                    </button>
+                 <button
+  onClick={() => {
+    window.location.href = "https://app.xeny.ai/signup-with-voiceagent";
+  }}
+  className="mt-6 bg-white text-slate-900 px-8 py-3 rounded-full font-bold text-sm hover:bg-slate-200 transition-colors w-full cursor-pointer"
+>
+  Start Saving Now
+</button>
+
                 </div>
             </div>
         </div>
@@ -2173,7 +2179,7 @@ const handleSubmitforXenyandZain = async () => {
               <img
                 src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80"
                 alt="Xeny"
-                className="w-full h-full object-cover grayscale opacity-60 group-hover:opacity-80 transition-all duration-300"
+                className={`w-full h-full object-cover ${selectedAgent === 'female' ? '' : 'grayscale'} opacity-60 group-hover:opacity-80 transition-all duration-300`}
               />
               <div className="absolute bottom-6 w-full left-3 text-gray-800 font-bold drop-shadow-md text-lg">Xeny</div>
               
@@ -2193,7 +2199,7 @@ const handleSubmitforXenyandZain = async () => {
               <img
                 src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80"
                 alt="Zain"
-                className="w-full h-full object-cover"
+                className={`w-full h-full object-cover ${selectedAgent === 'male' ? '' : 'grayscale'}`}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
               <div className="absolute bottom-3 left-3 text-white">
@@ -2220,7 +2226,7 @@ const handleSubmitforXenyandZain = async () => {
           </div>
 
           {/* Phone Number Input */}
-          <div className="flex items-center border border-slate-200 rounded-2xl px-3 sm:px-4 py-2 sm:py-3 mb-4 bg-slate-50 shadow-inner">
+          <div className="relative flex items-center border border-slate-200 rounded-2xl px-3 sm:px-4 py-2 sm:py-3 mb-4 bg-slate-50 shadow-inner">
             {/* Country Code Dropdown/Toggle */}
             <div className="flex items-center gap-2 border-r border-slate-300 pr-2 sm:pr-3 mr-2 sm:mr-3 cursor-pointer" onClick={() => {
               const currentIndex = COUNTRIES.findIndex(c => c.code === selectedCountry);
@@ -2269,8 +2275,8 @@ const handleSubmitforXenyandZain = async () => {
             disabled={isLoading}
             className={`w-full font-bold py-3 sm:py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 text-base sm:text-lg 
               ${isLoading 
-                ? 'bg-indigo-400 cursor-not-allowed' 
-                : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-300/50'
+                ? 'bg-cyan-400 cursor-not-allowed' 
+                : 'bg-cyan-600 hover:bg-indigo-700 text-white shadow-indigo-300/50'
               }`}
           >
             {isLoading ? (
