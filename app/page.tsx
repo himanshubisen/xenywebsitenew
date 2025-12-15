@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import dynamic from 'next/dynamic';
 import { faGraduationCap, faTruckLoading, faCoins, faPhoneAlt, faUserPlus, faFileInvoiceDollar, faMicrophoneAlt, faClock, faCalendarCheck, faGlobe, faPaperPlane, faCalendarAlt, faSearch, faCheckCircle, faHistory, faCreditCard, faChartBar, faRoute, faBoxOpen, faClipboardCheck, faChartPie, faRocket, faPhoneVolume, faHeadset, faChartLine, faBolt, faRobot, faBrain, faPlay, faChevronDown, faLock, faCheck, faBars, faTimes, faSpinner, faCircle } from "@fortawesome/free-solid-svg-icons"
 import { faAmazon, faGoogle, faSpotify, faAirbnb, faUber, faStripe, faMicrosoft, faSalesforce, faHubspot, faWhatsapp, faSlack } from "@fortawesome/free-brands-svg-icons"
 import {
@@ -51,8 +52,8 @@ import ScrollTextReveal from "@/components/animations/ScrollTextReveal"
 import StaggerReveal from "@/components/animations/StaggerReveal"
 import AnimatedFeatureDashboard from "@/components/animated-feature-dashboard"
 import TestCom from "@/components/test-component"
-import HowItsWork from "@/components/LandingPageFlow" 
-import IndustrialUseCases from "@/components/customer-stories" 
+import HowItsWork from "@/components/LandingPageFlow"
+const IndustrialUseCases = dynamic(() => import("@/components/customer-stories"), { ssr: false })
 
 import {  faChevronUp} from '@fortawesome/free-solid-svg-icons';
 
