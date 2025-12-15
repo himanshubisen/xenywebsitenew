@@ -1191,13 +1191,20 @@ export default function CallersPage() {
     <i className="fab fa-stripe text-5xl text-black hover:text-[#635BFF] transition-colors"></i>
 
     {/* Text-based brands */}
-    <span className="text-lg font-semibold hover:text-black transition-colors">
-      ElevenLabs
-    </span>
+  
 
-    <span className="text-lg font-semibold hover:text-black transition-colors">
-      Claude
-    </span>
+          <img
+      src="/client-logo/ElevenLabs.svg"
+      alt="ElevenLabs AI"
+      className="h-10 object-contain grayscale hover:grayscale-0 transition"
+    />
+
+
+       <img
+      src="/client-logo/Claude_AI_logo.svg.png"
+      alt="Claude AI"
+      className="h-8 object-contain grayscale hover:grayscale-0 transition"
+    />
 
     <span className="text-lg font-semibold hover:text-black transition-colors">
       Deepgram
@@ -1233,7 +1240,7 @@ export default function CallersPage() {
     />
 
     <img
-      src="/client-logo/technotask-logo.png"
+      src="/client-logo/Technotask.svg"
       alt="Technotask"
       className="h-8 object-contain grayscale hover:grayscale-0 transition"
     />
