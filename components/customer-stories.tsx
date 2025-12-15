@@ -2,11 +2,11 @@
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
-import { 
-  HeartPulse, Building2, BadgeDollarSign, ShoppingBag, Truck, Users, Plane, 
-  Phone, Calendar, Repeat, Play, Activity, CheckCircle2, ShieldCheck, 
+import {
+  HeartPulse, Building2, BadgeDollarSign, ShoppingBag, Truck, Users, Plane,
+  Phone, Calendar, Repeat, Play, Activity, CheckCircle2, ShieldCheck,
   MessageSquare, Star, Wallet, Sparkles, PhoneCall, TrendingUp, Zap,
-  Briefcase, UserCheck, FileText, MapPin, Box, Globe
+  Briefcase, UserCheck, FileText, MapPin, Box, Globe, ChevronLeft, ChevronRight
 } from 'lucide-react';
 import ScrollReveal from "@/components/animations/ScrollReveal"
 import TextReveal from "@/components/animations/TextReveal"
@@ -506,7 +506,11 @@ export default function App() {
       
       {/* Mobile Hint */}
       <div className="md:hidden absolute bottom-6 w-full text-center z-20 pointer-events-none opacity-40">
-        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Swipe for New Call</span>
+        <div className="flex items-center justify-center gap-2">
+          <ChevronLeft className="w-8 h-8 text-slate-400" />
+          <span className="text-[15px] font-bold text-slate-500 uppercase tracking-[0.2em]">Swipe for New Call</span>
+          <ChevronRight className="w-8 h-8 text-slate-400" />
+        </div>
       </div>
 
     </div>
