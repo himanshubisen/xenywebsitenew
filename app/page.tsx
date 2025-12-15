@@ -1043,11 +1043,12 @@ export default function CallersPage() {
 
           <ScrollReveal direction="up" delay={100}>
             <h1 className="text-3xl sm:text-4xl md:text-7xl font-bold leading-[1.1] mb-2 text-slate-900">
-              <ScrollTextReveal
+              {/* <ScrollTextReveal
                 text="Your 24/7 AI Voice Employee For"
                 splitBy="word"
                 className="block "
-              />
+              /> */}
+              Your 24/7 AI Voice Employee For
               <br />
               <HeroTypewriter />
               <span className="animate-pulse text-indigo-600">|</span>
