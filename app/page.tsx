@@ -1175,81 +1175,40 @@ export default function XenyPage() {
 
     
      {/* CLIENTS MARQUEE */}
-      <div className="bg-white border-y border-slate-100 py-10 overflow-hidden relative z-10">
-        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10"></div>
-        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white to-transparent z-10"></div>
-        <div className="flex w-max gap-16 items-center animate-[scroll_40s_linear_infinite]">
-{[1, 2].map((i) => (
-  <div
-    key={i}
-    className="flex gap-16 items-center text-slate-600"
-  >
-    {/* Font Awesome supported brands */}
-    <i className="fab fa-google text-3xl text-black hover:text-[#4285F4] transition-colors"></i>
-    <i className="fab fa-microsoft text-3xl text-black hover:text-[#F25022] transition-colors"></i>
-    <i className="fab fa-stripe text-5xl text-black hover:text-[#635BFF] transition-colors"></i>
+     <div className="bg-white border-y border-slate-100 py-10 overflow-hidden relative z-10 group">
+       <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-white to-transparent z-10"></div>
+       <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-white to-transparent z-10"></div>
+       <div className="flex gap-16 items-center animate-[scroll_30s_linear_infinite] group-hover:animate-none">
+         {/* First set */}
+         <i className="fab fa-google text-3xl text-black hover:text-[#4285F4] transition-colors"></i>
+         <i className="fab fa-microsoft text-3xl text-black hover:text-[#F25022] transition-colors"></i>
+         <i className="fab fa-stripe text-5xl text-black hover:text-[#635BFF] transition-colors"></i>
+         <img src="/client-logo/ElevenLabs.svg" alt="ElevenLabs AI" className="h-10 object-contain grayscale hover:grayscale-0 transition" />
+         <img src="/client-logo/Claude_AI_logo.svg.png" alt="Claude AI" className="h-8 object-contain grayscale hover:grayscale-0 transition" />
+         <span className="text-lg font-semibold hover:text-black transition-colors">Deepgram</span>
+         <img src="/client-logo/cartesia-logo.svg" alt="Cartesia" className="h-8 object-contain grayscale hover:grayscale-0 transition" />
+         <span className="text-lg font-semibold hover:text-black transition-colors">Sarvam</span>
+         <img src="/client-logo/Xeny-log" alt="Xeny" className="h-8 object-contain grayscale hover:grayscale-0 transition" />
+         <img src="/client-logo/triotech-logo.png" alt="Triotech" className="h-8 object-contain grayscale hover:grayscale-0 transition" />
+         <img src="/client-logo/ringing" alt="Ringingo" className="h-8 object-contain grayscale hover:grayscale-0 transition" />
+         <img src="/client-logo/Technotask.svg" alt="Technotask" className="h-8 object-contain grayscale hover:grayscale-0 transition" />
 
-    {/* Text-based brands */}
-  
-
-          <img
-      src="/client-logo/ElevenLabs.svg"
-      alt="ElevenLabs AI"
-      className="h-10 object-contain grayscale hover:grayscale-0 transition"
-    />
-
-
-       <img
-      src="/client-logo/Claude_AI_logo.svg.png"
-      alt="Claude AI"
-      className="h-8 object-contain grayscale hover:grayscale-0 transition"
-    />
-
-    <span className="text-lg font-semibold hover:text-black transition-colors">
-      Deepgram
-    </span>
-
-    <img
-      src="/client-logo/cartesia-logo.svg"
-      alt="Cartesia"
-      className="h-8 object-contain grayscale hover:grayscale-0 transition"
-    />
-
-    <span className="text-lg font-semibold hover:text-black transition-colors">
-      Sarvam
-    </span>
-
-    <img
-      src="/client-logo/Xeny-log"
-      alt="Xeny"
-      className="h-8 object-contain grayscale hover:grayscale-0 transition"
-    />
-
-    {/* Image logos */}
-    <img
-      src="/client-logo/triotech-logo.png"
-      alt="Triotech"
-      className="h-8 object-contain grayscale hover:grayscale-0 transition"
-    />
-
-    <img
-      src="/client-logo/ringing"
-      alt="Ringingo"
-      className="h-8 object-contain grayscale hover:grayscale-0 transition"
-    />
-
-    <img
-      src="/client-logo/Technotask.svg"
-      alt="Technotask"
-      className="h-8 object-contain grayscale hover:grayscale-0 transition"
-    />
-  </div>
-))}
-
-
-        </div>
-      </div>
-      {/* STATS SECTION */}
+         {/* Duplicate set for seamless loop */}
+         <i className="fab fa-google text-3xl text-black hover:text-[#4285F4] transition-colors"></i>
+         <i className="fab fa-microsoft text-3xl text-black hover:text-[#F25022] transition-colors"></i>
+         <i className="fab fa-stripe text-5xl text-black hover:text-[#635BFF] transition-colors"></i>
+         <img src="/client-logo/ElevenLabs.svg" alt="ElevenLabs AI" className="h-10 object-contain grayscale hover:grayscale-0 transition" />
+         <img src="/client-logo/Claude_AI_logo.svg.png" alt="Claude AI" className="h-8 object-contain grayscale hover:grayscale-0 transition" />
+         <span className="text-lg font-semibold hover:text-black transition-colors">Deepgram</span>
+         <img src="/client-logo/cartesia-logo.svg" alt="Cartesia" className="h-8 object-contain grayscale hover:grayscale-0 transition" />
+         <span className="text-lg font-semibold hover:text-black transition-colors">Sarvam</span>
+         <img src="/client-logo/Xeny-log" alt="Xeny" className="h-8 object-contain grayscale hover:grayscale-0 transition" />
+         <img src="/client-logo/triotech-logo.png" alt="Triotech" className="h-8 object-contain grayscale hover:grayscale-0 transition" />
+         <img src="/client-logo/ringing" alt="Ringingo" className="h-8 object-contain grayscale hover:grayscale-0 transition" />
+         <img src="/client-logo/Technotask.svg" alt="Technotask" className="h-8 object-contain grayscale hover:grayscale-0 transition" />
+       </div>
+     </div>
+     {/* STATS SECTION */}
       <section id="stats" className="py-24 bg-white z-10 relative overflow-hidden">
         {/* Floating Icons Background */}
         <div className="absolute inset-0 pointer-events-none z-0">
