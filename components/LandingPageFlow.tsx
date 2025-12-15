@@ -172,7 +172,7 @@ const LandingPageFlow = () => {
               return (
                 <div
                   key={step.id}
-                  className="relative group min-h-[180px]" // Added min-height for uniformity
+                  className="relative group md:min-h-[250px] min-h-[180px] " // Added min-height for uniformity
                   onMouseEnter={() => setActiveStep(index)}
                   onClick={() => setActiveStep(index)}
                 >
