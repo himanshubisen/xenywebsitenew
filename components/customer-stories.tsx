@@ -440,7 +440,7 @@ export default function App() {
       <DynamicBackground activeIndustry={activeIndustry} />
 
       {/* Heading */}
-      <div className="flex-none pt-8 pb-4 z-40 relative text-center">
+      <div className="flex-none pt-8 pb-0 md:pb-4  z-40 relative text-center">
           <ScrollReveal direction="up" delay={100}>
             <h1 className="text-5xl  text-bold
              text-slate-900 mb-6">
@@ -465,7 +465,7 @@ export default function App() {
       </div>
 
       {/* 3. Main Content Area */}
-      <div className="flex-grow flex flex-col items-center justify-center relative z-30 pb-6 px-4 py-2 min-h-0  w-full">
+      <div className="flex-grow flex flex-col items-center justify-center relative z-30 pb-2 md:pb-6 px-4 py-2 min-h-0  w-full">
           
           {/* MOBILE: Swipe Stack (Hidden on MD+ screens) */}
           <div className="md:hidden w-full max-w-md h-[60vh]  relative">
