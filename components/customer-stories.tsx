@@ -8,7 +8,10 @@ import {
   MessageSquare, Star, Wallet, Sparkles, PhoneCall, TrendingUp, Zap,
   Briefcase, UserCheck, FileText, MapPin, Box, Globe
 } from 'lucide-react';
-
+import ScrollReveal from "@/components/animations/ScrollReveal"
+import TextReveal from "@/components/animations/TextReveal"
+import ScrollTextReveal from "@/components/animations/ScrollTextReveal"
+import StaggerReveal from "@/components/animations/StaggerReveal"
 // --- Data ---
 const INDUSTRIES = [
    {
@@ -431,14 +434,19 @@ export default function App() {
   };
 
   return (
-    <div className="relative w-full  py-2  px-2 h-[100dvh] overflow-hidden flex flex-col font-sans select-none bg-slate-50 z-10">
+    <div className="relative w-full py-2 px-2 min-h-screen overflow-hidden flex flex-col font-sans select-none bg-slate-50 z-10">
       
       {/* 1. Light Dynamic Background */}
       <DynamicBackground activeIndustry={activeIndustry} />
 
       {/* Heading */}
       <div className="flex-none pt-8 pb-4 z-40 relative text-center">
-          <h1 className="text-4xl  text-slate-900 mb-6">Industrial Use Cases</h1>
+          <ScrollReveal direction="up" delay={100}>
+            <h1 className="text-5xl  text-bold
+             text-slate-900 mb-6">
+              <ScrollTextReveal text="Industrial Use Cases" splitBy="word" />
+            </h1>
+          </ScrollReveal>
       </div>
 
       {/* 2. Top Navigation (Tabs) */}

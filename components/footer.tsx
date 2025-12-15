@@ -21,9 +21,9 @@ export default function Footer() {
   ]
 
   const socialLinks = [
-    { icon: Github, href: "#" },
-    { icon: Twitter, href: "#" },
-    { icon: Linkedin, href: "#" },
+    { icon: Github, href: "#", name: "github" },
+    { icon: Twitter, href: "#", name: "twitter" },
+    { icon: Linkedin, href: "#", name: "linkedin" },
   ]
 
   const containerVariants = {
@@ -91,9 +91,9 @@ export default function Footer() {
         <div className="border-t border-gray-200 py-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-gray-600">Copyright © 2025 All rights reserved Xeny.ai</p>
           <div className="flex gap-4">
-            {socialLinks.map(({ icon: Icon, href }) => (
+            {socialLinks.map(({ icon: Icon, href, name }) => (
               <motion.a
-                key={href}
+                key={name}
                 href={href}
                 whileHover={{ scale: 1.2, rotate: 5 }}
                 whileTap={{ scale: 0.95 }}

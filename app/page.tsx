@@ -1368,15 +1368,28 @@ export default function CallersPage() {
         {/* Floating Icons Background */}
         <div className="absolute inset-0 pointer-events-none z-0">
           <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/30 via-purple-50/20 to-pink-50/30"></div>
-          {[...Array(12)].map((_, i) => (
+          {[
+            { left: 10, top: 20, delay: 0.5, duration: 4 },
+            { left: 30, top: 40, delay: 1.2, duration: 3.5 },
+            { left: 50, top: 60, delay: 0.8, duration: 4.2 },
+            { left: 70, top: 30, delay: 1.5, duration: 3.8 },
+            { left: 20, top: 70, delay: 0.3, duration: 4.5 },
+            { left: 80, top: 50, delay: 1.8, duration: 3.2 },
+            { left: 40, top: 10, delay: 0.9, duration: 4.1 },
+            { left: 60, top: 80, delay: 1.1, duration: 3.9 },
+            { left: 15, top: 35, delay: 2.0, duration: 4.3 },
+            { left: 85, top: 65, delay: 0.6, duration: 3.7 },
+            { left: 55, top: 25, delay: 1.4, duration: 4.0 },
+            { left: 25, top: 55, delay: 0.7, duration: 3.6 },
+          ].map((pos, i) => (
             <div
               key={i}
               className="absolute animate-pulse opacity-20"
               style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 3}s`,
-                animationDuration: `${3 + Math.random() * 2}s`,
+                left: `${pos.left}%`,
+                top: `${pos.top}%`,
+                animationDelay: `${pos.delay}s`,
+                animationDuration: `${pos.duration}s`,
               }}
             >
               <div className="w-8 h-8 bg-gradient-to-br from-indigo-400/40 to-purple-400/40 rounded-full blur-sm flex items-center justify-center backdrop-blur-sm border border-white/20">
@@ -1384,14 +1397,23 @@ export default function CallersPage() {
               </div>
             </div>
           ))}
-          {[...Array(8)].map((_, i) => (
+          {[
+            { left: 15, top: 25, rotate: 45 },
+            { left: 35, top: 55, rotate: 135 },
+            { left: 55, top: 35, rotate: 225 },
+            { left: 75, top: 65, rotate: 315 },
+            { left: 25, top: 45, rotate: 90 },
+            { left: 45, top: 75, rotate: 180 },
+            { left: 65, top: 15, rotate: 270 },
+            { left: 85, top: 85, rotate: 0 },
+          ].map((line, i) => (
             <div
               key={`line-${i}`}
               className="absolute opacity-10"
               style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                transform: `rotate(${Math.random() * 360}deg)`,
+                left: `${line.left}%`,
+                top: `${line.top}%`,
+                transform: `rotate(${line.rotate}deg)`,
               }}
             >
               <div className="w-16 h-px bg-gradient-to-r from-transparent via-indigo-300/50 to-transparent"></div>
@@ -1399,21 +1421,21 @@ export default function CallersPage() {
           ))}
           {/* Floating Theme Icons - Center */}
           {[
-            { icon: <Bot className="w-6 h-6 text-indigo-500/60" />, delay: 0 },
-            { icon: <Phone className="w-6 h-6 text-purple-500/60" />, delay: 1 },
-            { icon: <Bot className="w-6 h-6 text-pink-500/60" />, delay: 2 },
-            { icon: <Mic className="w-6 h-6 text-indigo-600/60" />, delay: 3 },
-            { icon: <Sparkles className="w-6 h-6 text-purple-600/60" />, delay: 4 },
-            { icon: <Headphones className="w-6 h-6 text-pink-600/60" />, delay: 5 },
+            { icon: <Bot className="w-6 h-6 text-indigo-500/60" />, left: 30, top: 40, delay: 0 },
+            { icon: <Phone className="w-6 h-6 text-purple-500/60" />, left: 50, top: 30, delay: 1 },
+            { icon: <Bot className="w-6 h-6 text-pink-500/60" />, left: 40, top: 60, delay: 2 },
+            { icon: <Mic className="w-6 h-6 text-indigo-600/60" />, left: 60, top: 50, delay: 3 },
+            { icon: <Sparkles className="w-6 h-6 text-purple-600/60" />, left: 35, top: 45, delay: 4 },
+            { icon: <Headphones className="w-6 h-6 text-pink-600/60" />, left: 55, top: 35, delay: 5 },
           ].map((item, i) => (
             <div
               key={`theme-center-${i}`}
               className="absolute opacity-30 animate-bounce"
               style={{
-                left: `${20 + Math.random() * 60}%`,
-                top: `${20 + Math.random() * 60}%`,
+                left: `${item.left}%`,
+                top: `${item.top}%`,
                 animationDelay: `${item.delay * 0.5}s`,
-                animationDuration: `${2 + Math.random() * 1}s`,
+                animationDuration: `${2 + (i % 2) * 0.5}s`,
               }}
             >
               <div className="w-12 h-12 bg-white/40 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center border border-white/30">
@@ -1423,19 +1445,19 @@ export default function CallersPage() {
           ))}
           {/* Floating Theme Icons - Left Side */}
           {[
-            { icon: <Bot className="w-5 h-5 text-indigo-400/50" />, delay: 0 },
-            { icon: <Phone className="w-5 h-5 text-purple-400/50" />, delay: 1 },
-            { icon: <Sparkles className="w-5 h-5 text-pink-400/50" />, delay: 2 },
-            { icon: <Mic className="w-5 h-5 text-indigo-500/50" />, delay: 3 },
+            { icon: <Bot className="w-5 h-5 text-indigo-400/50" />, left: 5, top: 30, delay: 0 },
+            { icon: <Phone className="w-5 h-5 text-purple-400/50" />, left: 10, top: 60, delay: 1 },
+            { icon: <Sparkles className="w-5 h-5 text-pink-400/50" />, left: 8, top: 45, delay: 2 },
+            { icon: <Mic className="w-5 h-5 text-indigo-500/50" />, left: 12, top: 70, delay: 3 },
           ].map((item, i) => (
             <div
               key={`theme-left-${i}`}
               className="absolute opacity-25 animate-pulse"
               style={{
-                left: `${Math.random() * 15}%`,
-                top: `${10 + Math.random() * 80}%`,
+                left: `${item.left}%`,
+                top: `${item.top}%`,
                 animationDelay: `${item.delay * 0.7}s`,
-                animationDuration: `${3 + Math.random() * 2}s`,
+                animationDuration: `${3 + (i % 2) * 1}s`,
               }}
             >
               <div className="w-10 h-10 bg-white/30 backdrop-blur-sm rounded-full shadow-md flex items-center justify-center border border-white/20">
@@ -1445,19 +1467,19 @@ export default function CallersPage() {
           ))}
           {/* Floating Theme Icons - Right Side */}
           {[
-            { icon: <Bot className="w-5 h-5 text-purple-400/50" />, delay: 0 },
-            { icon: <Headphones className="w-5 h-5 text-pink-400/50" />, delay: 1 },
-            { icon: <Sparkles className="w-5 h-5 text-indigo-500/50" />, delay: 2 },
-            { icon: <Phone className="w-5 h-5 text-purple-500/50" />, delay: 3 },
+            { icon: <Bot className="w-5 h-5 text-purple-400/50" />, left: 88, top: 25, delay: 0 },
+            { icon: <Headphones className="w-5 h-5 text-pink-400/50" />, left: 90, top: 55, delay: 1 },
+            { icon: <Sparkles className="w-5 h-5 text-indigo-500/50" />, left: 85, top: 40, delay: 2 },
+            { icon: <Phone className="w-5 h-5 text-purple-500/50" />, left: 92, top: 75, delay: 3 },
           ].map((item, i) => (
             <div
               key={`theme-right-${i}`}
               className="absolute opacity-25 animate-pulse"
               style={{
-                left: `${85 + Math.random() * 15}%`,
-                top: `${10 + Math.random() * 80}%`,
+                left: `${item.left}%`,
+                top: `${item.top}%`,
                 animationDelay: `${item.delay * 0.7}s`,
-                animationDuration: `${3 + Math.random() * 2}s`,
+                animationDuration: `${3 + (i % 2) * 1}s`,
               }}
             >
               <div className="w-10 h-10 bg-white/30 backdrop-blur-sm rounded-full shadow-md flex items-center justify-center border border-white/20">
@@ -1698,24 +1720,128 @@ export default function CallersPage() {
 
 
   {/* ASK AI */ }
-      <section className="py-24 bg-slate-100 border-t border-slate-200 relative z-10">
-        <div className="container mx-auto px-6 text-center">
-            <ScrollReveal direction="up" delay={100}>
-              <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-6">
-                <ScrollTextReveal
-                  text="Still not sure? Ask the AI."
-                  splitBy="word"
-                  className="block"
-                />
-              </h2>
-            </ScrollReveal>
-            <div className="flex flex-col md:flex-row justify-center gap-6 max-w-4xl mx-auto">
-                <a href="#" className="flex-1 bg-[#4129F9] hover:bg-[#3520D0] text-white py-5 px-8 rounded-full font-bold shadow-lg flex items-center justify-center gap-3 transition-transform hover:-translate-y-1"><Bot className="w-5 h-5"/> Ask ChatGPT</a>
-                <a href="#" className="flex-1 bg-[#D97757] hover:bg-[#C56545] text-white py-5 px-8 rounded-full font-bold shadow-lg flex items-center justify-center gap-3 transition-transform hover:-translate-y-1"><Bot className="w-5 h-5"/> Ask Claude</a>
-                <a href="#" className="flex-1 bg-[#1A7F85] hover:bg-[#14686D] text-white py-5 px-8 rounded-full font-bold shadow-lg flex items-center justify-center gap-3 transition-transform hover:-translate-y-1"><Search className="w-5 h-5"/> Ask Perplexity</a>
-            </div>
+ {/* ASK AI - Updated UI to match image */}
+<section className="py-12 md:py-32 bg-white relative z-10 border-t border-slate-200 overflow-hidden">
+  {/* Floating Icons Background */}
+  <div className="absolute inset-0 pointer-events-none z-0">
+    <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/20 via-purple-50/15 to-pink-50/20"></div>
+    {[
+      { left: 15, top: 25, delay: 0.5, duration: 4 },
+      { left: 35, top: 45, delay: 1.2, duration: 3.5 },
+      { left: 55, top: 65, delay: 0.8, duration: 4.2 },
+      { left: 75, top: 35, delay: 1.5, duration: 3.8 },
+      { left: 25, top: 75, delay: 0.3, duration: 4.5 },
+      { left: 85, top: 55, delay: 1.8, duration: 3.2 },
+      { left: 45, top: 15, delay: 0.9, duration: 4.1 },
+      { left: 65, top: 85, delay: 1.1, duration: 3.9 },
+    ].map((pos, i) => (
+      <div
+        key={i}
+        className="absolute animate-pulse opacity-15"
+        style={{
+          left: `${pos.left}%`,
+          top: `${pos.top}%`,
+          animationDelay: `${pos.delay}s`,
+          animationDuration: `${pos.duration}s`,
+        }}
+      >
+        <div className="w-6 h-6 bg-gradient-to-br from-indigo-400/30 to-purple-400/30 rounded-full blur-sm flex items-center justify-center backdrop-blur-sm border border-white/20">
+          <div className="w-3 h-3 bg-gradient-to-br from-pink-400/40 to-indigo-400/40 rounded-full"></div>
         </div>
-      </section>
+      </div>
+    ))}
+    {/* Floating Theme Icons */}
+    {[
+      { icon: <Bot className="w-4 h-4 text-indigo-500/50" />, left: 20, top: 30, delay: 0 },
+      { icon: <Phone className="w-4 h-4 text-purple-500/50" />, left: 40, top: 50, delay: 1 },
+      { icon: <Sparkles className="w-4 h-4 text-pink-500/50" />, left: 60, top: 40, delay: 2 },
+      { icon: <Mic className="w-4 h-4 text-indigo-600/50" />, left: 80, top: 60, delay: 3 },
+    ].map((item, i) => (
+      <div
+        key={`ask-${i}`}
+        className="absolute opacity-20 animate-bounce"
+        style={{
+          left: `${item.left}%`,
+          top: `${item.top}%`,
+          animationDelay: `${item.delay * 0.5}s`,
+          animationDuration: `${2 + (i % 2) * 0.5}s`,
+        }}
+      >
+        <div className="w-8 h-8 bg-white/30 backdrop-blur-sm rounded-full shadow-md flex items-center justify-center border border-white/20">
+          {item.icon}
+        </div>
+      </div>
+    ))}
+  </div>
+  <div className="container mx-auto px-6 max-w-7xl relative z-10">
+    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-12">
+      
+      {/* Left Text Content */}
+      <div className="lg:w-1/2 lg:pr-12 text-left">
+        <ScrollReveal direction="up" delay={100}>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">
+            <ScrollTextReveal
+              text="Still not sure if Callers is right for you?"
+              splitBy="word"
+              className="block"
+            />
+          </h2>
+        </ScrollReveal>
+        
+        <ScrollReveal direction="up" delay={200}>
+          <p className="text-xl text-slate-700 max-w-md">
+            Let ChatGPT, Claude, or Perplexity do the thinking for you. Click a button and see what your favorite AI says about Callers.
+          </p>
+        </ScrollReveal>
+      </div>
+
+      {/* Right Button Group */}
+      <div className="lg:w-1/2 flex flex-col items-start lg:items-end space-y-4">
+        
+        {/* Ask ChatGPT Button - Blue */}
+        <ScrollReveal direction="up" delay={300}>
+          <a
+            href="#"
+            className="w-full md:w-96 bg-[#4129F9] hover:bg-[#3520D0] text-white py-4 px-8 rounded-xl font-semibold text-lg shadow-xl flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-100"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 01-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 013.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 013.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 01-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 01-2.292-2.292L14.25 6l1.035-.259a3.375 3.375 0 012.292-2.292L18 2.25l.259 1.035a3.375 3.375 0 012.292 2.292L21.75 6l-1.035.259a3.375 3.375 0 01-2.292 2.292z" />
+            </svg>
+            Ask ChatGPT
+          </a>
+        </ScrollReveal>
+
+        {/* Ask Claude Button - Black */}
+        <ScrollReveal direction="up" delay={400}>
+          <a
+            href="#"
+            className="w-full md:w-96 bg-slate-900 hover:bg-slate-700 text-white py-4 px-8 rounded-xl font-semibold text-lg shadow-xl flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-100"
+          >
+            {/* Using a generic bot icon for Claude and Perplexity since the image shows similar icons */}
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 01-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 013.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 013.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 01-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 01-2.292-2.292L14.25 6l1.035-.259a3.375 3.375 0 012.292-2.292L18 2.25l.259 1.035a3.375 3.375 0 012.292 2.292L21.75 6l-1.035.259a3.375 3.375 0 01-2.292 2.292z" />
+            </svg>
+            Ask Claude
+          </a>
+        </ScrollReveal>
+
+        {/* Ask Perplexity Button - Black */}
+        <ScrollReveal direction="up" delay={500}>
+          <a
+            href="#"
+            className="w-full md:w-96 bg-slate-900 hover:bg-slate-700 text-white py-4 px-8 rounded-xl font-semibold text-lg shadow-xl flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-100"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 01-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 013.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 013.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 01-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 01-2.292-2.292L14.25 6l1.035-.259a3.375 3.375 0 012.292-2.292L18 2.25l.259 1.035a3.375 3.375 0 012.292 2.292L21.75 6l-1.035.259a3.375 3.375 0 01-2.292 2.292z" />
+            </svg>
+            Ask Perplexity
+          </a>
+        </ScrollReveal>
+      </div>
+
+    </div>
+  </div>
+</section>
              {/* FINAL CTA */ }
 {/* FINAL CTA */}
 {/* FINAL CTA */}

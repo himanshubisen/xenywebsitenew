@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import {
   Workflow,
@@ -197,8 +199,8 @@ const LandingPageFlow = () => {
                               <Play className={`w-1.5 h-1.5 md:w-2.5 md:h-2.5 ml-0.5 ${isActive ? 'text-indigo-600' : 'text-slate-300'}`} />
                             </div>
                             <div className="flex gap-0.5 items-end h-2 md:h-3 flex-1 opacity-60">
-                              {[...Array(8)].map((_, i) => (
-                                <div key={i} className={`w-0.5 rounded-full transition-colors ${isActive ? 'bg-indigo-400' : 'bg-slate-200'}`} style={{ height: `${Math.random() * 100}%` }}></div>
+                              {[65, 45, 80, 30, 90, 55, 70, 40].map((height, i) => (
+                                <div key={i} className={`w-0.5 rounded-full transition-colors ${isActive ? 'bg-indigo-400' : 'bg-slate-200'}`} style={{ height: `${height}%` }}></div>
                               ))}
                             </div>
                           </div>
