@@ -295,7 +295,7 @@ export default function About() {
       </section>
 
       {/* --- Section 4: CTA (Ready to transform?) --- */}
-      <section className="bg-gray-900/90 py-16 px-4 sm:px-6 lg:px-8">
+      <section className="bg-gray-900/90 py-16 px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           <motion.h2
             initial={{ opacity: 0, y: -10 }}
@@ -310,7 +310,10 @@ export default function About() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all"
-            onClick={() => {/* Implement your navigation logic here */}}
+                onClick={() =>
+          window.location.href =
+            "https://app.xeny.ai/signup-with-voiceagent"
+        }
           >
             Explore Xeny.ai Voice Agents
           </motion.button>

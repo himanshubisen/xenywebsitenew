@@ -3,6 +3,7 @@
 "use client"
 
 import { motion } from "framer-motion"
+import { useRouter } from "next/navigation";
 import { Check, Zap, DollarSign, Briefcase, Phone, CreditCard, Bot, Mic, Sparkles, Headphones } from "lucide-react"
 // Assuming Header and Footer are defined in your components directory
 import Header from "@/components/header"
@@ -53,12 +54,12 @@ const whyCreditBased = [
 // --- 2. Main Pricing Component ---
 export default function Pricing() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative">
+    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative pt-10">
       <HeroCanvas />
       <Header onDemoClick={() => {}} />
 
       {/* --- Section 1: Main Pay As You Use Card --- */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 ">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -66,10 +67,11 @@ export default function Pricing() {
           className="max-w-7xl mx-auto"
         >
           <ScrollReveal direction="up" delay={0}>
-            <h1 className="text-5xl font-bold text-center mb-6 text-gradient">
+            <h1 className="md:text-5xl text-3xl
+             font-bold text-center mb-6 text-gradient">
               <ScrollTextReveal text="AI Voicebot Pricing" splitBy="word" />
             </h1>
-            <p className="text-xl text-gray-600 text-center mb-16 max-w-2xl mx-auto">
+            <p className="text-xl  text-gray-600 text-center mb-16 max-w-2xl mx-auto">
               <ScrollTextReveal 
                 text="Deliver seamless, human-like customer conversations powered by AI – with flexible credit-based pricing designed for every business." 
                 splitBy="word"
@@ -88,7 +90,7 @@ export default function Pricing() {
               <p className="text-center text-blue-400 mb-6 font-semibold">Pay As You Use</p>
               <div className="flex justify-center items-center mb-4">
                 <Phone className="w-10 h-10 mr-4 text-blue-400" />
-                <span className="text-6xl font-bold">{CORE_RATE.credits} Credits</span>
+                <span className="md:text-6xl  text-4xl font-bold">{CORE_RATE.credits} Credits</span>
               </div>
               <p className="text-center text-sm text-gray-400 mb-8">per minute</p>
               
@@ -610,22 +612,31 @@ export default function Pricing() {
               <p className="text-xl mb-6">Get **100 free credits** to experience real conversations powered by AI Voicebot.</p>
             </ScrollReveal>
             <p className="text-sm text-blue-200 mb-8">Upgrade anytime – scale effortlessly.</p>
-            <div className="flex justify-center space-x-4">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-                className="bg-white text-blue-600 py-3 px-8 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all"
-              >
-                Start Free →
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.98 }}
-                className="bg-transparent border border-white text-white py-3 px-8 rounded-lg font-semibold hover:bg-white/10 transition-colors"
-              >
-                Talk to Sales
-              </motion.button>
-            </div>
+          <div className="flex flex-col sm:flex-row justify-center gap-4 w-full">
+      
+      {/* Start Free */}
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.98 }}
+        onClick={() =>
+          window.location.href =
+            "https://app.xeny.ai/signup-with-voiceagent"
+        }
+        className="bg-white text-blue-600 py-3 px-8 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all w-full sm:w-auto"
+      >
+        Start Free →
+      </motion.button>
+
+      {/* Talk to Sales */}
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.98 }}
+        // onClick={() => router.push("/about")}
+        className="bg-transparent border border-white text-white py-3 px-8 rounded-lg font-semibold hover:bg-white/10 transition-colors w-full sm:w-auto"
+      >
+        Talk to Sales
+      </motion.button>
+    </div>
           </motion.div>
 
         </div>
