@@ -110,9 +110,9 @@ const Counter = ({ target }: { target: string }) => {
 
 // --- Components ---
 const COUNTRIES = [
-    { code: '+971', countryCode: 'AE', emoji: '🇦🇪' },
-    { code: '+91', countryCode: 'US', emoji: '🇺🇸' },
-        { code: '+971', countryCode: 'US', emoji: '🇺🇸' },
+    // { code: '+971', countryCode: 'AE', emoji: '🇦🇪' },
+    // { code: '+91', countryCode: 'US', emoji: '🇺🇸' },
+        // { code: '+971', countryCode: 'US', emoji: '🇺🇸' },
   { code: '+91', countryCode: 'IN', emoji: '🇮🇳' },
 
 ];
@@ -1023,7 +1023,7 @@ export default function XenyPage() {
 
   try {
     // Full phone number with country code
-    const fullPhoneNumber = `${selectedCountry}${phoneNumber}`
+    const fullPhoneNumber = `${phoneNumber}`
 
     const response = await fetch(
       'https://api.elevenlabs.io/v1/convai/sip-trunk/outbound-call',
@@ -1031,10 +1031,10 @@ export default function XenyPage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'xi-api-key': process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY || 'sk_7b385992b5a935134eef4ee2d9ad8fd781f3873ca3556fca',
+          'xi-api-key': process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY ,
         },
         body: JSON.stringify({
-          agent_id: 'agent_7601kcgaht9yeccvqa7jrbtfqrbk',
+          agent_id: 'agent_5701kckky5jyfq3tk8h9bd7mc5rf',
           agent_phone_number_id: 'phnum_2901kcgea5jefv9bac4wvpgz6d5m',
           to_number: fullPhoneNumber, // 👈 phoneNumber sent here
         }),
