@@ -59,7 +59,7 @@ const GradientText = ({ children, className }: { children: React.ReactNode; clas
 // --- About Page Component ---
 export default function About() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative z-10">
+    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative z-10 mt-20">
       <HeroCanvas />
       <Header onDemoClick={() => {}} />
 
