@@ -218,7 +218,7 @@ export default function Blog() {
         </div>
       </section>
 
-      <section className="py-20 px-4 sm:px-6 lg:px-8 pt-16 relative z-20 bg-white/80 backdrop-blur-md">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 pt-16 relative z-20 bg-gradient-to-b from-white to-slate-100">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

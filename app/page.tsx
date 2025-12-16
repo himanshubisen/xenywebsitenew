@@ -1171,7 +1171,7 @@ const handleSubmitforXenyandZain = async () => {
       <Header />
 
       {/* HERO SECTION */}
-      <section className="relative pt-32 pb-20 overflow-hidden">
+      <section className="relative pt-32 pb-20 overflow-hidden ">
         <div className="container mx-auto px-6 relative z-10 flex flex-col items-center text-center">
 
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 backdrop-blur-sm border border-white/80 shadow-sm mb-8 animate-bounce-slow">

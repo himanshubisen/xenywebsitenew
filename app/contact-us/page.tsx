@@ -6,6 +6,10 @@ import React from 'react';
 // Assuming Header and Footer are defined in your components folder
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import HeroCanvas from "@/components/hero-canvas"
+import ScrollReveal from "@/components/animations/ScrollReveal"
+import ScrollTextReveal from "@/components/animations/ScrollTextReveal"
+import StaggerReveal from "@/components/animations/StaggerReveal"
 
 // Icons needed for the page and background effect (using Lucide React for example)
 import { 
@@ -44,13 +48,14 @@ const uaeOffice = {
 // --- Main Component ---
 export default function ContactUsPage() {
   return (
-    <div className="min-h-screen bg-white text-gray-800">
+    <div className="min-h-screen   text-gray-800 border-t border-gray-200">
+        <HeroCanvas />
       <Header />
       
       {/* -------------------------------------------------- */}
       {/* 1. HERO & ANIMATED BACKGROUND SECTION */}
       {/* -------------------------------------------------- */}
-      <section className="relative overflow-hidden pt-16 mt-15 md:mt-10 md:pt-24 pb-12 md:pb-20">
+      <section className="relative overflow-hidden pt-16 mt-15 md:mt-10 md:pt-24 pb-12 md:pb-20 ">
         <HeroCanvasEffect /> {/* The animated background component */}
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -72,7 +77,7 @@ export default function ContactUsPage() {
       {/* -------------------------------------------------- */}
       {/* 2. OFFICE LOCATIONS SECTION */}
       {/* -------------------------------------------------- */}
-      <section className="py-16 md:py-24">
+      <section className="py-16 md:py-24 bg-gray-50 border-b border-gray-200 z-10 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-bold text-center text-gray-900 mb-10">
             Our Offices
@@ -90,7 +95,7 @@ export default function ContactUsPage() {
       {/* -------------------------------------------------- */}
       {/* 3. GLOBAL SALES & PARTNERSHIPS SECTION (Now at the bottom) */}
       {/* -------------------------------------------------- */}
-      <section className="pb-16 md:pb-24 border-t border-gray-200 py-2 pt-10">
+      <section className="pb-16 md:pb-24 border-t border-gray-200 py-2 pt-10 bg-white relative z-10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Animated Card for Sales & Partnerships */}
           <div 

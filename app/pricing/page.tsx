@@ -185,7 +185,7 @@ export default function Pricing() {
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1
-            className="text-5xl md:text-7xl font-extrabold mb-4 tracking-tight
+            className="md:text-5xl  text-4xl md:text-7xl font-extrabold mb-4 tracking-tight
                        bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600
                        animate-pulse"
             style={{ animationDuration: '3s' }}
