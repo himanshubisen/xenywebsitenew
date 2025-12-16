@@ -236,7 +236,7 @@ export default function VoiceBotExplorer() {
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 pointer-events-none z-0 mix-blend-multiply"></div>
 
         {/* --- TOP: TABS --- */}
-        <div className={`relative w-full bg-white/80 backdrop-blur-md pt-36`}>
+        <div className={`fixed  w-full  z-100 pt-36`}>
           <div className={`w-full px-4 py-3 border-b border-gray-100`}>
             {/* Scrollable Tabs */}
             <div className={`flex gap-3 overflow-x-auto no-scrollbar py-1`}>
@@ -254,7 +254,7 @@ export default function VoiceBotExplorer() {
 
         {/* --- MAIN CONTENT AREA: ENFORCED GRID VIEW --- */}
         {/* Removed responsiveness classes and made it the default display */}
-        <div className={`relative z-10 flex-1 w-full flex flex-col pt-8 p-4 overflow-y-auto`}> 
+        <div className={`relative z-10 flex-1 w-full flex flex-col md:pt-55 pt-60   p-4 overflow-y-auto`}> 
 
           {/* This is the only view now, made it always visible and scrollable */}
           <div className={`w-full h-full`}>
