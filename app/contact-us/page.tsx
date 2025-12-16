@@ -90,7 +90,7 @@ export default function ContactUsPage() {
       {/* -------------------------------------------------- */}
       {/* 3. GLOBAL SALES & PARTNERSHIPS SECTION (Now at the bottom) */}
       {/* -------------------------------------------------- */}
-      <section className="pb-16 md:pb-24">
+      <section className="pb-16 md:pb-24 border-t border-gray-200 py-2 pt-10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Animated Card for Sales & Partnerships */}
           <div 

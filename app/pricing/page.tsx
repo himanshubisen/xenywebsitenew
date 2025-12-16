@@ -54,7 +54,7 @@ const whyCreditBased = [
 // --- 2. Main Pricing Component ---
 export default function Pricing() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative pt-10">
+    <div className="min-h-screen bg-white text-gray-800">
       <HeroCanvas />
       <Header onDemoClick={() => {}} />
 
@@ -190,7 +190,7 @@ export default function Pricing() {
                        animate-pulse"
             style={{ animationDuration: '3s' }}
           >
-            AI Voicebot Pricing
+            Voicebot Pricing
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Discover flexible credit-based pricing designed for every business.
@@ -199,153 +199,23 @@ export default function Pricing() {
       </section>
 
       {/* --- Section 1: Main Pay As You Use Card --- */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8  bg-gray-100 z-10 relative overflow-hidden border-t border-b border-gray-200">
-        {/* Floating Icons Background */}
-        <div className="absolute inset-0 pointer-events-none z-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/30 via-purple-50/20 to-pink-50/30"></div>
-          {[
-            { left: 10, top: 20, delay: 0.5, duration: 4 },
-            { left: 30, top: 40, delay: 1.2, duration: 3.5 },
-            { left: 50, top: 60, delay: 0.8, duration: 4.2 },
-            { left: 70, top: 30, delay: 1.5, duration: 3.8 },
-            { left: 20, top: 70, delay: 0.3, duration: 4.5 },
-            { left: 80, top: 50, delay: 1.8, duration: 3.2 },
-            { left: 40, top: 10, delay: 0.9, duration: 4.1 },
-            { left: 60, top: 80, delay: 1.1, duration: 3.9 },
-            { left: 15, top: 35, delay: 2.0, duration: 4.3 },
-            { left: 85, top: 65, delay: 0.6, duration: 3.7 },
-            { left: 55, top: 25, delay: 1.4, duration: 4.0 },
-            { left: 25, top: 55, delay: 0.7, duration: 3.6 },
-          ].map((pos, i) => (
-            <div
-              key={i}
-              className="absolute animate-pulse opacity-20"
-              style={{
-                left: `${pos.left}%`,
-                top: `${pos.top}%`,
-                animationDelay: `${pos.delay}s`,
-                animationDuration: `${pos.duration}s`,
-              }}
-            >
-              <div className="w-8 h-8 bg-gradient-to-br from-indigo-400/40 to-purple-400/40 rounded-full blur-sm flex items-center justify-center backdrop-blur-sm border border-white/20">
-                <div className="w-4 h-4 bg-gradient-to-br from-pink-400/50 to-indigo-400/50 rounded-full"></div>
-              </div>
-            </div>
-          ))}
-          {[
-            { left: 15, top: 25, rotate: 45 },
-            { left: 35, top: 55, rotate: 135 },
-            { left: 55, top: 35, rotate: 225 },
-            { left: 75, top: 65, rotate: 315 },
-            { left: 25, top: 45, rotate: 90 },
-            { left: 45, top: 75, rotate: 180 },
-            { left: 65, top: 15, rotate: 270 },
-            { left: 85, top: 85, rotate: 0 },
-          ].map((line, i) => (
-            <div
-              key={`line-${i}`}
-              className="absolute opacity-10"
-              style={{
-                left: `${line.left}%`,
-                top: `${line.top}%`,
-                transform: `rotate(${line.rotate}deg)`,
-              }}
-            >
-              <div className="w-16 h-px bg-gradient-to-r from-transparent via-indigo-300/50 to-transparent"></div>
-            </div>
-          ))}
-          {/* Floating Theme Icons - Center */}
-          {[
-            { icon: <Bot className="w-6 h-6 text-indigo-500/60" />, left: 30, top: 40, delay: 0 },
-            { icon: <Phone className="w-6 h-6 text-purple-500/60" />, left: 50, top: 30, delay: 1 },
-            { icon: <Bot className="w-6 h-6 text-pink-500/60" />, left: 40, top: 60, delay: 2 },
-            { icon: <Mic className="w-6 h-6 text-indigo-600/60" />, left: 60, top: 50, delay: 3 },
-            { icon: <Sparkles className="w-6 h-6 text-purple-600/60" />, left: 35, top: 45, delay: 4 },
-            { icon: <Headphones className="w-6 h-6 text-pink-600/60" />, left: 55, top: 35, delay: 5 },
-          ].map((item, i) => (
-            <div
-              key={`theme-center-${i}`}
-              className="absolute opacity-30 animate-bounce"
-              style={{
-                left: `${item.left}%`,
-                top: `${item.top}%`,
-                animationDelay: `${item.delay * 0.5}s`,
-                animationDuration: `${2 + (i % 2) * 0.5}s`,
-              }}
-            >
-              <div className="w-12 h-12 bg-white/40 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center border border-white/30">
-                {item.icon}
-              </div>
-            </div>
-          ))}
-          {/* Floating Theme Icons - Left Side */}
-          {[
-            { icon: <Bot className="w-5 h-5 text-indigo-400/50" />, left: 5, top: 30, delay: 0 },
-            { icon: <Phone className="w-5 h-5 text-purple-400/50" />, left: 10, top: 60, delay: 1 },
-            { icon: <Sparkles className="w-5 h-5 text-pink-400/50" />, left: 8, top: 45, delay: 2 },
-            { icon: <Mic className="w-5 h-5 text-indigo-500/50" />, left: 12, top: 70, delay: 3 },
-          ].map((item, i) => (
-            <div
-              key={`theme-left-${i}`}
-              className="absolute opacity-25 animate-pulse"
-              style={{
-                left: `${item.left}%`,
-                top: `${item.top}%`,
-                animationDelay: `${item.delay * 0.7}s`,
-                animationDuration: `${3 + (i % 2) * 1}s`,
-              }}
-            >
-              <div className="w-10 h-10 bg-white/30 backdrop-blur-sm rounded-full shadow-md flex items-center justify-center border border-white/20">
-                {item.icon}
-              </div>
-            </div>
-          ))}
-          {/* Floating Theme Icons - Right Side */}
-          {[
-            { icon: <Bot className="w-5 h-5 text-purple-400/50" />, left: 88, top: 25, delay: 0 },
-            { icon: <Headphones className="w-5 h-5 text-pink-400/50" />, left: 90, top: 55, delay: 1 },
-            { icon: <Sparkles className="w-5 h-5 text-indigo-500/50" />, left: 85, top: 40, delay: 2 },
-            { icon: <Phone className="w-5 h-5 text-purple-500/50" />, left: 92, top: 75, delay: 3 },
-          ].map((item, i) => (
-            <div
-              key={`theme-right-${i}`}
-              className="absolute opacity-25 animate-pulse"
-              style={{
-                left: `${item.left}%`,
-                top: `${item.top}%`,
-                animationDelay: `${item.delay * 0.7}s`,
-                animationDuration: `${3 + (i % 2) * 1}s`,
-              }}
-            >
-              <div className="w-10 h-10 bg-white/30 backdrop-blur-sm rounded-full shadow-md flex items-center justify-center border border-white/20">
-                {item.icon}
-              </div>
-            </div>
-          ))}
-        </div>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="max-w-7xl mx-auto relative z-10"
-        >
-   
-
+      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white z-10 relative">
+        <div className="max-w-7xl mx-auto">
           {/* Main Price Card */}
-          <div className="flex justify-center mb-20">
+          <div className="flex justify-center">
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.3, type: "spring", stiffness: 100 }}
               className="bg-gray-900 text-white rounded-2xl p-8 sm:p-12 shadow-2xl w-full max-w-md"
             >
-              <p className="text-center text-blue-400 mb-6 font-semibold">Pay As You Use</p>
+              <p className="text-center text-indigo-400 mb-6 font-semibold">Pay As You Use</p>
               <div className="flex justify-center items-center mb-4">
-                <Phone className="w-10 h-10 mr-4 text-blue-400" />
-                <span className="md:text-6xl  text-4xl font-bold">{CORE_RATE.credits} Credits</span>
+                <Phone className="w-10 h-10 mr-4 text-indigo-400" />
+                <span className="md:text-6xl text-4xl font-bold">{CORE_RATE.credits} Credits</span>
               </div>
               <p className="text-center text-sm text-gray-400 mb-8">per minute</p>
-              
+
               <div className="bg-gray-800 p-3 rounded-lg text-center mb-8">
                 <p className="text-sm font-medium">1 Credit = ₹{CORE_RATE.currency.INR}</p>
                 <p className="text-sm font-medium">1 Credit = AED {CORE_RATE.currency.AED}</p>
@@ -354,134 +224,11 @@ export default function Pricing() {
               <p className="text-center text-sm text-gray-400">Includes: {CORE_RATE.includes}</p>
             </motion.div>
           </div>
-        </motion.div>
+        </div>
       </section>
 
       {/* --- Section 2: Why Credit-Based (Feature Cards) --- */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white/70 backdrop-blur-sm relative overflow-hidden">
-        {/* Floating Icons Background */}
-        <div className="absolute inset-0 pointer-events-none z-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/30 via-purple-50/20 to-pink-50/30"></div>
-          {[
-            { left: 10, top: 20, delay: 0.5, duration: 4 },
-            { left: 30, top: 40, delay: 1.2, duration: 3.5 },
-            { left: 50, top: 60, delay: 0.8, duration: 4.2 },
-            { left: 70, top: 30, delay: 1.5, duration: 3.8 },
-            { left: 20, top: 70, delay: 0.3, duration: 4.5 },
-            { left: 80, top: 50, delay: 1.8, duration: 3.2 },
-            { left: 40, top: 10, delay: 0.9, duration: 4.1 },
-            { left: 60, top: 80, delay: 1.1, duration: 3.9 },
-            { left: 15, top: 35, delay: 2.0, duration: 4.3 },
-            { left: 85, top: 65, delay: 0.6, duration: 3.7 },
-            { left: 55, top: 25, delay: 1.4, duration: 4.0 },
-            { left: 25, top: 55, delay: 0.7, duration: 3.6 },
-          ].map((pos, i) => (
-            <div
-              key={i}
-              className="absolute animate-pulse opacity-20"
-              style={{
-                left: `${pos.left}%`,
-                top: `${pos.top}%`,
-                animationDelay: `${pos.delay}s`,
-                animationDuration: `${pos.duration}s`,
-              }}
-            >
-              <div className="w-8 h-8 bg-gradient-to-br from-indigo-400/40 to-purple-400/40 rounded-full blur-sm flex items-center justify-center backdrop-blur-sm border border-white/20">
-                <div className="w-4 h-4 bg-gradient-to-br from-pink-400/50 to-indigo-400/50 rounded-full"></div>
-              </div>
-            </div>
-          ))}
-          {[
-            { left: 15, top: 25, rotate: 45 },
-            { left: 35, top: 55, rotate: 135 },
-            { left: 55, top: 35, rotate: 225 },
-            { left: 75, top: 65, rotate: 315 },
-            { left: 25, top: 45, rotate: 90 },
-            { left: 45, top: 75, rotate: 180 },
-            { left: 65, top: 15, rotate: 270 },
-            { left: 85, top: 85, rotate: 0 },
-          ].map((line, i) => (
-            <div
-              key={`line-${i}`}
-              className="absolute opacity-10"
-              style={{
-                left: `${line.left}%`,
-                top: `${line.top}%`,
-                transform: `rotate(${line.rotate}deg)`,
-              }}
-            >
-              <div className="w-16 h-px bg-gradient-to-r from-transparent via-indigo-300/50 to-transparent"></div>
-            </div>
-          ))}
-          {/* Floating Theme Icons - Center */}
-          {[
-            { icon: <Bot className="w-6 h-6 text-indigo-500/60" />, left: 30, top: 40, delay: 0 },
-            { icon: <Phone className="w-6 h-6 text-purple-500/60" />, left: 50, top: 30, delay: 1 },
-            { icon: <Bot className="w-6 h-6 text-pink-500/60" />, left: 40, top: 60, delay: 2 },
-            { icon: <Mic className="w-6 h-6 text-indigo-600/60" />, left: 60, top: 50, delay: 3 },
-            { icon: <Sparkles className="w-6 h-6 text-purple-600/60" />, left: 35, top: 45, delay: 4 },
-            { icon: <Headphones className="w-6 h-6 text-pink-600/60" />, left: 55, top: 35, delay: 5 },
-          ].map((item, i) => (
-            <div
-              key={`theme-center-${i}`}
-              className="absolute opacity-30 animate-bounce"
-              style={{
-                left: `${item.left}%`,
-                top: `${item.top}%`,
-                animationDelay: `${item.delay * 0.5}s`,
-                animationDuration: `${2 + (i % 2) * 0.5}s`,
-              }}
-            >
-              <div className="w-12 h-12 bg-white/40 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center border border-white/30">
-                {item.icon}
-              </div>
-            </div>
-          ))}
-          {/* Floating Theme Icons - Left Side */}
-          {[
-            { icon: <Bot className="w-5 h-5 text-indigo-400/50" />, left: 5, top: 30, delay: 0 },
-            { icon: <Phone className="w-5 h-5 text-purple-400/50" />, left: 10, top: 60, delay: 1 },
-            { icon: <Sparkles className="w-5 h-5 text-pink-400/50" />, left: 8, top: 45, delay: 2 },
-            { icon: <Mic className="w-5 h-5 text-indigo-500/50" />, left: 12, top: 70, delay: 3 },
-          ].map((item, i) => (
-            <div
-              key={`theme-left-${i}`}
-              className="absolute opacity-25 animate-pulse"
-              style={{
-                left: `${item.left}%`,
-                top: `${item.top}%`,
-                animationDelay: `${item.delay * 0.7}s`,
-                animationDuration: `${3 + (i % 2) * 1}s`,
-              }}
-            >
-              <div className="w-10 h-10 bg-white/30 backdrop-blur-sm rounded-full shadow-md flex items-center justify-center border border-white/20">
-                {item.icon}
-              </div>
-            </div>
-          ))}
-          {/* Floating Theme Icons - Right Side */}
-          {[
-            { icon: <Bot className="w-5 h-5 text-purple-400/50" />, left: 88, top: 25, delay: 0 },
-            { icon: <Headphones className="w-5 h-5 text-pink-400/50" />, left: 90, top: 55, delay: 1 },
-            { icon: <Sparkles className="w-5 h-5 text-indigo-500/50" />, left: 85, top: 40, delay: 2 },
-            { icon: <Phone className="w-5 h-5 text-purple-500/50" />, left: 92, top: 75, delay: 3 },
-          ].map((item, i) => (
-            <div
-              key={`theme-right-${i}`}
-              className="absolute opacity-25 animate-pulse"
-              style={{
-                left: `${item.left}%`,
-                top: `${item.top}%`,
-                animationDelay: `${item.delay * 0.7}s`,
-                animationDuration: `${3 + (i % 2) * 1}s`,
-              }}
-            >
-              <div className="w-10 h-10 bg-white/30 backdrop-blur-sm rounded-full shadow-md flex items-center justify-center border border-white/20">
-                {item.icon}
-              </div>
-            </div>
-          ))}
-        </div>
+      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white/70 backdrop-blur-sm relative overflow-hidden border-t border-b border-gray-200 z-10">
         <div className="max-w-7xl mx-auto relative z-10">
           <ScrollReveal direction="up" delay={0}>
             <h2 className="text-3xl font-bold text-center mb-4 text-gray-800">
@@ -510,130 +257,7 @@ export default function Pricing() {
       </section>
 
       {/* --- Section 3: Full Feature/Credit Table --- */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-100 z-10 relative overflow-hidden">
-        {/* Floating Icons Background */}
-        <div className="absolute inset-0 pointer-events-none z-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/30 via-purple-50/20 to-pink-50/30"></div>
-          {[
-            { left: 10, top: 20, delay: 0.5, duration: 4 },
-            { left: 30, top: 40, delay: 1.2, duration: 3.5 },
-            { left: 50, top: 60, delay: 0.8, duration: 4.2 },
-            { left: 70, top: 30, delay: 1.5, duration: 3.8 },
-            { left: 20, top: 70, delay: 0.3, duration: 4.5 },
-            { left: 80, top: 50, delay: 1.8, duration: 3.2 },
-            { left: 40, top: 10, delay: 0.9, duration: 4.1 },
-            { left: 60, top: 80, delay: 1.1, duration: 3.9 },
-            { left: 15, top: 35, delay: 2.0, duration: 4.3 },
-            { left: 85, top: 65, delay: 0.6, duration: 3.7 },
-            { left: 55, top: 25, delay: 1.4, duration: 4.0 },
-            { left: 25, top: 55, delay: 0.7, duration: 3.6 },
-          ].map((pos, i) => (
-            <div
-              key={i}
-              className="absolute animate-pulse opacity-20"
-              style={{
-                left: `${pos.left}%`,
-                top: `${pos.top}%`,
-                animationDelay: `${pos.delay}s`,
-                animationDuration: `${pos.duration}s`,
-              }}
-            >
-              <div className="w-8 h-8 bg-gradient-to-br from-indigo-400/40 to-purple-400/40 rounded-full blur-sm flex items-center justify-center backdrop-blur-sm border border-white/20">
-                <div className="w-4 h-4 bg-gradient-to-br from-pink-400/50 to-indigo-400/50 rounded-full"></div>
-              </div>
-            </div>
-          ))}
-          {[
-            { left: 15, top: 25, rotate: 45 },
-            { left: 35, top: 55, rotate: 135 },
-            { left: 55, top: 35, rotate: 225 },
-            { left: 75, top: 65, rotate: 315 },
-            { left: 25, top: 45, rotate: 90 },
-            { left: 45, top: 75, rotate: 180 },
-            { left: 65, top: 15, rotate: 270 },
-            { left: 85, top: 85, rotate: 0 },
-          ].map((line, i) => (
-            <div
-              key={`line-${i}`}
-              className="absolute opacity-10"
-              style={{
-                left: `${line.left}%`,
-                top: `${line.top}%`,
-                transform: `rotate(${line.rotate}deg)`,
-              }}
-            >
-              <div className="w-16 h-px bg-gradient-to-r from-transparent via-indigo-300/50 to-transparent"></div>
-            </div>
-          ))}
-          {/* Floating Theme Icons - Center */}
-          {[
-            { icon: <Bot className="w-6 h-6 text-indigo-500/60" />, left: 30, top: 40, delay: 0 },
-            { icon: <Phone className="w-6 h-6 text-purple-500/60" />, left: 50, top: 30, delay: 1 },
-            { icon: <Bot className="w-6 h-6 text-pink-500/60" />, left: 40, top: 60, delay: 2 },
-            { icon: <Mic className="w-6 h-6 text-indigo-600/60" />, left: 60, top: 50, delay: 3 },
-            { icon: <Sparkles className="w-6 h-6 text-purple-600/60" />, left: 35, top: 45, delay: 4 },
-            { icon: <Headphones className="w-6 h-6 text-pink-600/60" />, left: 55, top: 35, delay: 5 },
-          ].map((item, i) => (
-            <div
-              key={`theme-center-${i}`}
-              className="absolute opacity-30 animate-bounce"
-              style={{
-                left: `${item.left}%`,
-                top: `${item.top}%`,
-                animationDelay: `${item.delay * 0.5}s`,
-                animationDuration: `${2 + (i % 2) * 0.5}s`,
-              }}
-            >
-              <div className="w-12 h-12 bg-white/40 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center border border-white/30">
-                {item.icon}
-              </div>
-            </div>
-          ))}
-          {/* Floating Theme Icons - Left Side */}
-          {[
-            { icon: <Bot className="w-5 h-5 text-indigo-400/50" />, left: 5, top: 30, delay: 0 },
-            { icon: <Phone className="w-5 h-5 text-purple-400/50" />, left: 10, top: 60, delay: 1 },
-            { icon: <Sparkles className="w-5 h-5 text-pink-400/50" />, left: 8, top: 45, delay: 2 },
-            { icon: <Mic className="w-5 h-5 text-indigo-500/50" />, left: 12, top: 70, delay: 3 },
-          ].map((item, i) => (
-            <div
-              key={`theme-left-${i}`}
-              className="absolute opacity-25 animate-pulse"
-              style={{
-                left: `${item.left}%`,
-                top: `${item.top}%`,
-                animationDelay: `${item.delay * 0.7}s`,
-                animationDuration: `${3 + (i % 2) * 1}s`,
-              }}
-            >
-              <div className="w-10 h-10 bg-white/30 backdrop-blur-sm rounded-full shadow-md flex items-center justify-center border border-white/20">
-                {item.icon}
-              </div>
-            </div>
-          ))}
-          {/* Floating Theme Icons - Right Side */}
-          {[
-            { icon: <Bot className="w-5 h-5 text-purple-400/50" />, left: 88, top: 25, delay: 0 },
-            { icon: <Headphones className="w-5 h-5 text-pink-400/50" />, left: 90, top: 55, delay: 1 },
-            { icon: <Sparkles className="w-5 h-5 text-indigo-500/50" />, left: 85, top: 40, delay: 2 },
-            { icon: <Phone className="w-5 h-5 text-purple-500/50" />, left: 92, top: 75, delay: 3 },
-          ].map((item, i) => (
-            <div
-              key={`theme-right-${i}`}
-              className="absolute opacity-25 animate-pulse"
-              style={{
-                left: `${item.left}%`,
-                top: `${item.top}%`,
-                animationDelay: `${item.delay * 0.7}s`,
-                animationDuration: `${3 + (i % 2) * 1}s`,
-              }}
-            >
-              <div className="w-10 h-10 bg-white/30 backdrop-blur-sm rounded-full shadow-md flex items-center justify-center border border-white/20">
-                {item.icon}
-              </div>
-            </div>
-          ))}
-        </div>
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-100 z-10 relative overflow-hidden border-b border-gray-200">
         <div className="max-w-7xl mx-auto relative z-10">
           <ScrollReveal direction="up" delay={0}>
             <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
@@ -685,130 +309,7 @@ export default function Pricing() {
       </section>
 
       {/* --- Section 4: Enterprise Solutions & Free Trial (from image_37c36f.png) --- */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white z-10 relative overflow-hidden">
-        {/* Floating Icons Background */}
-        <div className="absolute inset-0 pointer-events-none z-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/30 via-purple-50/20 to-pink-50/30"></div>
-          {[
-            { left: 10, top: 20, delay: 0.5, duration: 4 },
-            { left: 30, top: 40, delay: 1.2, duration: 3.5 },
-            { left: 50, top: 60, delay: 0.8, duration: 4.2 },
-            { left: 70, top: 30, delay: 1.5, duration: 3.8 },
-            { left: 20, top: 70, delay: 0.3, duration: 4.5 },
-            { left: 80, top: 50, delay: 1.8, duration: 3.2 },
-            { left: 40, top: 10, delay: 0.9, duration: 4.1 },
-            { left: 60, top: 80, delay: 1.1, duration: 3.9 },
-            { left: 15, top: 35, delay: 2.0, duration: 4.3 },
-            { left: 85, top: 65, delay: 0.6, duration: 3.7 },
-            { left: 55, top: 25, delay: 1.4, duration: 4.0 },
-            { left: 25, top: 55, delay: 0.7, duration: 3.6 },
-          ].map((pos, i) => (
-            <div
-              key={i}
-              className="absolute animate-pulse opacity-20"
-              style={{
-                left: `${pos.left}%`,
-                top: `${pos.top}%`,
-                animationDelay: `${pos.delay}s`,
-                animationDuration: `${pos.duration}s`,
-              }}
-            >
-              <div className="w-8 h-8 bg-gradient-to-br from-indigo-400/40 to-purple-400/40 rounded-full blur-sm flex items-center justify-center backdrop-blur-sm border border-white/20">
-                <div className="w-4 h-4 bg-gradient-to-br from-pink-400/50 to-indigo-400/50 rounded-full"></div>
-              </div>
-            </div>
-          ))}
-          {[
-            { left: 15, top: 25, rotate: 45 },
-            { left: 35, top: 55, rotate: 135 },
-            { left: 55, top: 35, rotate: 225 },
-            { left: 75, top: 65, rotate: 315 },
-            { left: 25, top: 45, rotate: 90 },
-            { left: 45, top: 75, rotate: 180 },
-            { left: 65, top: 15, rotate: 270 },
-            { left: 85, top: 85, rotate: 0 },
-          ].map((line, i) => (
-            <div
-              key={`line-${i}`}
-              className="absolute opacity-10"
-              style={{
-                left: `${line.left}%`,
-                top: `${line.top}%`,
-                transform: `rotate(${line.rotate}deg)`,
-              }}
-            >
-              <div className="w-16 h-px bg-gradient-to-r from-transparent via-indigo-300/50 to-transparent"></div>
-            </div>
-          ))}
-          {/* Floating Theme Icons - Center */}
-          {[
-            { icon: <Bot className="w-6 h-6 text-indigo-500/60" />, left: 30, top: 40, delay: 0 },
-            { icon: <Phone className="w-6 h-6 text-purple-500/60" />, left: 50, top: 30, delay: 1 },
-            { icon: <Bot className="w-6 h-6 text-pink-500/60" />, left: 40, top: 60, delay: 2 },
-            { icon: <Mic className="w-6 h-6 text-indigo-600/60" />, left: 60, top: 50, delay: 3 },
-            { icon: <Sparkles className="w-6 h-6 text-purple-600/60" />, left: 35, top: 45, delay: 4 },
-            { icon: <Headphones className="w-6 h-6 text-pink-600/60" />, left: 55, top: 35, delay: 5 },
-          ].map((item, i) => (
-            <div
-              key={`theme-center-${i}`}
-              className="absolute opacity-30 animate-bounce"
-              style={{
-                left: `${item.left}%`,
-                top: `${item.top}%`,
-                animationDelay: `${item.delay * 0.5}s`,
-                animationDuration: `${2 + (i % 2) * 0.5}s`,
-              }}
-            >
-              <div className="w-12 h-12 bg-white/40 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center border border-white/30">
-                {item.icon}
-              </div>
-            </div>
-          ))}
-          {/* Floating Theme Icons - Left Side */}
-          {[
-            { icon: <Bot className="w-5 h-5 text-indigo-400/50" />, left: 5, top: 30, delay: 0 },
-            { icon: <Phone className="w-5 h-5 text-purple-400/50" />, left: 10, top: 60, delay: 1 },
-            { icon: <Sparkles className="w-5 h-5 text-pink-400/50" />, left: 8, top: 45, delay: 2 },
-            { icon: <Mic className="w-5 h-5 text-indigo-500/50" />, left: 12, top: 70, delay: 3 },
-          ].map((item, i) => (
-            <div
-              key={`theme-left-${i}`}
-              className="absolute opacity-25 animate-pulse"
-              style={{
-                left: `${item.left}%`,
-                top: `${item.top}%`,
-                animationDelay: `${item.delay * 0.7}s`,
-                animationDuration: `${3 + (i % 2) * 1}s`,
-              }}
-            >
-              <div className="w-10 h-10 bg-white/30 backdrop-blur-sm rounded-full shadow-md flex items-center justify-center border border-white/20">
-                {item.icon}
-              </div>
-            </div>
-          ))}
-          {/* Floating Theme Icons - Right Side */}
-          {[
-            { icon: <Bot className="w-5 h-5 text-purple-400/50" />, left: 88, top: 25, delay: 0 },
-            { icon: <Headphones className="w-5 h-5 text-pink-400/50" />, left: 90, top: 55, delay: 1 },
-            { icon: <Sparkles className="w-5 h-5 text-indigo-500/50" />, left: 85, top: 40, delay: 2 },
-            { icon: <Phone className="w-5 h-5 text-purple-500/50" />, left: 92, top: 75, delay: 3 },
-          ].map((item, i) => (
-            <div
-              key={`theme-right-${i}`}
-              className="absolute opacity-25 animate-pulse"
-              style={{
-                left: `${item.left}%`,
-                top: `${item.top}%`,
-                animationDelay: `${item.delay * 0.7}s`,
-                animationDuration: `${3 + (i % 2) * 1}s`,
-              }}
-            >
-              <div className="w-10 h-10 bg-white/30 backdrop-blur-sm rounded-full shadow-md flex items-center justify-center border border-white/20">
-                {item.icon}
-              </div>
-            </div>
-          ))}
-        </div>
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white z-10 relative overflow-hidden border-b border-gray-200">
         <div className="max-w-7xl mx-auto text-center relative z-10">
           <ScrollReveal direction="up" delay={0}>
             <h2 className="text-3xl font-bold text-gray-800 mb-4">
@@ -895,22 +396,6 @@ export default function Pricing() {
       </section>
 
       <Footer />
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes spin-slow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        @keyframes spin-reverse {
-          from { transform: translate(-50%, -50%) rotate(0deg); }
-          to { transform: translate(-50%, -50%) rotate(-360deg); }
-        }
-        @keyframes flowIn {
-          0% { transform: rotate(var(--angle)) translateX(var(--radius)); opacity: 0; }
-          20% { opacity: 1; }
-          80% { opacity: 1; }
-          100% { transform: rotate(var(--angle)) translateX(0px); opacity: 0; }
-        }
-      `}} />
-    </main>
+    </div>
   )
 }

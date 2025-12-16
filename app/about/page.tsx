@@ -196,7 +196,7 @@ export default function About() {
                        animate-pulse"
             style={{ animationDuration: '3s' }}
           >
-            About Xeny
+            About Us
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Learn about our mission, vision, and the team behind Xeny.
