@@ -145,7 +145,7 @@ className="
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: "auto" }}
           exit={{ opacity: 0, height: 0 }}
-          className="md:hidden fixed top-[88px] left-0 right-0 bg-white/95 backdrop-blur-md border-b border-white/50 shadow-lg mx-4 rounded-2xl overflow-hidden"
+          className="md:hidden fixed top-[88px] z-100  left-0 right-0 bg-white/95 backdrop-blur-md border-b border-white/50 shadow-lg mx-4 rounded-2xl overflow-hidden"
         >
           <div className="p-4 space-y-3">
             {[

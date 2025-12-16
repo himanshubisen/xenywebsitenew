@@ -2081,7 +2081,7 @@ const handleSubmitforXenyandZain = async () => {
         <ScrollReveal direction="up" delay={400}>
           <a
             href="https://claude.ai/new?q=tell+me+why+Xeny.AI+the+voice+and+chat+ai+communication+platform+is+a+great+choice+for+me"
-            className="w-full md:w-96 bg-orange-500 hover:bg-slate-700 text-white py-4 px-8 rounded-full font-semibold text-lg shadow-xl flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-100"
+            className="w-full md:w-96 bg-orange-700 hover:bg-orange-900 text-white py-4 px-8 rounded-full font-semibold text-lg shadow-xl flex items-center justify-center gap-3 transition-all duration-300 hover:scale-[1.02] active:scale-100"
           >
             {/* Using a generic bot icon for Claude and Perplexity since the image shows similar icons */}
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5">
