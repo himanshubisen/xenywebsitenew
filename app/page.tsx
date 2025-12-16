@@ -71,6 +71,30 @@ import { useIntersectionObserver } from "@/hooks/useIntersectionObserver";
 type TabId = 'real_estate' | 'growth' | 'hr' | 'finance' | 'cx' | 'ops' | 'marketing' | 'sales';
 type ServiceId = 'edu' | 'ecommerce' | 'realestate' | 'healthcare' | 'logistics' | 'finance_serv';
 
+const INDIA_AGENT_MAP: Record<string, { male: string; female: string }> = {
+  sales: {
+    male: 'agent_5801kch3fzpgfa08qnkrh2pg3dds',     // Xeny-India-Sales-Male
+    female: 'agent_7901kch4fvf2ebpr3yd0tape0314',   // Xeny-India-Sales-Female
+  },
+  'appointment booking': {
+    male: 'agent_2401kck9mywcfhq895kzk2n0rf21',     // AppointmentBooking-Male
+    female: 'agent_2201kck9gssreq2b0n9wge3vve64',   // AppointmentBooking-Female
+  },
+  recovery: {
+    male: 'agent_1101kckk48phejwrtygdwkhg9c7j',    // Recovery-Male
+    female: 'agent_8001kckkbvzhenqtbakn6p6z68xv',   // Recovery-Female
+  },
+  support: {
+    male: 'agent_2001kckkgwjtepn99vxrxve908ed',      // Support-Male
+    female: 'agent_0401kckkpmwkf22bmzv645b3m566',  // Support-Female
+  },
+  general: {
+    male: 'agent_7201kckksq6sfvpv4379yc2wz9cn',    // General-Male
+    female: 'agent_5701kckky5jyfq3tk8h9bd7mc5rf',  // General-Female
+  },
+};
+
+
 // --- Counter Component ---
 const Counter = ({ target }: { target: string }) => {
   const [count, setCount] = useState(0);
@@ -1070,10 +1094,14 @@ const handleSubmitforXenyandZain = async () => {
     return;
   }
 
-  const expectedLength = selectedCountry.code === '+91' ? 10 : selectedCountry.code === '+971' ? 9 : 10;
+  // 🔒 INDIA ONLY
+  if (selectedCountry.code !== '+91') {
+    setError('Currently available only for India (+91)');
+    return;
+  }
 
-  if (!new RegExp(`^[0-9]{${expectedLength}}$`).test(phoneNumber)) {
-    setError(`Please enter a valid ${expectedLength}-digit phone number`);
+  if (!/^[0-9]{10}$/.test(phoneNumber)) {
+    setError('Please enter a valid 10-digit phone number');
     return;
   }
 
@@ -1082,17 +1110,17 @@ const handleSubmitforXenyandZain = async () => {
   setSuccess('');
 
   try {
-    // Full phone number with country code
-    const fullPhoneNumber = `${selectedCountry}${phoneNumber}`;
+    const fullPhoneNumber = phoneNumber;
 
-    // Choose agent_id based on selected gender
+    const useCaseKey = selectedUseCase.toLowerCase(); // sales | support | etc
+    const genderKey = selectedAgent === 'female' ? 'female' : 'male';
+
     const agentId =
-      selectedAgent === 'female'
-        ? 'agent_7901kch4fvf2ebpr3yd0tape0314' // Xeny-India-Sales-Female
-        : 'agent_5801kch3fzpgfa08qnkrh2pg3dds'; // Xeny-India-Sales-Male (Zain)
+      INDIA_AGENT_MAP[useCaseKey]?.[genderKey];
 
-    // Map use case to lowercase or keep as-is — adjust if ElevenLabs expects specific format
-    const callType = selectedUseCase.toLowerCase(); // e.g., "sales", "support", etc.
+    if (!agentId) {
+      throw new Error('Agent not configured for selected options');
+    }
 
     const response = await fetch(
       'https://api.elevenlabs.io/v1/convai/sip-trunk/outbound-call',
@@ -1100,39 +1128,41 @@ const handleSubmitforXenyandZain = async () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'xi-api-key': process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY || 'sk_7b385992b5a935134eef4ee2d9ad8fd781f3873ca3556fca',
+          'xi-api-key':
+            process.env.NEXT_PUBLIC_ELEVENLABS_API_KEY ||
+            'sk_7b385992b5a935134eef4ee2d9ad8fd781f3873ca3556fca',
         },
         body: JSON.stringify({
           agent_id: agentId,
           agent_phone_number_id: 'phnum_2901kcgea5jefv9bac4wvpgz6d5m',
           to_number: fullPhoneNumber,
-          'type-call': callType, // Custom field as per your curl example
+          'type-call': useCaseKey,
         }),
       }
     );
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.error?.message || errorData.error || 'Failed to initiate AI call');
+      throw new Error(
+        errorData.error?.message ||
+        errorData.error ||
+        'Failed to initiate AI call'
+      );
     }
 
-    const data = await response.json();
-    console.log('ElevenLabs call initiated:', data);
+    await response.json();
 
     setSuccess('AI call initiated successfully! You’ll receive a call shortly.');
-    setPhoneNumber(''); // Clear input after success
+    setPhoneNumber('');
 
   } catch (err: any) {
     console.error('Call initiation error:', err);
-    if (err instanceof TypeError) {
-      setError('Network error: Please check your internet connection');
-    } else {
-      setError(err.message || 'Failed to initiate call. Please try again.');
-    }
+    setError(err.message || 'Failed to initiate call. Please try again.');
   } finally {
     setIsLoading(false);
   }
 };
+
 
   // Handle country selection
    const handleCountrySelect = (country) => {
