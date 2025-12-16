@@ -37,13 +37,14 @@ import HeroCanvasEffect from "@/components/hero-canvas"
  * --- DATA GENERATION ---
  */
 const INDUSTRIES = [
+   { id: 'education', label: 'Education', icon: GraduationCap, color: 'from-yellow-500 to-amber-600', text: 'text-amber-600', bg: 'bg-amber-50' },
 
   { id: 'realestate', label: 'Real Estate', icon: Briefcase, color: 'from-emerald-500 to-teal-600', text: 'text-teal-600', bg: 'bg-emerald-50' },
     { id: 'healthcare', label: 'Healthcare', icon: Heart, color: 'from-pink-500 to-rose-600', text: 'text-rose-600', bg: 'bg-rose-50' },
   { id: 'fintech', label: 'Fintech', icon: Activity, color: 'from-blue-600 to-indigo-600', text: 'text-indigo-600', bg: 'bg-blue-50' },
   { id: 'ecommerce', label: 'E-commerce', icon: ShoppingCart, color: 'from-orange-500 to-red-600', text: 'text-orange-600', bg: 'bg-orange-50' },
   { id: 'automotive', label: 'Automotive', icon: Car, color: 'from-red-600 to-red-800', text: 'text-red-700', bg: 'bg-red-50' },
-  { id: 'education', label: 'Education', icon: GraduationCap, color: 'from-yellow-500 to-amber-600', text: 'text-amber-600', bg: 'bg-amber-50' },
+ 
   { id: 'logistics', label: 'Logistics', icon: Truck, color: 'from-amber-500 to-yellow-600', text: 'text-yellow-600', bg: 'bg-yellow-50' },
   { id: 'insurance', label: 'Insurance', icon: Shield, color: 'from-indigo-500 to-purple-600', text: 'text-purple-600', bg: 'bg-indigo-50' },
   { id: 'legal', label: 'Legal', icon: Scale, color: 'from-slate-500 to-slate-700', text: 'text-slate-600', bg: 'bg-slate-50' },
@@ -507,10 +508,10 @@ export default function VoiceBotExplorer() {
         </div>
 
         {/* --- TOP: TABS --- */}
-        <div className={`reletive  top-24 w-full z-40 bg-white/80 backdrop-blur-md py-2`}>
-          <div className={`w-full px-4 py-3 border-b border-gray-100`}>
+        <div className={`reletive  top-24 w-full z-40 bg-white/80 backdrop-blur-md py-2 px-2`}>
+          <div className={`w-full  py-3 border-b border-gray-100`}>
             {/* Scrollable Tabs */}
-            <div className={`flex gap-3 overflow-x-auto no-scrollbar py-1 mask-linear-fade `}>
+            <div className={`flex gap-3 overflow-x-auto no-scrollbar py-1  `}>
               {INDUSTRIES.map((ind) => (
                 <IndustryTab
                   key={ind.id}
