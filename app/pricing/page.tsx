@@ -53,7 +53,7 @@ const creditFeatures = [
 ]
 
 const whyCreditBased = [
-  { title: "Transparent & flexible", description: "Pay only for what you use", icon: DollarSign },
+  { title: "Transparent & Flexible Pricing ", description: "Pay only for what you use", icon: DollarSign },
   { title: "Perfect for startups to enterprises", description: "Scale at your own pace", icon: Briefcase },
   { title: "Upgrade connectivity or voice anytime", description: "Change quality on demand", icon: Zap },
   { title: "No hidden fees or long-term contracts", description: "Complete transparency", icon: CreditCard },
@@ -240,12 +240,12 @@ export default function Pricing() {
         <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50 z-10 relative"> {/* Use a light background for contrast */}
             <div className="max-w-7xl mx-auto">
                 {/* Main Price Card */}
-                <div className="flex justify-center">
+                <div className="flex justify-center ">
                     <motion.div
                         initial={{ scale: 0.9, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ delay: 0.1, type: "tween", duration: 0.5 }} // Subtle animation adjustment
-                        className="bg-white text-gray-800 rounded-3xl p-8 sm:p-12 shadow-2xl shadow-indigo-100 ring-1 ring-gray-100 w-full max-w-md" // White card with softer shadow and border
+                        className="bg-white text-gray-800 rounded-3xl p-8 sm:p-12 shadow-2xl shadow-indigo-100 ring-1 ring-gray-100 w-full " // White card with softer shadow and border
                     >
                         <h3 className="text-center text-indigo-600 mb-6 font-bold text-xl tracking-wider uppercase">
                             Pay As You Use
