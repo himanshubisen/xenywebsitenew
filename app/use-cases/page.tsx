@@ -236,7 +236,7 @@ export default function VoiceBotExplorer() {
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 pointer-events-none z-0 mix-blend-multiply"></div>
 
         {/* --- TOP: TABS --- */}
-        <div className={`fixed  w-full  z-100 pt-36`}>
+        <div className={`fixed m  w-full bg-red-500  z-80 mt-30 py-2 bg-white/80 backdrop-blur-md`}>
           <div className={`w-full px-4 py-3 border-b border-gray-100`}>
             {/* Scrollable Tabs */}
             <div className={`flex gap-3 overflow-x-auto no-scrollbar py-1`}>
