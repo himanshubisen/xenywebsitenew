@@ -57,9 +57,9 @@ export default function Header({ onDemoClick }: HeaderProps) {
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
             <Link href="/" className="hover:text-indigo-600 transition-colors">Home</Link>
             <Link href="/use-cases" className="hover:text-indigo-600 transition-colors">Use Cases</Link>
-              <Link href="/blog" className="hover:text-indigo-600 transition-colors">Blog</Link>
+              {/* <Link href="/blog" className="hover:text-indigo-600 transition-colors">Blog</Link> */}
             <Link href="/pricing" className="hover:text-indigo-600 transition-colors">Pricing</Link>
-              <Link href="/contact-us" className="hover:text-indigo-600 transition-colors">Contact Us</Link>
+              {/* <Link href="/contact-us" className="hover:text-indigo-600 transition-colors">Contact Us</Link> */}
             <Link href="/about" className="hover:text-indigo-600 transition-colors">About Us</Link>
           </div>
 
@@ -153,9 +153,9 @@ className="
             {[
               { label: "Home", href: "/" },
               { label: "Use Cases", href: "/use-cases" },
-              { label: "Blog", href: "/blog" },
+              // { label: "Blog", href: "/blog" },
               { label: "Pricing", href: "/pricing" },
-              { label: "Contact Us", href: "/contact-us" },
+              // { label: "Contact Us", href: "/contact-us" },
               { label: "About", href: "/about" },
             ].map((item) => (
               <Link

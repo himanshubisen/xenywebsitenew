@@ -14,15 +14,24 @@ import ScrollReveal from "@/components/animations/ScrollReveal"
 import ScrollTextReveal from "@/components/animations/ScrollTextReveal"
 import StaggerReveal from "@/components/animations/StaggerReveal"
 
-// --- 1. Data Structure from Images ---
 const CORE_RATE = {
-  credits: 5,
-  currency: {
-    INR: 1,
-    AED: 0.1,
-  },
-  includes: "Normal Connectivity + Standard Voice",
-}
+    credits: 5, // Example value
+    includes: "HD Audio, Call Recording, Standard Support", // Example value
+    currency: {
+        INR: 1.5, // Example value
+        AED: 0.066, // Example value
+    }
+};
+
+// --- 1. Data Structure from Images ---
+// const CORE_RATE = {
+//   credits: 5,
+//   currency: {
+//     INR: 1,
+//     AED: 0.1,
+//   },
+//   includes: "Normal Connectivity + Standard Voice",
+// }
 
 const creditFeatures = [
   { group: "Connectivity", type: "Normal", description: "Normal connectivity for smooth, consistent performance.", growth: <Check className="w-5 h-5 text-green-500" />, enterprise: <Check className="w-5 h-5 text-green-500" />, credit: "Included" },
@@ -197,37 +206,7 @@ export default function Pricing() {
           </p>
         </div>
       </section>
-
-      {/* --- Section 1: Main Pay As You Use Card --- */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white z-10 relative">
-        <div className="max-w-7xl mx-auto">
-          {/* Main Price Card */}
-          <div className="flex justify-center">
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.3, type: "spring", stiffness: 100 }}
-              className="bg-gray-900 text-white rounded-2xl p-8 sm:p-12 shadow-2xl w-full max-w-md"
-            >
-              <p className="text-center text-indigo-400 mb-6 font-semibold">Pay As You Use</p>
-              <div className="flex justify-center items-center mb-4">
-                <Phone className="w-10 h-10 mr-4 text-indigo-400" />
-                <span className="md:text-6xl text-4xl font-bold">{CORE_RATE.credits} Credits</span>
-              </div>
-              <p className="text-center text-sm text-gray-400 mb-8">per minute</p>
-
-              <div className="bg-gray-800 p-3 rounded-lg text-center mb-8">
-                <p className="text-sm font-medium">1 Credit = ₹{CORE_RATE.currency.INR}</p>
-                <p className="text-sm font-medium">1 Credit = AED {CORE_RATE.currency.AED}</p>
-              </div>
-
-              <p className="text-center text-sm text-gray-400">Includes: {CORE_RATE.includes}</p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* --- Section 2: Why Credit-Based (Feature Cards) --- */}
+            {/* --- Section 2: Why Credit-Based (Feature Cards) --- */}
       <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white/70 backdrop-blur-sm relative overflow-hidden border-t border-b border-gray-200 z-10">
         <div className="max-w-7xl mx-auto relative z-10">
           <ScrollReveal direction="up" delay={0}>
@@ -255,6 +234,61 @@ export default function Pricing() {
           </StaggerReveal>
         </div>
       </section>
+
+
+   {/* --- Section 1: Main Pay As You Use Card --- */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50 z-10 relative"> {/* Use a light background for contrast */}
+            <div className="max-w-7xl mx-auto">
+                {/* Main Price Card */}
+                <div className="flex justify-center">
+                    <motion.div
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ delay: 0.1, type: "tween", duration: 0.5 }} // Subtle animation adjustment
+                        className="bg-white text-gray-800 rounded-3xl p-8 sm:p-12 shadow-2xl shadow-indigo-100 ring-1 ring-gray-100 w-full max-w-md" // White card with softer shadow and border
+                    >
+                        <h3 className="text-center text-indigo-600 mb-6 font-bold text-xl tracking-wider uppercase">
+                            Pay As You Use
+                        </h3>
+                        
+                        {/* Credits Rate */}
+                        <div className="flex justify-center items-center mb-2">
+                            <Phone className="w-8 h-8 mr-4 text-indigo-500" />
+                            <span className="md:text-6xl text-5xl font-extrabold text-gray-900">
+                                {CORE_RATE.credits} Credits
+                            </span>
+                        </div>
+                        <p className="text-center text-md text-gray-500 mb-8">
+                            per minute
+                        </p>
+
+                        {/* Currency Rate Box */}
+                        <div className="bg-indigo-50/70 p-4 rounded-xl text-center mb-8 border-l-4 border-indigo-400"> {/* Light-colored, accented box */}
+                            <p className="text-md font-semibold text-gray-700">
+                                Equivalent Rates:
+                            </p>
+                            <div className="mt-2 space-y-1">
+                                <p className="text-sm text-gray-600">
+                                    <span className="font-bold">1 Credit</span> = ₹{CORE_RATE.currency.INR}
+                                </p>
+                                <p className="text-sm text-gray-600">
+                                    <span className="font-bold">1 Credit</span> = AED {CORE_RATE.currency.AED}
+                                </p>
+                            </div>
+                        </div>
+
+                        {/* Includes Section */}
+                        <div className="mt-6 border-t pt-6 border-gray-100">
+                            <p className="text-center text-sm font-medium text-gray-600">
+                                <span className="font-bold text-gray-700">Includes:</span> {CORE_RATE.includes}
+                            </p>
+                        </div>
+                        
+                    </motion.div>
+                </div>
+            </div>
+        </section>
+
 
       {/* --- Section 3: Full Feature/Credit Table --- */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-100 z-10 relative overflow-hidden border-b border-gray-200">

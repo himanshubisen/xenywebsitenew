@@ -3,22 +3,40 @@
 import { motion } from "framer-motion"
 import { Github, Twitter, Linkedin } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
+
 
 export default function Footer() {
-  const footerSections = [
-    {
-      title: "Product",
-      items: ["Features", "Pricing", "Security", "Enterprise"],
-    },
-    {
-      title: "Company",
-      items: ["About", "Blog", "Careers", "Contact"],
-    },
-    {
-      title: "Legal",
-      items: ["Privacy", "Terms", "Compliance", "Cookies"],
-    },
-  ]
+const footerSections = [
+  {
+    title: "Product",
+    items: [
+      { label: "Features", href: "/features" },
+      { label: "Pricing", href: "/pricing" },
+      { label: "Security", href: "/security" },
+      { label: "Enterprise", href: "/enterprise" },
+    ],
+  },
+  {
+    title: "Company",
+    items: [
+      { label: "About", href: "/about" },
+      { label: "Blog", href: "/blog" },          // ✅ blog
+      { label: "Careers", href: "#" },
+      { label: "Contact", href: "/contact-us" }, // ✅ contact-us
+    ],
+  },
+  {
+    title: "Legal",
+    items: [
+      { label: "Privacy", href: "#" },
+      { label: "Terms", href: "#" },
+      { label: "Compliance", href: "#" },
+      { label: "Cookies", href: "#" },
+    ],
+  },
+]
+
 
   const socialLinks = [
     { icon: Github, href: "#", name: "github" },
@@ -74,15 +92,19 @@ export default function Footer() {
           {footerSections.map((section) => (
             <motion.div key={section.title} variants={itemVariants}>
               <h3 className="font-semibold text-gray-900 mb-4">{section.title}</h3>
-              <ul className="space-y-2">
-                {section.items.map((item) => (
-                  <li key={item}>
-                    <a href="#" className="text-sm text-gray-600 hover:text-blue-600 transition-colors">
-                      {item}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+           <ul className="space-y-2">
+  {section.items.map((item) => (
+    <li key={item.label}>
+      <Link
+        href={item.href}
+        className="text-sm text-gray-600 hover:text-blue-600 transition-colors"
+      >
+        {item.label}
+      </Link>
+    </li>
+  ))}
+</ul>
+
             </motion.div>
           ))}
         </motion.div>
