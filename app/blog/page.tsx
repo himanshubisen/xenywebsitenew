@@ -73,11 +73,11 @@ export default function Blog() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative">
+    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 relative z-10">
       <HeroCanvas />
       <Header onDemoClick={() => {}} />
 
-      <section className="py-20 px-4 sm:px-6 lg:px-8 pt-32">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 pt-32 relative z-20 bg-white/80 backdrop-blur-md">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
